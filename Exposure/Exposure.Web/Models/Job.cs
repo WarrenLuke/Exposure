@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace Exposure.Entities
 
         
         [DisplayName("Employer")]
-        public int EmployerID { get; set; }
+        public string EmployerID { get; set; }
 
         [Required]
         [StringLength(20)]
@@ -45,14 +46,16 @@ namespace Exposure.Entities
         [Range(00.1, 100.00)]
         [DisplayName("Hourly Rate")]
         [DataType(DataType.Currency)]
-        public double HourlyRate { get; set; }
+        public double Rate { get; set; }
 
         [DisplayName("Location")]
         [Required]
         public int SuburbID { get; set; }
 
+        public int SkillID { get; set; }
+
         [DisplayName("Agreed Rate")]
-        public float Rate { get; set; }
+        public float AgreedRate { get; set; }
 
         [DefaultValue(false)]
         public bool Completed { get; set; }
@@ -61,8 +64,10 @@ namespace Exposure.Entities
 
         public virtual ICollection<JobApplication> Applications { get; set; }
 
-       
+        public virtual Skill Skill { get; set; }
 
+        public virtual Employer Employer { get; set; }
+        
         public DateTime? CompletionDate { get; set; }
 
 

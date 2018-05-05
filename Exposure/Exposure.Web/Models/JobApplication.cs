@@ -18,7 +18,7 @@ namespace Exposure.Entities
         [DisplayName("Job")]
         public int JobID { get; set; }
 
-        [Required]     
+            
         [DisplayName("Worker")]
         public int WorkerID { get; set; }
 
@@ -29,6 +29,8 @@ namespace Exposure.Entities
         public Reply Status  { get; set; }
 
         public virtual Job Job { get; set; }
+
+        public virtual Worker Worker { get; set; }
 
         public virtual ICollection<Incident> Incidents { get; set; }
 

@@ -42,6 +42,10 @@ namespace Exposure.Web.Models
 
         public virtual ICollection<UserIncident> UserIncidents { get; set; }
 
+        public virtual Employer Employer { get; set; }
+
+        public virtual Worker Worker { get; set; }
+
 
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

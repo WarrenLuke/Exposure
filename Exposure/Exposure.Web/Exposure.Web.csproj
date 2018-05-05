@@ -227,13 +227,31 @@
     <Compile Include="DataContexts\IdentityMigrations\201805031322234_UpdateJob.Designer.cs">
       <DependentUpon>201805031322234_UpdateJob.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805051050053_Add Employer.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805051050053_Add Employer.Designer.cs">
+      <DependentUpon>201805051050053_Add Employer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805051110185_MinorChanges.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805051110185_MinorChanges.Designer.cs">
+      <DependentUpon>201805051110185_MinorChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805051122233_AddWorker.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805051122233_AddWorker.Designer.cs">
+      <DependentUpon>201805051122233_AddWorker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805051127486_Relationships.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805051127486_Relationships.Designer.cs">
+      <DependentUpon>201805051127486_Relationships.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
+    <Compile Include="Models\Worker.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Models\City.cs" />
+    <Compile Include="Models\Employer.cs" />
     <Compile Include="Models\GeneralBusiness.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Incident.cs" />
@@ -247,6 +265,7 @@
     <Compile Include="Models\Suburb.cs" />
     <Compile Include="Models\UserIncident.cs" />
     <Compile Include="Models\UserReview.cs" />
+    <Compile Include="Models\WorkerSkill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -354,6 +373,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201805031322234_UpdateJob.resx">
       <DependentUpon>201805031322234_UpdateJob.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805051050053_Add Employer.resx">
+      <DependentUpon>201805051050053_Add Employer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805051110185_MinorChanges.resx">
+      <DependentUpon>201805051110185_MinorChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805051122233_AddWorker.resx">
+      <DependentUpon>201805051122233_AddWorker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805051127486_Relationships.resx">
+      <DependentUpon>201805051127486_Relationships.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

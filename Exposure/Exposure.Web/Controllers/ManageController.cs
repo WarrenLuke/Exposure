@@ -103,6 +103,7 @@ namespace Exposure.Web.Controllers
             return RedirectToAction("ManageLogins", new { Message = message });
         }
 
+        [AllowAnonymous]
         public  ActionResult AllUsers()
         {
             var AllUsers = (from user in DataContexts.IdentityDb.Create().Users

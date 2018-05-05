@@ -12,6 +12,7 @@ namespace Exposure.Entities
     {
         [Key]
         public int UserIncID { get; set; }
+
         
         public string UserId { get; set; }
 

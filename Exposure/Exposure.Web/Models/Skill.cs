@@ -20,7 +20,12 @@ namespace Exposure.Entities
         [DisplayName("Recommended Rate")]
         public float Recom_Rate { get; set; }
 
-        
+        public virtual ICollection<WorkerSkill> WorkerSkills { get; set; }
+
+        public virtual ICollection<Job> Jobs { get; set; }
+
+
+
 
     }
 }
