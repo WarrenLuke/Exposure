@@ -197,6 +197,10 @@
     <Compile Include="DataContexts\ExposureMigrations\201804282241075_InitialCreate.Designer.cs">
       <DependentUpon>201804282241075_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\ExposureMigrations\201804301343384_RemovedHistory.cs" />
+    <Compile Include="DataContexts\ExposureMigrations\201804301343384_RemovedHistory.Designer.cs">
+      <DependentUpon>201804301343384_RemovedHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\ExposureMigrations\Configuration.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201804282307324_Initial.cs" />
@@ -206,6 +210,22 @@
     <Compile Include="DataContexts\IdentityMigrations\201804292322394_AllUsers.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201804292322394_AllUsers.Designer.cs">
       <DependentUpon>201804292322394_AllUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805031247214_Changes.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805031247214_Changes.Designer.cs">
+      <DependentUpon>201805031247214_Changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805031252398_Changes2.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805031252398_Changes2.Designer.cs">
+      <DependentUpon>201805031252398_Changes2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805031312108_FieldTypes.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805031312108_FieldTypes.Designer.cs">
+      <DependentUpon>201805031312108_FieldTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805031322234_UpdateJob.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805031322234_UpdateJob.Designer.cs">
+      <DependentUpon>201805031322234_UpdateJob.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Global.asax.cs">
@@ -219,13 +239,14 @@
     <Compile Include="Models\Incident.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\JobApplication.cs" />
-    <Compile Include="Models\JobHistory.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Progress.cs" />
     <Compile Include="Models\Reply.cs" />
     <Compile Include="Models\Review.cs" />
     <Compile Include="Models\Skill.cs" />
     <Compile Include="Models\Suburb.cs" />
+    <Compile Include="Models\UserIncident.cs" />
+    <Compile Include="Models\UserReview.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -313,11 +334,26 @@
     <EmbeddedResource Include="DataContexts\ExposureMigrations\201804282241075_InitialCreate.resx">
       <DependentUpon>201804282241075_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\ExposureMigrations\201804301343384_RemovedHistory.resx">
+      <DependentUpon>201804301343384_RemovedHistory.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201804282307324_Initial.resx">
       <DependentUpon>201804282307324_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201804292322394_AllUsers.resx">
       <DependentUpon>201804292322394_AllUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805031247214_Changes.resx">
+      <DependentUpon>201805031247214_Changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805031252398_Changes2.resx">
+      <DependentUpon>201805031252398_Changes2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805031312108_FieldTypes.resx">
+      <DependentUpon>201805031312108_FieldTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805031322234_UpdateJob.resx">
+      <DependentUpon>201805031322234_UpdateJob.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

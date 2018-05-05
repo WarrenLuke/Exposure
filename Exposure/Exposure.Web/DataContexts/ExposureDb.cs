@@ -12,7 +12,7 @@ namespace Exposure.Web.DataContexts
         public ExposureDb()
             :base("DefaultConnection")
         {
-
+            
         }
         public DbSet<City> Cities { get; set; }
 
@@ -21,8 +21,6 @@ namespace Exposure.Web.DataContexts
         public DbSet<Job> Jobs { get; set; }
 
         public DbSet<JobApplication> JobApplications { get; set; }
-
-        public DbSet<JobHistory> JobHistories { get; set; }
 
         public DbSet<Incident> MyProperty { get; set; }
 

@@ -13,10 +13,12 @@ namespace Exposure.Entities
         [ScaffoldColumn(false)]
         public int JobID { get; set; }
 
-        [ScaffoldColumn(false)]
+        
+        [DisplayName("Employer")]
         public int EmployerID { get; set; }
 
-
+        [Required]
+        [StringLength(20)]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Please provide a description for your advertisement")]
@@ -45,14 +47,21 @@ namespace Exposure.Entities
         [DataType(DataType.Currency)]
         public double HourlyRate { get; set; }
 
+        [DisplayName("Location")]
+        [Required]
+        public int SuburbID { get; set; }
+
         [DisplayName("Agreed Rate")]
         public float Rate { get; set; }
 
         [DefaultValue(false)]
         public bool Completed { get; set; }
 
+        public virtual Suburb Suburb{ get; set; }
+
         public virtual ICollection<JobApplication> Applications { get; set; }
 
+       
 
         public DateTime? CompletionDate { get; set; }
 

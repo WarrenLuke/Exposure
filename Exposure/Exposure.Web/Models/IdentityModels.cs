@@ -1,9 +1,11 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Exposure.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -30,7 +32,15 @@ namespace Exposure.Web.Models
         [DisplayName("Address Line 2")]
         public string AddressLine2 { get; set; }
 
-       
+        
+        [DisplayName("Suburb")]
+        public int SuburbID { get; set; }
+
+        public virtual Suburb Suburb { get; set; }
+
+        public virtual ICollection<UserReview> UserReviews { get; set; }
+
+        public virtual ICollection<UserIncident> UserIncidents { get; set; }
 
 
 
