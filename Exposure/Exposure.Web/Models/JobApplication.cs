@@ -20,7 +20,7 @@ namespace Exposure.Entities
 
             
         [DisplayName("Worker")]
-        public int WorkerID { get; set; }
+        public string WorkerID { get; set; }
 
         [Required(ErrorMessage = "Provide a short motivation why you should be hired")]
         [StringLength(500)]

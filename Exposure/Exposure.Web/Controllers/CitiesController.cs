@@ -11,6 +11,7 @@ using Exposure.Web.DataContexts;
 
 namespace Exposure.Web.Models
 {
+    [Authorize]
     public class CitiesController : Controller
     {
         private ExposureDb db = new ExposureDb();

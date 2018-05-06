@@ -23,13 +23,12 @@ namespace Exposure.Entities
         public string Description { get; set; }
 
         [Required]
-        public string Reporter { get; set; }
-
-        [Required]
         public string Offender { get; set; }
 
-        public virtual ICollection<UserIncident> UserIncidents { get; set; }
+        public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; }
 
+        [ForeignKey("Offender")]
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         public JobApplication JobApplications { get; set; }
         

@@ -38,9 +38,14 @@ namespace Exposure.Web.Models
 
         public virtual Suburb Suburb { get; set; }
 
-        public virtual ICollection<UserReview> UserReviews { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
 
-        public virtual ICollection<UserIncident> UserIncidents { get; set; }
+        public virtual ICollection<Incident> Incidents { get; set; }
+
+        public virtual ICollection<Review> Reviewees { get; set; }
+        
+        public virtual ICollection<Incident> Offenders { get; set; }
+
 
         public virtual Employer Employer { get; set; }
 

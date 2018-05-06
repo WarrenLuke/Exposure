@@ -24,11 +24,8 @@ namespace Exposure.Entities
         [StringLength(1024)]
         public string Comment { get; set; }
 
-        //[Required]
-        //public string Reviewer { get; set; }
-
-        //[Required]
-        //public string Reviewee { get; set; }
+              
+        public string Reviewee { get; set; }
 
         [Required]
         [ScaffoldColumn(false)]
@@ -36,7 +33,11 @@ namespace Exposure.Entities
 
         public int JobApplicationID { get; set; }
 
-        public ICollection<UserReview> UserReviews { get; set; }
+        public ICollection<ApplicationUser> ApplicationUsers { get; set; }
+
+        [ForeignKey("Reviewee")]
+        public virtual ApplicationUser ApplicationUser { get; set; }
+
 
         [ForeignKey("JobApplicationID")]
         public virtual JobApplication JobApplication { get; set; }
