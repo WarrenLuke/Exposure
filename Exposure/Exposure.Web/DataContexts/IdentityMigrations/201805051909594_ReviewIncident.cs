@@ -7,14 +7,8 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
     {
         public override void Up()
         {
-            DropForeignKey("dbo.UserIncidents", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.UserIncidents", "IncidentID", "dbo.Incidents");
-            DropForeignKey("dbo.UserReviews", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.UserReviews", "ReviewID", "dbo.Reviews");
-            DropIndex("dbo.UserIncidents", new[] { "UserId" });
-            DropIndex("dbo.UserIncidents", new[] { "IncidentID" });
-            DropIndex("dbo.UserReviews", new[] { "UserId" });
-            DropIndex("dbo.UserReviews", new[] { "ReviewID" });
+            
+            
             CreateTable(
                 "dbo.UserIncidents",
                 c => new
@@ -24,24 +18,27 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                     })
                 .PrimaryKey(t => new { t.IncidentID, t.UserId })
                 .ForeignKey("dbo.Incidents", t => t.IncidentID, cascadeDelete: false)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: false)
+                
                 .Index(t => t.IncidentID)
                 .Index(t => t.UserId);
+
+            AddForeignKey("dbo.UserIncidents", "UserId", "dbo.Users", "Id");
             
             CreateTable(
                 "dbo.UserReviews",
                 c => new
                     {
                         ReviewID = c.Int(nullable: false),
-                        UserId = c.String(nullable: false, maxLength: 128),
+                        UserID = c.String(nullable: false, maxLength: 128),
                     })
-                .PrimaryKey(t => new { t.ReviewID, t.UserId })
+                .PrimaryKey(t => new { t.ReviewID, t.UserID })
                 .ForeignKey("dbo.Reviews", t => t.ReviewID, cascadeDelete: false)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: false)
+                
                 .Index(t => t.ReviewID)
-                .Index(t => t.UserId);
-            
-            
+                .Index(t => t.UserID);
+
+            AddForeignKey("dbo.UserReviews", "UserID", "dbo.Users", "Id");
+
         }
         
         public override void Down()

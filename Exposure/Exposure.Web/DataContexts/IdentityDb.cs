@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -9,10 +10,6 @@ namespace Exposure.Web.DataContexts
 {
     public class IdentityDb : IdentityDbContext<ApplicationUser>
     {
-
-
-
-
 
         public IdentityDb()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -24,7 +21,7 @@ namespace Exposure.Web.DataContexts
             return new IdentityDb();
         }
 
-        public System.Data.Entity.DbSet<Exposure.Web.Models.AllUsers> AllUsers { get; set; }
+        
 
         public System.Data.Entity.DbSet<Exposure.Entities.Job> Jobs { get; set; }
 
@@ -39,6 +36,10 @@ namespace Exposure.Web.DataContexts
         public System.Data.Entity.DbSet<Exposure.Entities.JobApplication> JobApplications { get; set; }
 
         public System.Data.Entity.DbSet<Exposure.Entities.Incident> Incidents { get; set; }
+
+       
+
+        public System.Data.Entity.DbSet<Exposure.Entities.Worker> Workers { get; set; }
     }
 }
    

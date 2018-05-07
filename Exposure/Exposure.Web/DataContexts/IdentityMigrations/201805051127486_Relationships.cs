@@ -8,11 +8,11 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
         public override void Up()
         {
             AddColumn("dbo.Jobs", "SkillID", c => c.Int(nullable: false));
-            AddColumn("dbo.JobApplications", "Worker_WorkerID", c => c.String(maxLength: 128));
+            AddColumn("dbo.JobApplications", "WorkerID", c => c.String(maxLength: 128));
             CreateIndex("dbo.Jobs", "SkillID");
-            CreateIndex("dbo.JobApplications", "Worker_WorkerID");
+            CreateIndex("dbo.JobApplications", "WorkerID");
             AddForeignKey("dbo.Jobs", "SkillID", "dbo.Skills", "SkillID", cascadeDelete: true);
-            AddForeignKey("dbo.JobApplications", "Worker_WorkerID", "dbo.Workers", "WorkerID");
+            AddForeignKey("dbo.JobApplications", "WorkerID", "dbo.Workers", "UserID");
         }
         
         public override void Down()

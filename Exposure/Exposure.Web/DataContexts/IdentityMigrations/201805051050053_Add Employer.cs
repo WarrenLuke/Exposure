@@ -16,10 +16,12 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                         SuburbID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.UserID)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserID)
+                
                 .ForeignKey("dbo.Suburbs", t => t.SuburbID, cascadeDelete: true)
                 .Index(t => t.UserID)
                 .Index(t => t.SuburbID);
+
+            AddForeignKey("dbo.Employers", "UserId", "dbo.Users", "Id");
             
         }
         

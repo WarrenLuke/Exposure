@@ -12,14 +12,14 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
             
             DropIndex("dbo.Reviews", new[] { "JobApplication_JobApplicationID" });
            
-            RenameColumn(table: "dbo.AspNetUsers", name: "Suburb_SuburbID", newName: "SuburbID");
-            RenameColumn(table: "dbo.UserIncidents", name: "Id", newName: "UserId");
+            
+            
             RenameColumn(table: "dbo.Reviews", name: "JobApplication_JobApplicationID", newName: "JobApplicationID");
-            RenameIndex(table: "dbo.UserIncidents", name: "IX_Id", newName: "IX_UserId");
+            
             AlterColumn("dbo.Reviews", "JobApplicationID", c => c.Int(nullable: false));
-            CreateIndex("dbo.AspNetUsers", "SuburbID");
+            
             CreateIndex("dbo.Reviews", "JobApplicationID");
-            AddForeignKey("dbo.AspNetUsers", "SuburbID", "dbo.Suburbs", "SuburbID", cascadeDelete: true);
+            
             AddForeignKey("dbo.Reviews", "JobApplicationID", "dbo.JobApplications", "JobApplicationID", cascadeDelete: true);
         }
         

@@ -211,10 +211,6 @@
     <Compile Include="DataContexts\IdentityMigrations\201804282307324_Initial.Designer.cs">
       <DependentUpon>201804282307324_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataContexts\IdentityMigrations\201804292322394_AllUsers.cs" />
-    <Compile Include="DataContexts\IdentityMigrations\201804292322394_AllUsers.Designer.cs">
-      <DependentUpon>201804292322394_AllUsers.cs</DependentUpon>
-    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\201805031247214_Changes.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201805031247214_Changes.Designer.cs">
       <DependentUpon>201805031247214_Changes.cs</DependentUpon>
@@ -254,6 +250,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201805062128225_MinorUpdate.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201805062128225_MinorUpdate.Designer.cs">
       <DependentUpon>201805062128225_MinorUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805071757411_AddRoles.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805071757411_AddRoles.Designer.cs">
+      <DependentUpon>201805071757411_AddRoles.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Worker.cs" />
@@ -341,7 +341,6 @@
     <Content Include="Views\Cities\Details.cshtml" />
     <Content Include="Views\Cities\Edit.cshtml" />
     <Content Include="Views\Cities\Index.cshtml" />
-    <Content Include="Views\Manage\AllUsers.cshtml" />
     <Content Include="Views\Jobs\Create.cshtml" />
     <Content Include="Views\Jobs\Delete.cshtml" />
     <Content Include="Views\Jobs\Details.cshtml" />
@@ -389,9 +388,6 @@
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201804282307324_Initial.resx">
       <DependentUpon>201804282307324_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\IdentityMigrations\201804292322394_AllUsers.resx">
-      <DependentUpon>201804292322394_AllUsers.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201805031247214_Changes.resx">
       <DependentUpon>201805031247214_Changes.cs</DependentUpon>
     </EmbeddedResource>
@@ -421,6 +417,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201805062128225_MinorUpdate.resx">
       <DependentUpon>201805062128225_MinorUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805071757411_AddRoles.resx">
+      <DependentUpon>201805071757411_AddRoles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

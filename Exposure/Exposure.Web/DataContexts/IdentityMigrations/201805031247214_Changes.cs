@@ -29,19 +29,7 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                     })
                 .PrimaryKey(t => t.CityID);
             
-            CreateTable(
-                "dbo.UserIncidents",
-                c => new
-                    {
-                        UserIncID = c.Int(nullable: false, identity: true),
-                        Id = c.String(maxLength: 128),
-                        IncidentID = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.UserIncID)
-                .ForeignKey("dbo.AspNetUsers", t => t.Id)
-                .ForeignKey("dbo.Incidents", t => t.IncidentID, cascadeDelete: true)
-                .Index(t => t.Id)
-                .Index(t => t.IncidentID);
+           
             
             CreateTable(
                 "dbo.Incidents",
@@ -102,19 +90,7 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                     })
                 .PrimaryKey(t => t.ReviewID);
             
-            CreateTable(
-                "dbo.UserReviews",
-                c => new
-                    {
-                        UserReviewID = c.String(nullable: false, maxLength: 128),
-                        UserId = c.String(maxLength: 128),
-                        ReviewID = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.UserReviewID)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId)
-                .ForeignKey("dbo.Reviews", t => t.ReviewID, cascadeDelete: true)
-                .Index(t => t.UserId)
-                .Index(t => t.ReviewID);
+            
             
             CreateTable(
                 "dbo.ReviewJobApplications",
@@ -129,10 +105,10 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                 .Index(t => t.Review_ReviewID)
                 .Index(t => t.JobApplication_JobApplicationID);
             
-            AddColumn("dbo.AspNetUsers", "SuburbID", c => c.String(nullable: false));
-            AddColumn("dbo.AspNetUsers", "Suburb_SuburbID", c => c.Int());
-            CreateIndex("dbo.AspNetUsers", "Suburb_SuburbID");
-            AddForeignKey("dbo.AspNetUsers", "Suburb_SuburbID", "dbo.Suburbs", "SuburbID");
+            
+            AddColumn("dbo.Users", "SuburbID", c => c.Int());
+            CreateIndex("dbo.Users", "SuburbID");
+            AddForeignKey("dbo.Users", "SuburbID", "dbo.Suburbs", "SuburbID");
         }
         
         public override void Down()

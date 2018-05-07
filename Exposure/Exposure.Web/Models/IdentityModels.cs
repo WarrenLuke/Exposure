@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -36,6 +37,7 @@ namespace Exposure.Web.Models
         [DisplayName("Suburb")]
         public int SuburbID { get; set; }
 
+        [ForeignKey("SuburbID")]
         public virtual Suburb Suburb { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }

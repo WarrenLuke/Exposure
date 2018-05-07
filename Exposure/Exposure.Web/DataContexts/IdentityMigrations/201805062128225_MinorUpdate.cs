@@ -7,19 +7,9 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
     {
         public override void Up()
         {
-            DropForeignKey("dbo.IncidentApplicationUsers", "Incident_IncidentID", "dbo.Incidents");
-            DropForeignKey("dbo.IncidentApplicationUsers", "ApplicationUser_Id", "dbo.AspNetUsers");
-            DropForeignKey("dbo.ReviewApplicationUsers", "Review_ReviewID", "dbo.Reviews");
-            DropForeignKey("dbo.ReviewApplicationUsers", "ApplicationUser_Id", "dbo.AspNetUsers");
-            DropIndex("dbo.JobApplications", new[] { "Worker_WorkerID" });
-            DropIndex("dbo.IncidentApplicationUsers", new[] { "Incident_IncidentID" });
-            DropIndex("dbo.IncidentApplicationUsers", new[] { "ApplicationUser_Id" });
-            DropIndex("dbo.ReviewApplicationUsers", new[] { "Review_ReviewID" });
-            DropIndex("dbo.ReviewApplicationUsers", new[] { "ApplicationUser_Id" });
-            DropColumn("dbo.JobApplications", "WorkerID");
-            RenameColumn(table: "dbo.JobApplications", name: "Worker_WorkerID", newName: "WorkerID");
-            AddColumn("dbo.AspNetUsers", "Incident_IncidentID", c => c.Int());
-            AddColumn("dbo.AspNetUsers", "Review_ReviewID", c => c.Int());
+            
+            AddColumn("dbo.Users", "Incident_IncidentID", c => c.Int());
+            AddColumn("dbo.Users", "Review_ReviewID", c => c.Int());
             AddColumn("dbo.Incidents", "ApplicationUser_Id", c => c.String(maxLength: 128));
             AddColumn("dbo.Incidents", "ApplicationUser_Id1", c => c.String(maxLength: 128));
             AddColumn("dbo.Reviews", "Reviewee", c => c.String(maxLength: 128));
@@ -27,23 +17,22 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
             AddColumn("dbo.Reviews", "ApplicationUser_Id1", c => c.String(maxLength: 128));
             AlterColumn("dbo.Incidents", "Offender", c => c.String(nullable: false, maxLength: 128));
             AlterColumn("dbo.JobApplications", "WorkerID", c => c.String(maxLength: 128));
-            CreateIndex("dbo.AspNetUsers", "Incident_IncidentID");
-            CreateIndex("dbo.AspNetUsers", "Review_ReviewID");
+            CreateIndex("dbo.Users", "Incident_IncidentID");
+            CreateIndex("dbo.Users", "Review_ReviewID");
             CreateIndex("dbo.Incidents", "Offender");
             CreateIndex("dbo.Incidents", "ApplicationUser_Id");
             CreateIndex("dbo.Incidents", "ApplicationUser_Id1");
-            CreateIndex("dbo.JobApplications", "WorkerID");
             CreateIndex("dbo.Reviews", "Reviewee");
             CreateIndex("dbo.Reviews", "ApplicationUser_Id");
             CreateIndex("dbo.Reviews", "ApplicationUser_Id1");
-            AddForeignKey("dbo.Incidents", "Offender", "dbo.AspNetUsers", "Id", cascadeDelete: false);
-            AddForeignKey("dbo.AspNetUsers", "Incident_IncidentID", "dbo.Incidents", "IncidentID");
-            AddForeignKey("dbo.Reviews", "Reviewee", "dbo.AspNetUsers", "Id");
-            AddForeignKey("dbo.AspNetUsers", "Review_ReviewID", "dbo.Reviews", "ReviewID");
-            AddForeignKey("dbo.Incidents", "ApplicationUser_Id", "dbo.AspNetUsers", "Id");
-            AddForeignKey("dbo.Incidents", "ApplicationUser_Id1", "dbo.AspNetUsers", "Id");
-            AddForeignKey("dbo.Reviews", "ApplicationUser_Id", "dbo.AspNetUsers", "Id");
-            AddForeignKey("dbo.Reviews", "ApplicationUser_Id1", "dbo.AspNetUsers", "Id");
+            AddForeignKey("dbo.Incidents", "Offender", "dbo.Users", "Id", cascadeDelete: false);
+            AddForeignKey("dbo.Users", "Incident_IncidentID", "dbo.Incidents", "IncidentID");
+            AddForeignKey("dbo.Reviews", "Reviewee", "dbo.Users", "Id");
+            AddForeignKey("dbo.Users", "Review_ReviewID", "dbo.Reviews", "ReviewID");
+            AddForeignKey("dbo.Incidents", "ApplicationUser_Id", "dbo.Users", "Id");
+            AddForeignKey("dbo.Incidents", "ApplicationUser_Id1", "dbo.Users", "Id");
+            AddForeignKey("dbo.Reviews", "ApplicationUser_Id", "dbo.Users", "Id");
+            AddForeignKey("dbo.Reviews", "ApplicationUser_Id1", "dbo.Users", "Id");
             DropColumn("dbo.Incidents", "Reporter");
             
         }

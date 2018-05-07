@@ -11,26 +11,29 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                 "dbo.Workers",
                 c => new
                     {
-                        WorkerID = c.String(nullable: false, maxLength: 128),
+                        UserID = c.String(nullable: false, maxLength: 128),
                     })
-                .PrimaryKey(t => t.WorkerID)
-                .ForeignKey("dbo.AspNetUsers", t => t.WorkerID)
-                .Index(t => t.WorkerID);
+                .PrimaryKey(t => t.UserID)
+                .Index(t => t.UserID);
+
+            AddForeignKey("dbo.Workers", "UserID", "dbo.Users", "Id");
+
             
             CreateTable(
                 "dbo.WorkerSkills",
                 c => new
                     {
                         WSID = c.Int(nullable: false, identity: true),
-                        WorkerID = c.Int(nullable: false),
+                        WorkerID = c.String(nullable: false, maxLength:128),
                         SkillID = c.Int(nullable: false),
-                        Worker_WorkerID = c.String(maxLength: 128),
+                        
                     })
                 .PrimaryKey(t => t.WSID)
                 .ForeignKey("dbo.Skills", t => t.SkillID, cascadeDelete: true)
-                .ForeignKey("dbo.Workers", t => t.Worker_WorkerID)
                 .Index(t => t.SkillID)
-                .Index(t => t.Worker_WorkerID);
+                .Index(t => t.WorkerID);
+
+            AddForeignKey("dbo.WorkerSkills", "WorkerID", "dbo.Workers", "UserID");
             
             CreateTable(
                 "dbo.Skills",

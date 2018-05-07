@@ -103,28 +103,7 @@ namespace Exposure.Web.Controllers
             return RedirectToAction("ManageLogins", new { Message = message });
         }
 
-        [AllowAnonymous]
-        public  ActionResult AllUsers()
-        {
-            var AllUsers = (from user in DataContexts.IdentityDb.Create().Users
-                            select new
-                            {
-                                Id = user.Id,
-                                Username = user.UserName,
-                                FirstName = user.FirstName,
-                                LastName = user.LastName,
-                                Email = user.Email
-                            }).ToList().Select(p=> new AllUsers()
-                            {
-                                Id= p.Id,
-                                Username = p.Username,
-                                FirstName = p.FirstName,
-                                LastName = p.LastName,
-                                Email = p.Email
-
-                            });
-            return View(AllUsers);
-        }
+       
 
 
         //

@@ -8,9 +8,16 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
+
 <body>
+
+    
     <div class="navbar navbar-inverse navbar-fixed-top">
+        <div>
+            Exposure
+        </div>
         <div class="container">
+           
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -24,6 +31,7 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Users", "AllUsers","Manage")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
