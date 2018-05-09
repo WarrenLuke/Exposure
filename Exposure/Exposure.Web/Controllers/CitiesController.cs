@@ -38,6 +38,7 @@ namespace Exposure.Web.Models
         }
 
         // GET: Cities/Create
+        [AllowAnonymous]
         public ActionResult Create()
         {
             return View();
@@ -48,6 +49,7 @@ namespace Exposure.Web.Models
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult Create([Bind(Include = "CityID,CityName,CityAbbrev")] City city)
         {
             if (ModelState.IsValid)

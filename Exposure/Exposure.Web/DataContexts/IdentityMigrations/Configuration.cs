@@ -1,5 +1,6 @@
 namespace Exposure.Web.DataContexts.IdentityMigrations
 {
+    using Exposure.Entities;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
@@ -27,15 +28,6 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                 manager.Create(role);
             }
 
-            if (!context.Roles.Any(r => r.Name == "Worker"))
-            {
-                var store = new RoleStore<IdentityRole>(context);
-                var manager = new RoleManager<IdentityRole>(store);
-                var role = new IdentityRole { Name = "Worker" };
-
-                manager.Create(role);
-            }
-
             if (!context.Roles.Any(r => r.Name == "Employer"))
             {
                 var store = new RoleStore<IdentityRole>(context);
@@ -45,6 +37,25 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                 manager.Create(role);
             }
 
+            if (!context.Roles.Any(r => r.Name == "Worker"))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Worker" };
+
+                manager.Create(role);
+            }
+
+            context.Suburbs.AddOrUpdate(
+                s => s.SubName,
+                new Suburb()
+                {
+                    SubName = "Walmer",
+                    CityID = 1
+                }
+                );
+
+            
 
             //  This method will be called after migrating to the latest version.
 
