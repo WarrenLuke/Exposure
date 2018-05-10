@@ -2090,7 +2090,7 @@ fieldset[disabled] .btn-default.active {
 }
 
 .btn-primary {
-  color: #ffffff;
+  color: rgb(252, 85, 0);
   background-color: #428bca;
   border-color: #357ebd;
 }

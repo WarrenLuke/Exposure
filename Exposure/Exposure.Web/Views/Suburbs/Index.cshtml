@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Exposure.Entities.Suburb>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.City.CityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.City.CityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.SuburbID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.SuburbID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.SuburbID })
+        </td>
+    </tr>
+}
+
+</table>

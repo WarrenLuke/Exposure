@@ -21,16 +21,16 @@ namespace Exposure.Web.DataContexts
             return new IdentityDb();
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<IdentityUser>().ToTable("Users", "dbo");
-            modelBuilder.Entity<ApplicationUser>().ToTable("Users", "dbo");
-            modelBuilder.Entity<IdentityUserRole>().ToTable("UserRoles", "dbo");
-            modelBuilder.Entity<IdentityUserLogin>().ToTable("UserLogins", "dbo");
-            modelBuilder.Entity<IdentityUserClaim>().ToTable("UserClaims", "dbo");
-            modelBuilder.Entity<IdentityRole>().ToTable("Roles", "dbo");
-        }
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+            
+        //    modelBuilder.Entity<ApplicationUser>().ToTable("Users", "dbo");
+        //    modelBuilder.Entity<IdentityUserRole>().ToTable("UserRoles", "dbo");
+        //    modelBuilder.Entity<IdentityUserLogin>().ToTable("UserLogins", "dbo");
+        //    modelBuilder.Entity<IdentityUserClaim>().ToTable("UserClaims", "dbo");
+        //    modelBuilder.Entity<IdentityRole>().ToTable("Roles", "dbo");
+        //}
 
         public System.Data.Entity.DbSet<Exposure.Entities.Job> Jobs { get; set; }
 
@@ -49,6 +49,8 @@ namespace Exposure.Web.DataContexts
        
 
         public System.Data.Entity.DbSet<Exposure.Entities.Worker> Workers { get; set; }
+
+        public System.Data.Entity.DbSet<Exposure.Entities.City> Cities { get; set; }
     }
 }
    

@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Exposure.Web.Models;
+using Exposure.Web.DataContexts;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Exposure.Entities;
 
 namespace Exposure.Web.Controllers
 {
@@ -17,6 +20,7 @@ namespace Exposure.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private IdentityDb db = new IdentityDb();
 
         public AccountController()
         {
@@ -139,6 +143,7 @@ namespace Exposure.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName");
             return View();
         }
 
@@ -151,11 +156,33 @@ namespace Exposure.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = (model.FirstName +" "+model.LastName), Email = model.Email, FirstName =model.FirstName, LastName = model.LastName,
-                                    AddressLine1 = model.AddressLine1, AddressLine2 = model.AddressLine2, PhoneNumber=model.PhoneNumber };
+               
+                var user = new ApplicationUser { UserName = (model.FirstName +" "+model.LastName), Gender = model.Gender, Email = model.Email, FirstName =model.FirstName, LastName = model.LastName,
+                                    AddressLine1 = model.AddressLine1, AddressLine2 = model.AddressLine2, PhoneNumber=model.PhoneNumber, SuburbID=model.SuburbID  };
+                var role = model.Role; 
                 var result = await UserManager.CreateAsync(user, model.Password);
+                
+                
+                
                 if (result.Succeeded)
                 {
+                    //Binding user to selected role by using the UserManager class
+                    UserManager.AddToRole(user.Id, role);
+
+                    //If statement used to determind 
+                    if (role == "Employer")
+                    {
+                        var employer = new Employer { EmployerID = user.Id };
+                        db.Employers.Add(employer);
+                        db.SaveChanges();
+                        
+                    }
+                    else if (role == "Worker")
+                    {
+                        var worker = new Worker { WorkerID = user.Id };
+                        db.Workers.Add(worker);
+                        db.SaveChanges();
+                    }
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

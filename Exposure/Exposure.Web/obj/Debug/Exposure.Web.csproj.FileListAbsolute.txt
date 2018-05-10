@@ -121,5 +121,4 @@ C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Ex
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.ExposureMigrations.InitialCreate.resources
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.csproj.GenerateResource.cache
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.ExposureMigrations.RemovedHistory.resources
-C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.InitialCreate.resources
-C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.Roles.resources
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.Initial.resources

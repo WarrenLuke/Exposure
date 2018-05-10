@@ -26,6 +26,10 @@ namespace Exposure.Web.Models
         public string LastName { get; set; }
 
         [Required]
+        [StringLength(10)]
+        public string Gender { get; set; }
+
+        [Required]
         [StringLength(1024)]
         [DisplayName("Address Line 1")]
         public string AddressLine1 { get; set; }
@@ -40,13 +44,13 @@ namespace Exposure.Web.Models
         [ForeignKey("SuburbID")]
         public virtual Suburb Suburb { get; set; }
 
+        public virtual ICollection<Review> UserReviews { get; set; }
+
+        public virtual ICollection<Incident> UserIncidents { get; set; }
+
         public virtual ICollection<Review> Reviews { get; set; }
-
-        public virtual ICollection<Incident> Incidents { get; set; }
-
-        public virtual ICollection<Review> Reviewees { get; set; }
         
-        public virtual ICollection<Incident> Offenders { get; set; }
+        public virtual ICollection<Incident> Incidents { get; set; }
 
 
         public virtual Employer Employer { get; set; }

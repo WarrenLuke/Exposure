@@ -55,6 +55,17 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                 }
                 );
 
+            context.Skills.AddOrUpdate(
+                sk => sk.SkillDescription,
+                new Skill() { SkillDescription = "Painting", Recom_Rate = 250 },
+                new Skill() { SkillDescription = "Gardening", Recom_Rate = 150 },
+                new Skill() { SkillDescription = "Plumbing", Recom_Rate = 250 },
+                new Skill() { SkillDescription = "Tiling", Recom_Rate = 300 },
+                new Skill() { SkillDescription = "Welding", Recom_Rate = 350 },
+                new Skill() { SkillDescription = "Tinkering", Recom_Rate = 100 }              
+
+                );
+
             
 
             //  This method will be called after migrating to the latest version.

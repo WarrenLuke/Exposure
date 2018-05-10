@@ -196,6 +196,7 @@
     <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
+    <Compile Include="Controllers\SuburbsController.cs" />
     <Compile Include="DataContexts\ExposureDb.cs" />
     <Compile Include="DataContexts\ExposureMigrations\201804282241075_InitialCreate.cs" />
     <Compile Include="DataContexts\ExposureMigrations\201804282241075_InitialCreate.Designer.cs">
@@ -207,35 +208,35 @@
     </Compile>
     <Compile Include="DataContexts\ExposureMigrations\Configuration.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
-    <Compile Include="DataContexts\IdentityMigrations\201805092001419_Initial Create.cs" />
-    <Compile Include="DataContexts\IdentityMigrations\201805092001419_Initial Create.Designer.cs">
-      <DependentUpon>201805092001419_Initial Create.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\IdentityMigrations\201805092128061_Roles.cs" />
-    <Compile Include="DataContexts\IdentityMigrations\201805092128061_Roles.Designer.cs">
-      <DependentUpon>201805092128061_Roles.cs</DependentUpon>
+    <Compile Include="DataContexts\IdentityMigrations\201805101215466_Initial.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805101215466_Initial.Designer.cs">
+      <DependentUpon>201805101215466_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
-    <Compile Include="Models\Worker.cs" />
+    <Compile Include="Models\Enums\Gender.cs" />
+    <Compile Include="Models\Enums\Role.cs" />
+    <Compile Include="Models\ExposureModels\UserIncident.cs" />
+    <Compile Include="Models\ExposureModels\UserReview.cs" />
+    <Compile Include="Models\ExposureModels\Worker.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
-    <Compile Include="Models\City.cs" />
-    <Compile Include="Models\Employer.cs" />
-    <Compile Include="Models\GeneralBusiness.cs" />
+    <Compile Include="Models\ExposureModels\City.cs" />
+    <Compile Include="Models\ExposureModels\Employer.cs" />
+    <Compile Include="Models\ExposureModels\GeneralBusiness.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\Incident.cs" />
-    <Compile Include="Models\Job.cs" />
-    <Compile Include="Models\JobApplication.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Progress.cs" />
-    <Compile Include="Models\Reply.cs" />
-    <Compile Include="Models\Review.cs" />
-    <Compile Include="Models\Skill.cs" />
-    <Compile Include="Models\Suburb.cs" />
-    <Compile Include="Models\WorkerSkill.cs" />
+    <Compile Include="Models\ExposureModels\Incident.cs" />
+    <Compile Include="Models\ExposureModels\Job.cs" />
+    <Compile Include="Models\ExposureModels\JobApplication.cs" />
+    <Compile Include="Models\ViewModels\ManageViewModels.cs" />
+    <Compile Include="Models\Enums\Progress.cs" />
+    <Compile Include="Models\Enums\Reply.cs" />
+    <Compile Include="Models\ExposureModels\Review.cs" />
+    <Compile Include="Models\ExposureModels\Skill.cs" />
+    <Compile Include="Models\ExposureModels\Suburb.cs" />
+    <Compile Include="Models\ExposureModels\WorkerSkill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -321,6 +322,11 @@
     <Content Include="Views\Incidents\Details.cshtml" />
     <Content Include="Views\Incidents\Edit.cshtml" />
     <Content Include="Views\Incidents\Index.cshtml" />
+    <Content Include="Views\Suburbs\Create.cshtml" />
+    <Content Include="Views\Suburbs\Delete.cshtml" />
+    <Content Include="Views\Suburbs\Details.cshtml" />
+    <Content Include="Views\Suburbs\Edit.cshtml" />
+    <Content Include="Views\Suburbs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -345,11 +351,8 @@
     <EmbeddedResource Include="DataContexts\ExposureMigrations\201804301343384_RemovedHistory.resx">
       <DependentUpon>201804301343384_RemovedHistory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805092001419_Initial Create.resx">
-      <DependentUpon>201805092001419_Initial Create.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805092128061_Roles.resx">
-      <DependentUpon>201805092128061_Roles.cs</DependentUpon>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805101215466_Initial.resx">
+      <DependentUpon>201805101215466_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

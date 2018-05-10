@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Exposure.Web.Models;
+using System.Collections.Generic;
 
 namespace Exposure.Web.Controllers
 {
@@ -64,12 +65,18 @@ namespace Exposure.Web.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+
+            
             var model = new IndexViewModel
             {
+                
                 FirstName = UserManager.FindById(userId).FirstName,
                 LastName = UserManager.FindById(userId).LastName,
+                Gender = UserManager.FindById(userId).Gender,
+                Suburb = UserManager.FindById(userId).Suburb.SubName,
                 AddressLine1 = UserManager.FindById(userId).AddressLine1,
                 AddressLine2 = UserManager.FindById(userId).AddressLine2,
+                Email = UserManager.FindById(userId).Email,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
@@ -78,6 +85,31 @@ namespace Exposure.Web.Controllers
             };
             return View(model);
         }
+
+        //GET: /Cities/Index
+        public ActionResult Cities()
+        {
+            return View();
+        }
+
+        //GET: /Incidents/Index
+        public ActionResult Incidents()
+        {
+            return View();
+        }
+
+        //GET: /Suburbs/Index
+        public ActionResult Suburbs()
+        {
+            return View();
+        }
+
+        //GET: /Jobs/Index
+        public ActionResult Jobs()
+        {
+            return View();
+        }
+      
 
         //
         // POST: /Manage/RemoveLogin
@@ -226,6 +258,8 @@ namespace Exposure.Web.Controllers
         {
             return View();
         }
+
+
 
         //
         // POST: /Manage/ChangePassword
