@@ -16,35 +16,35 @@
             <div class="col-md-6 text-center">
                 <h4>What would you like to do?</h4>
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-default btn-lg" value="Manage Users" />
+                    <input type="submit" class="btn btn-default btn-lg" value="Manage Users" formaction="Users" />
 
                 </div>
                 <br />
                 <div class="col-md-offset-2 col-md-10">
                     <a href="Manage/Incidents">
-                        <input type="submit" class="btn btn-default btn-lg" value="Manage Incidents" />
+                        <input type="submit" class="btn btn-default btn-lg" value="Manage Incidents" formaction="Incidents" />
                     </a>
                 </div>
                 <br />
                 <div class="col-md-offset-2 col-md-10">
 
-                    <input type="submit" class="btn btn-default btn-lg" value="Manage Suburbs" />
-                    @Html.ActionLink("Manage Suburbs", "Index", "Suburbs")
+                    <input type="submit" class="btn btn-default btn-lg" value="Manage Suburbs" formaction="Suburbs"/>
+                    
                 </div>
                 <br />
                 <div class="col-md-offset-2 col-md-10">                    
-                        <input type="submit" class="btn btn-default btn-lg" value="Manage Cities" />                   
-                    @Html.ActionLink("Manage Cities","Index", "Cities")                    
+                        <input type="submit" class="btn btn-default btn-lg" value="Manage Cities" formaction="Cities"/>                   
+                                   
                 </div>
                 <br />
                 <div class="col-md-offset-2 col-md-10">
                     <a href="Manage/Jobs">
-                        <input type="submit" class="btn btn-default btn-lg" value="Manage Incidents" />
+                        <input type="submit" class="btn btn-default btn-lg" value="Manage Jobs" formaction="Jobs"/>
                     </a>
                 </div>
                 <br />
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-default btn-lg" value="Manage Compnay information" />
+                    <input type="submit" class="btn btn-default btn-lg" value="Manage Compnay information" formaction="Company"/>
                 </div>
             </div>
             

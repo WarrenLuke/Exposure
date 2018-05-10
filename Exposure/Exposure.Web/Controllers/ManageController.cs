@@ -89,25 +89,25 @@ namespace Exposure.Web.Controllers
         //GET: /Cities/Index
         public ActionResult Cities()
         {
-            return View();
+            return RedirectToRoute("Defaults", new { controller = "Cities", action = "Index" });
         }
 
         //GET: /Incidents/Index
         public ActionResult Incidents()
         {
-            return View();
+            return RedirectToRoute("Default", new { controller = "Incidents", action = "Index" });
         }
 
         //GET: /Suburbs/Index
         public ActionResult Suburbs()
         {
-            return View();
+            return RedirectToRoute("Default", new { controller = "Suburbs", action = "Index" });
         }
 
         //GET: /Jobs/Index
         public ActionResult Jobs()
         {
-            return View();
+            return RedirectToRoute("Default", new { controller = "Jobs", action = "Index" });
         }
       
 
