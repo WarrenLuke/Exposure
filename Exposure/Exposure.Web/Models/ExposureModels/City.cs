@@ -18,6 +18,6 @@ namespace Exposure.Entities
 
         public virtual ICollection<Suburb> Suburbs { get; set; }
 
-
+        
     }
 }

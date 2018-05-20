@@ -8,11 +8,21 @@
 
 <p>
     @Html.ActionLink("Create New", "Create")
+    @using (Html.BeginForm("Index", "Jobs", FormMethod.Get))
+    {
+        <p>
+            Skills: @Html.DropDownList("jobSkills", "All")
+            <input type="submit" value="Filter"/>
+        </p>
+    }
+
 </p>
+
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Employer.WorkNo)
+           Employer
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Skill.SkillDescription)
@@ -42,9 +52,6 @@
             @Html.DisplayNameFor(model => model.Rate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AgreedRate)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Completed)
         </th>
         <th>
@@ -56,7 +63,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Employer.WorkNo)
+            @User.Identity.Name
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
@@ -84,9 +91,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Rate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AgreedRate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Completed)

@@ -60,8 +60,7 @@ namespace Exposure.Entities
         [DisplayName("Category")]
         public int SkillID { get; set; }
 
-        [DisplayName("Agreed Rate")]
-        public float AgreedRate { get; set; }
+        
 
         [DefaultValue(false)]
         public bool Completed { get; set; }

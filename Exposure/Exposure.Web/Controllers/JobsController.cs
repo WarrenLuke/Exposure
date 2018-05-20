@@ -11,15 +11,35 @@ using Exposure.Web.DataContexts;
 
 namespace Exposure.Web.Controllers
 {
-    [Authorize]
     public class JobsController : Controller
     {
         private IdentityDb db = new IdentityDb();
 
         // GET: Jobs
-        public ActionResult Index()
+        public ActionResult Index(string id, string skill)
         {
+            var SkillsLst = new List<string>();
+
+            var SkillsQry = from d in db.Skills
+                            orderby d.SkillDescription
+                            select d.SkillDescription;
+
+            SkillsLst.AddRange(SkillsQry.Distinct());
+            ViewBag.jobSkills = new SelectList(SkillsLst,"SkillID","SkillDescription");
+
             var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb);
+
+
+            if (!String.IsNullOrEmpty(id))
+            {
+                jobs = jobs.Where(j => j.EmployerID.Equals(id)); 
+            }
+
+            if(!String.IsNullOrEmpty(skill))
+            {
+                jobs = jobs.Where(j => j.SkillID.Equals(skill));
+            }
+
             return View(jobs.ToList());
         }
 
@@ -41,7 +61,7 @@ namespace Exposure.Web.Controllers
         // GET: Jobs/Create
         public ActionResult Create()
         {
-            ViewBag.EmployerID = new SelectList(db.Employers, "EmployerID", "WorkNo");
+            ViewBag.EmployerID = new SelectList(db.Employers, "EmployerID", "WorkName");
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription");
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName");
             return View();
@@ -52,7 +72,7 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "JobID,EmployerID,Title,Description,StartDate,EndDate,StartTime,EndTime,Rate,SuburbID,SkillID,AgreedRate,Completed,CompletionDate")] Job job)
+        public ActionResult Create([Bind(Include = "JobID,EmployerID,Title,Description,StartDate,EndDate,StartTime,EndTime,Rate,SuburbID,SkillID,Completed,CompletionDate")] Job job)
         {
             if (ModelState.IsValid)
             {
@@ -61,7 +81,7 @@ namespace Exposure.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EmployerID = new SelectList(db.Employers, "EmployerID", "WorkNo", job.EmployerID);
+            ViewBag.EmployerID = new SelectList(db.Employers, "EmployerID", "WorkName", job.EmployerID);
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", job.SkillID);
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", job.SuburbID);
             return View(job);
@@ -79,7 +99,7 @@ namespace Exposure.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EmployerID = new SelectList(db.Employers, "EmployerID", "WorkNo", job.EmployerID);
+            ViewBag.EmployerID = new SelectList(db.Employers, "EmployerID", "WorkName", job.EmployerID);
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", job.SkillID);
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", job.SuburbID);
             return View(job);
@@ -90,7 +110,7 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "JobID,EmployerID,Title,Description,StartDate,EndDate,StartTime,EndTime,Rate,SuburbID,SkillID,AgreedRate,Completed,CompletionDate")] Job job)
+        public ActionResult Edit([Bind(Include = "JobID,EmployerID,Title,Description,StartDate,EndDate,StartTime,EndTime,Rate,SuburbID,SkillID,Completed,CompletionDate")] Job job)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +118,7 @@ namespace Exposure.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.EmployerID = new SelectList(db.Employers, "EmployerID", "WorkNo", job.EmployerID);
+            ViewBag.EmployerID = new SelectList(db.Employers, "EmployerID", "WorkName", job.EmployerID);
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", job.SkillID);
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", job.SuburbID);
             return View(job);

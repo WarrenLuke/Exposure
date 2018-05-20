@@ -11,7 +11,6 @@ using Exposure.Web.DataContexts;
 
 namespace Exposure.Web.Controllers
 {
-    [Authorize]
     public class JobApplicationsController : Controller
     {
         private IdentityDb db = new IdentityDb();
@@ -19,7 +18,7 @@ namespace Exposure.Web.Controllers
         // GET: JobApplications
         public ActionResult Index()
         {
-            var jobApplications = db.JobApplications.Include(j => j.Job);
+            var jobApplications = db.JobApplications.Include(j => j.Job).Include(j => j.Worker);
             return View(jobApplications.ToList());
         }
 
@@ -42,6 +41,7 @@ namespace Exposure.Web.Controllers
         public ActionResult Create()
         {
             ViewBag.JobID = new SelectList(db.Jobs, "JobID", "EmployerID");
+            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID");
             return View();
         }
 
@@ -50,7 +50,7 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "JobApplicationID,JobID,WorkerID,Motivation,Status")] JobApplication jobApplication)
+        public ActionResult Create([Bind(Include = "JobApplicationID,JobID,WorkerID,Motivation,Response")] JobApplication jobApplication)
         {
             if (ModelState.IsValid)
             {
@@ -60,6 +60,7 @@ namespace Exposure.Web.Controllers
             }
 
             ViewBag.JobID = new SelectList(db.Jobs, "JobID", "EmployerID", jobApplication.JobID);
+            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID", jobApplication.WorkerID);
             return View(jobApplication);
         }
 
@@ -76,6 +77,7 @@ namespace Exposure.Web.Controllers
                 return HttpNotFound();
             }
             ViewBag.JobID = new SelectList(db.Jobs, "JobID", "EmployerID", jobApplication.JobID);
+            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID", jobApplication.WorkerID);
             return View(jobApplication);
         }
 
@@ -84,7 +86,7 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "JobApplicationID,JobID,WorkerID,Motivation,Status")] JobApplication jobApplication)
+        public ActionResult Edit([Bind(Include = "JobApplicationID,JobID,WorkerID,Motivation,Response")] JobApplication jobApplication)
         {
             if (ModelState.IsValid)
             {
@@ -93,6 +95,7 @@ namespace Exposure.Web.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.JobID = new SelectList(db.Jobs, "JobID", "EmployerID", jobApplication.JobID);
+            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID", jobApplication.WorkerID);
             return View(jobApplication);
         }
 

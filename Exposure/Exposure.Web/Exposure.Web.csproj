@@ -212,6 +212,26 @@
     <Compile Include="DataContexts\IdentityMigrations\201805101215466_Initial.Designer.cs">
       <DependentUpon>201805101215466_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805191257104_YearsOfExperience.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805191257104_YearsOfExperience.Designer.cs">
+      <DependentUpon>201805191257104_YearsOfExperience.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805191303385_WorkerFK.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805191303385_WorkerFK.Designer.cs">
+      <DependentUpon>201805191303385_WorkerFK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805191309364_WSCompositeKey.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805191309364_WSCompositeKey.Designer.cs">
+      <DependentUpon>201805191309364_WSCompositeKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805191528233_Unknown.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805191528233_Unknown.Designer.cs">
+      <DependentUpon>201805191528233_Unknown.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805191555105_JobFields.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805191555105_JobFields.Designer.cs">
+      <DependentUpon>201805191555105_JobFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -302,21 +322,11 @@
     <Content Include="Views\Cities\Details.cshtml" />
     <Content Include="Views\Cities\Edit.cshtml" />
     <Content Include="Views\Cities\Index.cshtml" />
-    <Content Include="Views\Jobs\Create.cshtml" />
-    <Content Include="Views\Jobs\Delete.cshtml" />
-    <Content Include="Views\Jobs\Details.cshtml" />
-    <Content Include="Views\Jobs\Edit.cshtml" />
-    <Content Include="Views\Jobs\Index.cshtml" />
     <Content Include="Views\Reviews\Create.cshtml" />
     <Content Include="Views\Reviews\Delete.cshtml" />
     <Content Include="Views\Reviews\Details.cshtml" />
     <Content Include="Views\Reviews\Edit.cshtml" />
     <Content Include="Views\Reviews\Index.cshtml" />
-    <Content Include="Views\JobApplications\Create.cshtml" />
-    <Content Include="Views\JobApplications\Delete.cshtml" />
-    <Content Include="Views\JobApplications\Details.cshtml" />
-    <Content Include="Views\JobApplications\Edit.cshtml" />
-    <Content Include="Views\JobApplications\Index.cshtml" />
     <Content Include="Views\Incidents\Create.cshtml" />
     <Content Include="Views\Incidents\Delete.cshtml" />
     <Content Include="Views\Incidents\Details.cshtml" />
@@ -327,6 +337,16 @@
     <Content Include="Views\Suburbs\Details.cshtml" />
     <Content Include="Views\Suburbs\Edit.cshtml" />
     <Content Include="Views\Suburbs\Index.cshtml" />
+    <Content Include="Views\Jobs\Create.cshtml" />
+    <Content Include="Views\Jobs\Delete.cshtml" />
+    <Content Include="Views\Jobs\Details.cshtml" />
+    <Content Include="Views\Jobs\Edit.cshtml" />
+    <Content Include="Views\Jobs\Index.cshtml" />
+    <Content Include="Views\JobApplications\Create.cshtml" />
+    <Content Include="Views\JobApplications\Delete.cshtml" />
+    <Content Include="Views\JobApplications\Details.cshtml" />
+    <Content Include="Views\JobApplications\Edit.cshtml" />
+    <Content Include="Views\JobApplications\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -353,6 +373,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201805101215466_Initial.resx">
       <DependentUpon>201805101215466_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805191257104_YearsOfExperience.resx">
+      <DependentUpon>201805191257104_YearsOfExperience.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805191303385_WorkerFK.resx">
+      <DependentUpon>201805191303385_WorkerFK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805191309364_WSCompositeKey.resx">
+      <DependentUpon>201805191309364_WSCompositeKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805191528233_Unknown.resx">
+      <DependentUpon>201805191528233_Unknown.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805191555105_JobFields.resx">
+      <DependentUpon>201805191555105_JobFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

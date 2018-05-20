@@ -143,7 +143,7 @@ namespace Exposure.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName");
+            ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID","SubName");
             return View();
         }
 
@@ -156,7 +156,8 @@ namespace Exposure.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+                ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
+
                 var user = new ApplicationUser { UserName = (model.FirstName +" "+model.LastName), Gender = model.Gender, Email = model.Email, FirstName =model.FirstName, LastName = model.LastName,
                                     AddressLine1 = model.AddressLine1, AddressLine2 = model.AddressLine2, PhoneNumber=model.PhoneNumber, SuburbID=model.SuburbID  };
                 var role = model.Role; 
@@ -169,20 +170,20 @@ namespace Exposure.Web.Controllers
                     //Binding user to selected role by using the UserManager class
                     UserManager.AddToRole(user.Id, role);
 
-                    //If statement used to determind 
-                    if (role == "Employer")
-                    {
-                        var employer = new Employer { EmployerID = user.Id };
-                        db.Employers.Add(employer);
-                        db.SaveChanges();
+                    //If statement used to determine which table user should be added to
+                    //if (role == "Employer")
+                    //{
+                    //    var employer = new Employer { EmployerID = user.Id };
+                    //    db.Employers.Add(employer);
+                    //    db.SaveChanges();
                         
-                    }
-                    else if (role == "Worker")
-                    {
-                        var worker = new Worker { WorkerID = user.Id };
-                        db.Workers.Add(worker);
-                        db.SaveChanges();
-                    }
+                    //}
+                    //else if (role == "Worker")
+                    //{
+                    //    var worker = new Worker { WorkerID = user.Id };
+                    //    db.Workers.Add(worker);
+                    //    db.SaveChanges();
+                    //}
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

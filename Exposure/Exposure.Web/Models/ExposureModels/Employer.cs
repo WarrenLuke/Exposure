@@ -15,8 +15,17 @@ namespace Exposure.Entities
         [Key]
         public string EmployerID { get; set; }
 
-        public string WorkNo { get; set; }
+        [ScaffoldColumn(false)]
+        public string WorkName { get; set; }
 
+        [ScaffoldColumn(false)]
+        public string WorkNumber { get; set; }
+
+        [ScaffoldColumn(false)]
+        public string WorkAddress { get; set; }
+
+        [ScaffoldColumn(false)]
+       
         public int SuburbID { get; set; }
 
         public Suburb Suburb { get; set; }

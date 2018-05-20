@@ -1,4 +1,5 @@
 ﻿@model Exposure.Web.Models.IndexViewModel
+@using  Exposure.Web.Models
 @{
     ViewBag.Title = "Manage";
 }
@@ -8,7 +9,7 @@
 @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
 
-    if (User.IsInRole("Employer"))
+    if (User.IsInRole("Admin"))
     {
         <div class="form-group form-actions container">
             
@@ -46,19 +47,87 @@
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" class="btn btn-default btn-lg" value="Manage Compnay information" formaction="Company"/>
                 </div>
+            </div>         
+         </div>
+    }
+    else if (User.IsInRole("Employer"))
+    {
+        
+        <div class="form-group form-actions">
+            <div class="col-md-3">
+                <div class="col-md-12">
+
+                </div>
+                <dl>
+                    <dt>EMPLOYER</dt>
+                    <dt>Password:</dt>
+                    <dt>
+                        @Html.ActionLink("Change Password", "ChangePassword");
+                    </dt>
+                </dl>
+                
+            </div>
+
+            <div class="col-md-md-4">
+                <dl class="dl-horizontal">
+                    <dt>First Name:</dt>
+                    <dd>
+                        @(Model.FirstName ?? "None")
+                    </dd>
+                    <dt>Last Name:</dt>
+                    <dd>     @Model.LastName      </dd>
+                    <dt>Gender:</dt>
+                    <dd>     @Model.Gender        </dd>
+                    <dt>Suburb:</dt>
+                    <dt>     @Model.Suburb        </dt>
+                    <dt>Address Line 1:</dt>
+                    <dd>     @Model.AddressLine1  </dd>
+                    <dt>Address Line 2:</dt>
+                    <dd>     @Model.AddressLine2  </dd>
+                    <dt>Email Address:</dt>
+                    <dd>     @Model.Email         </dd>
+                    <dt>Phone Number:</dt>
+                    <dd>                        
+                        @if (Model.PhoneNumber == null)
+                        {
+                            @Html.ActionLink("Add Phone Number", "AddPhoneNumber")
+                        }
+                        else
+                        {
+                            @Model.PhoneNumber
+                            
+                        }
+
+                    </dd>
+                 </dl>
             </div>
             
+            <div class="col-md-5">
+                <div class="col-md-12">
+                    <dl>
+                        <dt>Work Name: </dt>
+                        <dd>    @Model.WorkName     </dd>
+                        <dt>Work Location: </dt>
+                        <dd>    @Model.Location     </dd>
+                        <dt>Work Address:</dt>
+                        <dd>    @Model.WorkAddress  </dd>
+                        <dt>Work Contact Number:</dt>
+                        <dd>    @Model.WorkNumber   </dd>
+                    </dl>
+
+
+                </div>
+
+                <div class="col-md-12">
+
+
+                </div>
+            </div>
+
 
         </div>
-
-
+       
     }
-    //else if (User.IsInRole("Employer"))
-    //{
-
-
-
-    //}
     //else if (User.IsInRole("Worker"))
     //{
 

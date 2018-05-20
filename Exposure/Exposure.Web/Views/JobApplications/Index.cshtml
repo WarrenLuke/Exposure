@@ -15,13 +15,13 @@
             @Html.DisplayNameFor(model => model.Job.EmployerID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.WorkerID)
+            @Html.DisplayNameFor(model => model.Worker.WorkerID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Motivation)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            @Html.DisplayNameFor(model => model.Response)
         </th>
         <th></th>
     </tr>
@@ -32,13 +32,13 @@
             @Html.DisplayFor(modelItem => item.Job.EmployerID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.WorkerID)
+            @Html.DisplayFor(modelItem => item.Worker.WorkerID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Motivation)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Status)
+            @Html.DisplayFor(modelItem => item.Response)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.JobApplicationID }) |

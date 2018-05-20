@@ -26,7 +26,7 @@ namespace Exposure.Entities
         [StringLength(500)]
         public string Motivation { get; set; }
 
-        public Reply Status  { get; set; }
+        public Reply Response  { get; set; }
 
         public virtual Job Job { get; set; }
 
@@ -35,6 +35,8 @@ namespace Exposure.Entities
         public virtual ICollection<Incident> Incidents { get; set; }
 
         public virtual ICollection<Review>  Reviews { get; set; }
+
+
 
         
 

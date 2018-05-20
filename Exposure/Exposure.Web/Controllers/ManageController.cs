@@ -76,6 +76,10 @@ namespace Exposure.Web.Controllers
                 Suburb = UserManager.FindById(userId).Suburb.SubName,
                 AddressLine1 = UserManager.FindById(userId).AddressLine1,
                 AddressLine2 = UserManager.FindById(userId).AddressLine2,
+                WorkName = UserManager.FindById(userId).Employer.WorkName,
+                WorkAddress = UserManager.FindById(userId).Employer.WorkAddress,
+                WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
+                Location = UserManager.FindById(userId).Employer.Suburb.SubName,
                 Email = UserManager.FindById(userId).Email,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -108,6 +112,11 @@ namespace Exposure.Web.Controllers
         public ActionResult Jobs()
         {
             return RedirectToRoute("Default", new { controller = "Jobs", action = "Index" });
+        }
+
+        public ActionResult ManageJobs()
+        {
+            return RedirectToRoute("Defualt", new { controller = "Jobs", action ="EmployerJobs" });
         }
       
 
