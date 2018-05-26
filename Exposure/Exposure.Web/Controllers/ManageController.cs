@@ -77,7 +77,8 @@ namespace Exposure.Web.Controllers
                 AddressLine1 = UserManager.FindById(userId).AddressLine1,
                 AddressLine2 = UserManager.FindById(userId).AddressLine2,
                 WorkName = UserManager.FindById(userId).Employer.WorkName,
-                WorkAddress = UserManager.FindById(userId).Employer.WorkAddress,
+                WorkAddressLine1 = UserManager.FindById(userId).Employer.WorkAddress1,
+                WorkAddressLine2 = UserManager.FindById(userId).Employer.WorkAddress2,
                 WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
                 Location = UserManager.FindById(userId).Employer.Suburb.SubName,
                 Email = UserManager.FindById(userId).Email,
@@ -114,10 +115,35 @@ namespace Exposure.Web.Controllers
             return RedirectToRoute("Default", new { controller = "Jobs", action = "Index" });
         }
 
+        
+
         public ActionResult ManageJobs()
         {
-            return RedirectToRoute("Defualt", new { controller = "Jobs", action ="EmployerJobs" });
+            return RedirectToRoute("Default", new { controller = "Jobs", action = "EmployerJobs" });
         }
+
+        public ActionResult ReportIncident()
+        {
+            return RedirectToRoute("Default", new { controller = "Incident", action = "Create" });
+        }
+
+        public ActionResult UpdateWorkDetails()
+        {
+            return RedirectToRoute("Defaul", new { controller = "Employer", action = "Edit" });
+        }
+        //public ActionResult PersonalDetails()
+        //{
+        //    return RedirectToRoute();
+
+        //}
+
+        public ActionResult JobApplications()
+        {
+            return RedirectToRoute("Default", new { controller = "Jobapplications", action = "Index" });
+
+        }
+
+
       
 
         //

@@ -162,28 +162,29 @@ namespace Exposure.Web.Controllers
                                     AddressLine1 = model.AddressLine1, AddressLine2 = model.AddressLine2, PhoneNumber=model.PhoneNumber, SuburbID=model.SuburbID  };
                 var role = model.Role; 
                 var result = await UserManager.CreateAsync(user, model.Password);
-                
-                
-                
+
+
+
                 if (result.Succeeded)
                 {
                     //Binding user to selected role by using the UserManager class
                     UserManager.AddToRole(user.Id, role);
 
                     //If statement used to determine which table user should be added to
-                    //if (role == "Employer")
-                    //{
-                    //    var employer = new Employer { EmployerID = user.Id };
-                    //    db.Employers.Add(employer);
-                    //    db.SaveChanges();
-                        
-                    //}
-                    //else if (role == "Worker")
-                    //{
-                    //    var worker = new Worker { WorkerID = user.Id };
-                    //    db.Workers.Add(worker);
-                    //    db.SaveChanges();
-                    //}
+                    if (role == "Employer")
+                    {
+                        var employer = new Employer { EmployerID = user.Id };
+                        db.Employers.Add(employer);
+                        db.SaveChanges();
+                    }
+                    else if (role == "Worker")
+                    {
+                        var worker = new Worker { WorkerID = user.Id };
+                        db.Workers.Add(worker);
+                        db.SaveChanges();
+
+                    }
+
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

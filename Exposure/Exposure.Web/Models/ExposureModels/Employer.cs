@@ -2,6 +2,7 @@
 using Exposure.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -13,20 +14,23 @@ namespace Exposure.Entities
     {
         [ForeignKey("ApplicationUser")]
         [Key]
+        [ScaffoldColumn(false)]
         public string EmployerID { get; set; }
 
-        [ScaffoldColumn(false)]
+        [DisplayName("Company Name")]
         public string WorkName { get; set; }
 
-        [ScaffoldColumn(false)]
+        [DisplayName("Company Number")]
         public string WorkNumber { get; set; }
 
-        [ScaffoldColumn(false)]
-        public string WorkAddress { get; set; }
+        [DisplayName("Company Address Line 1")]
+        public string WorkAddress1 { get; set; }
 
-        [ScaffoldColumn(false)]
-       
-        public int SuburbID { get; set; }
+        [DisplayName("Company Address Line 2")]
+        public string WorkAddress2 { get; set; }
+
+        [DisplayName("Company Location")]
+        public int? SuburbID { get; set; }
 
         public Suburb Suburb { get; set; }
 

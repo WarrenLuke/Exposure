@@ -11,6 +11,7 @@ using Exposure.Web.DataContexts;
 
 namespace Exposure.Web.Controllers
 {
+    [Authorize(Roles =("Admin, Employer"))]
     public class JobApplicationsController : Controller
     {
         private IdentityDb db = new IdentityDb();
@@ -38,6 +39,7 @@ namespace Exposure.Web.Controllers
         }
 
         // GET: JobApplications/Create
+        [Authorize(Roles =("Worker"))]
         public ActionResult Create()
         {
             ViewBag.JobID = new SelectList(db.Jobs, "JobID", "EmployerID");

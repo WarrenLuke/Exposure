@@ -51,6 +51,8 @@ namespace Exposure.Web.DataContexts
         public System.Data.Entity.DbSet<Exposure.Entities.Worker> Workers { get; set; }
 
         public System.Data.Entity.DbSet<Exposure.Entities.City> Cities { get; set; }
+
+        public System.Data.Entity.DbSet<Exposure.Entities.WorkerSkill> WorkerSkills { get; set; }
     }
 }
    

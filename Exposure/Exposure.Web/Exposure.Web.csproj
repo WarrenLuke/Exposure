@@ -190,13 +190,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EmployersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncidentsController.cs" />
     <Compile Include="Controllers\JobApplicationsController.cs" />
     <Compile Include="Controllers\JobsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
+    <Compile Include="Controllers\SkillsController.cs" />
     <Compile Include="Controllers\SuburbsController.cs" />
+    <Compile Include="Controllers\WorkerSkillsController.cs" />
     <Compile Include="DataContexts\ExposureDb.cs" />
     <Compile Include="DataContexts\ExposureMigrations\201804282241075_InitialCreate.cs" />
     <Compile Include="DataContexts\ExposureMigrations\201804282241075_InitialCreate.Designer.cs">
@@ -231,6 +234,18 @@
     <Compile Include="DataContexts\IdentityMigrations\201805191555105_JobFields.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201805191555105_JobFields.Designer.cs">
       <DependentUpon>201805191555105_JobFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805261046506_RemoveCompletionDate.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805261046506_RemoveCompletionDate.Designer.cs">
+      <DependentUpon>201805261046506_RemoveCompletionDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805261132511_UpdateEmployer.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805261132511_UpdateEmployer.Designer.cs">
+      <DependentUpon>201805261132511_UpdateEmployer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805261352590_NullForeignKey.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805261352590_NullForeignKey.Designer.cs">
+      <DependentUpon>201805261352590_NullForeignKey.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
@@ -347,6 +362,21 @@
     <Content Include="Views\JobApplications\Details.cshtml" />
     <Content Include="Views\JobApplications\Edit.cshtml" />
     <Content Include="Views\JobApplications\Index.cshtml" />
+    <Content Include="Views\Employers\Create.cshtml" />
+    <Content Include="Views\Employers\Delete.cshtml" />
+    <Content Include="Views\Employers\Details.cshtml" />
+    <Content Include="Views\Employers\Edit.cshtml" />
+    <Content Include="Views\Employers\Index.cshtml" />
+    <Content Include="Views\Skills\Create.cshtml" />
+    <Content Include="Views\Skills\Delete.cshtml" />
+    <Content Include="Views\Skills\Details.cshtml" />
+    <Content Include="Views\Skills\Edit.cshtml" />
+    <Content Include="Views\Skills\Index.cshtml" />
+    <Content Include="Views\WorkerSkills\Create.cshtml" />
+    <Content Include="Views\WorkerSkills\Delete.cshtml" />
+    <Content Include="Views\WorkerSkills\Details.cshtml" />
+    <Content Include="Views\WorkerSkills\Edit.cshtml" />
+    <Content Include="Views\WorkerSkills\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -388,6 +418,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201805191555105_JobFields.resx">
       <DependentUpon>201805191555105_JobFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805261046506_RemoveCompletionDate.resx">
+      <DependentUpon>201805261046506_RemoveCompletionDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805261132511_UpdateEmployer.resx">
+      <DependentUpon>201805261132511_UpdateEmployer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805261352590_NullForeignKey.resx">
+      <DependentUpon>201805261352590_NullForeignKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

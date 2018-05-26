@@ -19,7 +19,8 @@ namespace Exposure.Web.Models
         public string AddressLine2 { get; set; }
         public string WorkName { get; set; }
         public string WorkNumber { get; set; }
-        public string WorkAddress { get; set; }
+        public string WorkAddressLine1 { get; set; }
+        public string WorkAddressLine2 { get; set; }
         public string Location { get; set; }
         public string Email { get; set; }
         public bool HasPassword { get; set; }

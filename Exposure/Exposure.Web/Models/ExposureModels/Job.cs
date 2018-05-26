@@ -22,6 +22,10 @@ namespace Exposure.Entities
         [StringLength(20)]
         public string Title { get; set; }
 
+        [Required(ErrorMessage = "Each jobs needs to be associated with a skill")]
+        [DisplayName("Category")]
+        public int SkillID { get; set; }
+
         [Required(ErrorMessage = "Please provide a description for your advertisement")]
         [StringLength(1024)]
         public string Description { get; set; }
@@ -56,11 +60,7 @@ namespace Exposure.Entities
         [Required]
         [DisplayName("Location")]
         public int SuburbID { get; set; }
-
-        [DisplayName("Category")]
-        public int SkillID { get; set; }
-
-        
+    
 
         [DefaultValue(false)]
         public bool Completed { get; set; }
@@ -73,7 +73,7 @@ namespace Exposure.Entities
 
         public virtual Employer Employer { get; set; }
         
-        public DateTime? CompletionDate { get; set; }
+       
 
 
 

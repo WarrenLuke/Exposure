@@ -11,6 +11,7 @@ using Exposure.Web.DataContexts;
 
 namespace Exposure.Web.Controllers
 {
+    [Authorize(Roles =("Employer, Admin"))]
     public class JobsController : Controller
     {
         private IdentityDb db = new IdentityDb();
@@ -58,6 +59,7 @@ namespace Exposure.Web.Controllers
             return View(job);
         }
 
+        [Authorize(Roles =("Admin"))]
         // GET: Jobs/Create
         public ActionResult Create()
         {
