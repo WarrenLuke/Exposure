@@ -53,7 +53,7 @@ namespace Exposure.Web.Controllers
 
         //
         // GET: /Manage/Index
-        public async Task<ActionResult> Index(ManageMessageId? message)
+        public async Task<ActionResult> Index(ManageMessageId? message, IndexViewModel model)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -67,7 +67,7 @@ namespace Exposure.Web.Controllers
             var userId = User.Identity.GetUserId();
 
             
-            var model = new IndexViewModel
+            model = new IndexViewModel
             {
                 
                 FirstName = UserManager.FindById(userId).FirstName,

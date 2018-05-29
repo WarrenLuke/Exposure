@@ -14,7 +14,7 @@ namespace Exposure.Web.Models
     [Authorize]
     public class CitiesController : Controller
     {
-        private ExposureDb db = new ExposureDb();
+        private IdentityDb db = new IdentityDb();
 
         // GET: Cities
         public ActionResult Index()
