@@ -12,6 +12,7 @@ using Exposure.Web.Models;
 using Exposure.Web.DataContexts;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Exposure.Entities;
+using System.Collections.Generic;
 
 namespace Exposure.Web.Controllers
 {
@@ -143,7 +144,16 @@ namespace Exposure.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID","SubName");
+            var suburbsList = new List<string>();
+            var suburbsQry = from s in db.Suburbs
+                            orderby s.SubName
+                            select s.SubName;
+            
+                          
+
+            suburbsList.AddRange(suburbsQry.Distinct());
+
+            ViewBag.Suburbs = new SelectList(suburbsList, "SuburbID","SubName");
             return View();
         }
 

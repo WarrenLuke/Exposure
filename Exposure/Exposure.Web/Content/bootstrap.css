@@ -2049,20 +2049,20 @@ fieldset[disabled] .btn {
 }
 
 .btn-default {
-  color: #ff6a00;
+  color: #e7e7e7;
   background-color: #ff6a00;
-  border-color: #fff;
+  border-color: #eeeeee;
 }
 
-.btn-default:hover,
-.btn-default:focus,
-.btn-default:active,
-.btn-default.active,
-.open .dropdown-toggle.btn-default {
-  color: #333333;
-  background-color: #ebebeb;
-  border-color: #adadad;
-}
+    .btn-default:hover,
+    .btn-default:focus,
+    .btn-default:active,
+    .btn-default.active,
+    .open .dropdown-toggle.btn-default {
+        color: #ff6a00;
+        background-color: #ebebe3;
+        border-color: #ff6a00;
+    }
 
 .btn-default:active,
 .btn-default.active,

@@ -67,7 +67,7 @@ namespace Exposure.Web.Controllers
             var userId = User.Identity.GetUserId();
 
             
-            var model = new IndexViewModel
+            var model = new IndexViewModel()
             {
                 
                 FirstName = UserManager.FindById(userId).FirstName,

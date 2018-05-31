@@ -9,7 +9,7 @@
 @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
 
-    if (User.IsInRole("Worker"))
+    if (User.IsInRole("Admin"))
     {
         <div class="form-group form-actions container">
             
@@ -50,7 +50,7 @@
             </div>         
          </div>
     }
-    @*else if (User.IsInRole("Employer"))
+    else if (User.IsInRole("Employer"))
     {
         
         <div class="form-group form-actions">
@@ -105,7 +105,7 @@
 
                     <dt>@Html.DisplayNameFor(model=>model.PhoneNumber):</dt>
                     <dd>                        
-                        @if (Model.PhoneNumber == null)
+                        @if (@Html.DisplayFor(model=>model.PhoneNumber) == null)
                         {
                             @Html.ActionLink("Add Phone Number", "AddPhoneNumber")
                         }
@@ -143,7 +143,7 @@
 
         </div>
        
-    }*@
+    }
     //else if (User.IsInRole("Worker"))
     //{
 
