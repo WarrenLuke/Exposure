@@ -200,16 +200,6 @@
     <Compile Include="Controllers\SkillsController.cs" />
     <Compile Include="Controllers\SuburbsController.cs" />
     <Compile Include="Controllers\WorkerSkillsController.cs" />
-    <Compile Include="DataContexts\ExposureDb.cs" />
-    <Compile Include="DataContexts\ExposureMigrations\201804282241075_InitialCreate.cs" />
-    <Compile Include="DataContexts\ExposureMigrations\201804282241075_InitialCreate.Designer.cs">
-      <DependentUpon>201804282241075_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\ExposureMigrations\201804301343384_RemovedHistory.cs" />
-    <Compile Include="DataContexts\ExposureMigrations\201804301343384_RemovedHistory.Designer.cs">
-      <DependentUpon>201804301343384_RemovedHistory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\ExposureMigrations\Configuration.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201805101215466_Initial.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201805101215466_Initial.Designer.cs">
@@ -246,6 +236,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201805261352590_NullForeignKey.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201805261352590_NullForeignKey.Designer.cs">
       <DependentUpon>201805261352590_NullForeignKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201805291155393_JobEdit.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201805291155393_JobEdit.Designer.cs">
+      <DependentUpon>201805291155393_JobEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
@@ -395,12 +389,6 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DataContexts\ExposureMigrations\201804282241075_InitialCreate.resx">
-      <DependentUpon>201804282241075_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\ExposureMigrations\201804301343384_RemovedHistory.resx">
-      <DependentUpon>201804301343384_RemovedHistory.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201805101215466_Initial.resx">
       <DependentUpon>201805101215466_Initial.cs</DependentUpon>
     </EmbeddedResource>
@@ -427,6 +415,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201805261352590_NullForeignKey.resx">
       <DependentUpon>201805261352590_NullForeignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201805291155393_JobEdit.resx">
+      <DependentUpon>201805291155393_JobEdit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

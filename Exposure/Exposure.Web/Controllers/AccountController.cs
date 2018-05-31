@@ -78,9 +78,10 @@ namespace Exposure.Web.Controllers
                 return View(model);
             }
 
+            var user = await UserManager.FindByEmailAsync(model.Email);
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -168,7 +169,7 @@ namespace Exposure.Web.Controllers
             {
                 ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
 
-                var user = new ApplicationUser { UserName = (model.FirstName +" "+model.LastName), Gender = model.Gender, Email = model.Email, FirstName =model.FirstName, LastName = model.LastName,
+                var user = new ApplicationUser { UserName = model.Email, Gender = model.Gender, Email = model.Email, FirstName =model.FirstName, LastName = model.LastName,
                                     AddressLine1 = model.AddressLine1, AddressLine2 = model.AddressLine2, PhoneNumber=model.PhoneNumber, SuburbID=model.SuburbID  };
                 var role = model.Role; 
                 var result = await UserManager.CreateAsync(user, model.Password);

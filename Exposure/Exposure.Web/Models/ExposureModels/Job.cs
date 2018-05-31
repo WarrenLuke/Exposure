@@ -16,11 +16,18 @@ namespace Exposure.Entities
 
         
         [DisplayName("Employer")]
+        [ReadOnly(true)]
         public string EmployerID { get; set; }
 
         [Required]
         [StringLength(20)]
         public string Title { get; set; }
+
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [ReadOnly(true)]
+        
+        public DateTime DateAdvertised { get; set; }
 
         [Required(ErrorMessage = "Each jobs needs to be associated with a skill")]
         [DisplayName("Category")]
