@@ -27,6 +27,7 @@ namespace Exposure.Entities
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         [ReadOnly(true)]
         
+        [DisplayName("Date Advertised")]
         public DateTime DateAdvertised { get; set; }
 
         [Required(ErrorMessage = "Each jobs needs to be associated with a skill")]
@@ -40,25 +41,28 @@ namespace Exposure.Entities
         [Required(ErrorMessage = "Please enter a start date")]
         [DataType(DataType.Date)]
         [DisplayName("Start Date")]
-        public DateTime StartDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Column(TypeName = "datetime2")]
+        public DateTime? StartDate { get; set; }
 
         [Required(ErrorMessage = "Please enter a end date")]
         [DataType(DataType.Date)]
-        [DisplayName("End Date")]
-        public DateTime EndDate { get; set; }
+        [DisplayName("Est. End Date")]
+        [Column(TypeName = "datetime2")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? EndDate { get; set; }
 
         [Required(ErrorMessage = "Please enter a start time")]
-        [DataType(DataType.DateTime)]
+        
         [DisplayName("Start Time")]
-        public DateTime StartTime { get; set; }
+        public int StartTime { get; set; }
 
         [Required(ErrorMessage = "Please enter a end time")]
-        [DataType(DataType.DateTime)]
+        
         [DisplayName("End Time")]
-        public DateTime EndTime { get; set; }
+        public int EndTime { get; set; }
 
         [Required(ErrorMessage = "Please specify how much you will be paying]")]
-        [Range(00.1, 100.00)]
         [DisplayName("Rate")]
         [DataType(DataType.Currency)]
         public double Rate { get; set; }
@@ -67,7 +71,13 @@ namespace Exposure.Entities
         [Required]
         [DisplayName("Location")]
         public int SuburbID { get; set; }
-    
+
+        [Required]
+        [DisplayName("Address Line 1")]
+        public string AddressLine1 { get; set; }
+        
+        [DisplayName("Address Line 2")]
+        public string AddressLine2 { get; set; }
 
         [DefaultValue(false)]
         public bool Completed { get; set; }

@@ -12,13 +12,19 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Employer.WorkName)
+            @Html.DisplayNameFor(model => model.Employer.ApplicationUser.FirstName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Skill.SkillDescription)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Suburb.SubName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddressLine1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddressLine2)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
@@ -53,7 +59,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Employer.WorkName)
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName + " " + item.Employer.ApplicationUser.LastName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
@@ -61,9 +70,12 @@
         <td>
             @Html.DisplayFor(modelItem => item.Suburb.SubName)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
+        <th>
+            @Html.DisplayFor(modelItem => item.AddressLine1)
+        </th>
+        <th>
+            @Html.DisplayFor(modelItem => item.AddressLine2)
+        </th>
         <td>
             @Html.DisplayFor(modelItem => item.DateAdvertised)
         </td>
@@ -89,9 +101,9 @@
             @Html.DisplayFor(modelItem => item.Completed)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.JobID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.JobID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.JobID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.JobID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.JobID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
         </td>
     </tr>
 }

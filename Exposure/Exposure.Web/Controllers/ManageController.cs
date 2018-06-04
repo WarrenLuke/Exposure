@@ -53,7 +53,7 @@ namespace Exposure.Web.Controllers
 
         //
         // GET: /Manage/Index
-        public async Task<ActionResult> Index(ManageMessageId? message, IndexViewModel model)
+        public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -64,14 +64,9 @@ namespace Exposure.Web.Controllers
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
-            var userId = User.Identity.GetUserId();
+            var userId = User.Identity.GetUserId();           
 
-            
-<<<<<<< HEAD
-            var model = new IndexViewModel()
-=======
-            model = new IndexViewModel
->>>>>>> 45b7e1464d73738493b375dc397ca7d3d2de5315
+            var model = new IndexViewModel
             {
                 
                 FirstName = UserManager.FindById(userId).FirstName,
@@ -135,6 +130,7 @@ namespace Exposure.Web.Controllers
         {
             return RedirectToRoute("Defaul", new { controller = "Employer", action = "Edit" });
         }
+
         //public ActionResult PersonalDetails()
         //{
         //    return RedirectToRoute();

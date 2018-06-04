@@ -146,15 +146,12 @@ namespace Exposure.Web.Controllers
         public ActionResult Register()
         {
             var suburbsList = new List<string>();
-            var suburbsQry = from s in db.Suburbs
-                            orderby s.SubName
-                            select s.SubName;
-            
-                          
+            var suburbsQry = (from s in db.Suburbs
+                              orderby s.SubName, s.SuburbID
+                              select s).ToList();             
+                  
 
-            suburbsList.AddRange(suburbsQry.Distinct());
-
-            ViewBag.Suburbs = new SelectList(suburbsList, "SuburbID","SubName");
+            ViewBag.Suburbs = new SelectList(suburbsQry, "SuburbID", "SubName");
             return View();
         }
 

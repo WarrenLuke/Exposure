@@ -16,8 +16,8 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DropDownListFor(r=>r.Role,
-           new SelectList(Enum.GetValues(typeof(Role))),"---Select Use---" ,new { @class = "form-control" })
+            @Html.DropDownListFor(r => r.Role,
+    new SelectList(Enum.GetValues(typeof(Role))), "---Select Use---", new { @class = "form-control" })
         </div>
     </div>
 
@@ -39,16 +39,15 @@
         @Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.DropDownListFor(m => m.Gender,
-                 new SelectList(Enum.GetValues(typeof(Gender))),
-                 "---Select Gender---", new { @class = "form-control" })
+          new SelectList(Enum.GetValues(typeof(Gender))),
+          "---Select Gender---", new { @class = "form-control" })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.SuburbID, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DropDownList("Suburbs")
-            @*@Html.DropDownListFor("Suburbs",null,htmlAttributes: new { @class = "form-control" })*@
+            @Html.DropDownListFor(m=>m.SuburbID, (IEnumerable<SelectListItem>)ViewBag.Suburbs, htmlAttributes: new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.SuburbID, "", new { @class = "text-danger" })
         </div>
     </div>

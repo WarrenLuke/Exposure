@@ -26,7 +26,8 @@ namespace Exposure.Entities
         [StringLength(500)]
         public string Motivation { get; set; }
 
-        public Reply Response  { get; set; }
+        [DefaultValue("Pending")]
+        public Reply? Response  { get; set; }
 
         public virtual Job Job { get; set; }
 

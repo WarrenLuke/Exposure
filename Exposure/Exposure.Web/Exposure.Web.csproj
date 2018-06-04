@@ -241,6 +241,38 @@
     <Compile Include="DataContexts\IdentityMigrations\201805291155393_JobEdit.Designer.cs">
       <DependentUpon>201805291155393_JobEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806021340533_JobTime.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806021340533_JobTime.Designer.cs">
+      <DependentUpon>201806021340533_JobTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806021343041_JodTimeAdd.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806021343041_JodTimeAdd.Designer.cs">
+      <DependentUpon>201806021343041_JodTimeAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806021450131_dateTime2.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806021450131_dateTime2.Designer.cs">
+      <DependentUpon>201806021450131_dateTime2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806021502303_date.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806021502303_date.Designer.cs">
+      <DependentUpon>201806021502303_date.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806021942354_ProfilePic.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806021942354_ProfilePic.Designer.cs">
+      <DependentUpon>201806021942354_ProfilePic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806021945089_ProfilePic1.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806021945089_ProfilePic1.Designer.cs">
+      <DependentUpon>201806021945089_ProfilePic1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806021949328_picUpdate.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806021949328_picUpdate.Designer.cs">
+      <DependentUpon>201806021949328_picUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806031334581_JobAddress.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806031334581_JobAddress.Designer.cs">
+      <DependentUpon>201806031334581_JobAddress.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -418,6 +450,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201805291155393_JobEdit.resx">
       <DependentUpon>201805291155393_JobEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806021340533_JobTime.resx">
+      <DependentUpon>201806021340533_JobTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806021343041_JodTimeAdd.resx">
+      <DependentUpon>201806021343041_JodTimeAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806021450131_dateTime2.resx">
+      <DependentUpon>201806021450131_dateTime2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806021502303_date.resx">
+      <DependentUpon>201806021502303_date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806021942354_ProfilePic.resx">
+      <DependentUpon>201806021942354_ProfilePic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806021945089_ProfilePic1.resx">
+      <DependentUpon>201806021945089_ProfilePic1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806021949328_picUpdate.resx">
+      <DependentUpon>201806021949328_picUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806031334581_JobAddress.resx">
+      <DependentUpon>201806031334581_JobAddress.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

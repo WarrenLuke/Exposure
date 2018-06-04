@@ -8,6 +8,7 @@ namespace Exposure.Entities
 {
     public enum Reply
     {
+        Pending,
         Hired,
         Rejected
     }
