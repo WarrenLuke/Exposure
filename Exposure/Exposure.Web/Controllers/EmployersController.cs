@@ -59,7 +59,7 @@ namespace Exposure.Web.Controllers
             {
                 db.Employers.Add(employer);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToRoute("Default", new {controller = "Manage", action="Index" });
             }
 
             
@@ -79,7 +79,7 @@ namespace Exposure.Web.Controllers
             {
                 return HttpNotFound();
             }
-            
+            ViewBag.Employer = User.Identity.GetUserId();
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", employer.SuburbID);
             return View(employer);
         }
@@ -95,7 +95,7 @@ namespace Exposure.Web.Controllers
             {
                 db.Entry(employer).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToRoute("Default", new {controller="Manage", action="Index" });
             }
             
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", employer.SuburbID);

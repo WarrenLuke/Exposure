@@ -10,6 +10,8 @@ using Exposure.Web.Models;
 using System.Collections.Generic;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
+using System.Data;
+using System.Data.Entity;
 
 namespace Exposure.Web.Controllers
 {
@@ -18,7 +20,7 @@ namespace Exposure.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private IdentityDb db;
+        private IdentityDb db = new IdentityDb();
 
         public ManageController()
         {
@@ -67,15 +69,16 @@ namespace Exposure.Web.Controllers
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
-            var userId = User.Identity.GetUserId();  
-            
+            var userId = User.Identity.GetUserId();
 
+                        
             var model = new IndexViewModel
             {   
                 WorkName = UserManager.FindById(userId).Employer.WorkName,
                 WorkAddressLine1 = UserManager.FindById(userId).Employer.WorkAddress1,
                 WorkAddressLine2= UserManager.FindById(userId).Employer.WorkAddress2,
                 WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
+                Location = UserManager.FindById(userId).Employer.SuburbID,
                 Email = UserManager.FindById(userId).Email,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -84,7 +87,9 @@ namespace Exposure.Web.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
 
-            ApplicationUser user = UserManager.FindById(userId);            
+            ApplicationUser user = UserManager.FindById(userId);
+
+                        
 
             user = new ApplicationUser
             {
@@ -94,15 +99,25 @@ namespace Exposure.Web.Controllers
                 AddressLine1 = user.AddressLine1,
                 AddressLine2 = user.AddressLine2,
                 Email = user.Email,
+                SuburbID = user.SuburbID
 
             };
 
-            ViewBag.EmpSub = from s in db.Suburbs
-                             where s.SuburbID == user.Employer.SuburbID
-                             select s.SubName;
 
 
-            //ViewData["employer"] = employer;
+            var uSub = user.SuburbID;
+            //var userSub = db.Suburbs.SqlQuery("exec UserSuburb @suburb", uSub);
+
+
+            //ViewBag.UserSub = userSub;
+
+            //var empSub = from s in db.Suburbs
+            //             where s.SuburbID == user.Employer.SuburbID
+            //             select s.SubName;
+
+            //ViewBag.EmpSub = empSub;
+            ViewBag.UserID = userId;
+
             ViewData["user"] = user;
 
             return View(model);
@@ -141,12 +156,14 @@ namespace Exposure.Web.Controllers
 
         public ActionResult ReportIncident()
         {
-            return RedirectToRoute("Default", new { controller = "Incident", action = "Create" });
+            return RedirectToRoute("Default", new { controller = "Incidents", action = "Create" });
         }
 
         public ActionResult UpdateWorkDetails()
         {
-            return RedirectToRoute("Default", new { controller = "Suburbs", action = "Index" });
+            var userID = User.Identity.GetUserId();
+            ApplicationUser user = UserManager.FindById(userID);
+            return RedirectToRoute("Default", new { controller = "Employers", action = "Edit", id = userID});         
         }
 
         //public ActionResult PersonalDetails()

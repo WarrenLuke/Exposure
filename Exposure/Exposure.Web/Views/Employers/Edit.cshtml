@@ -1,10 +1,10 @@
 ﻿@model Exposure.Entities.Employer
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Update Work Details";
 }
 
-<h2>Edit</h2>
+<h2>@ViewBag.Title</h2>
 
 
 @using (Html.BeginForm())
@@ -12,10 +12,11 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Employer</h4>
+        
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
+            @Html.HiddenFor(model => model.EmployerID, "Employer")
             @Html.LabelFor(model => model.WorkName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.WorkName, new { htmlAttributes = new { @class = "form-control" } })

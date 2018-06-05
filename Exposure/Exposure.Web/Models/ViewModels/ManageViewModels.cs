@@ -20,7 +20,7 @@ namespace Exposure.Web.Models
 
         public string Gender { get; set; }
 
-        public string Suburb { get; set; }
+        public int Suburb { get; set; }
 
         [DisplayName("Address Line 1")]
         public string AddressLine1 { get; set; }
@@ -41,7 +41,8 @@ namespace Exposure.Web.Models
         public string WorkAddressLine2 { get; set; }
 
         [DisplayName("Suburb")]
-        public string Location { get; set; }
+        public int? Location { get; set; }
+
         public string Email { get; set; }
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
