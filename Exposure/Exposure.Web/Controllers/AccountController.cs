@@ -179,19 +179,7 @@ namespace Exposure.Web.Controllers
                     UserManager.AddToRole(user.Id, role);
 
                     //If statement used to determine which table user should be added to
-                    if (role == "Employer")
-                    {
-                        var employer = new Employer { EmployerID = user.Id };
-                        db.Employers.Add(employer);
-                        db.SaveChanges();
-                    }
-                    else if (role == "Worker")
-                    {
-                        var worker = new Worker { WorkerID = user.Id };
-                        db.Workers.Add(worker);
-                        db.SaveChanges();
-
-                    }
+                    
 
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     

@@ -1,10 +1,23 @@
 ﻿@model Exposure.Web.Models.IndexViewModel
 @using  Exposure.Web.Models
+@using Exposure.Entities
 @{
-    ViewBag.Title = "Manage";
+    if(User.IsInRole("Employer"))
+    {
+        ViewBag.Title = "Employer Profile";
+    }
+    else if (User.IsInRole("Worker"))
+    {
+        ViewBag.Title = "Worker Profile";
+    }
+    else if(User.IsInRole("Admin"))
+    {
+        ViewBag.Title = "Administrator";
+    }
+
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
@@ -52,56 +65,53 @@
     }
     else if (User.IsInRole("Employer"))
     {
+         
+            var emp = (Employer)ViewData["employer"];
+            var user = (ApplicationUser)ViewData["user"];
+           
         
         <div class="form-group form-actions">
-            <h2>Employer Profile Details</h2>
-            <div class="col-md-4">
-                <div class="col-md-12">
-                    <dl>
-                        <dt>Profile Picture</dt>
-                    </dl>
-                    
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="col-md-12">
+                        
+                            <h3>PROFILE PICTURE</h3>
+                        
+                    </div>
+                    <div class="col-md-12">                        
+                         @Html.ActionLink("Change Password", "ChangePassword") <br/>                                            
+                        <input type="submit" class="btn btn-default" value="Manage Jobs" formaction="ManageJobs" /><br />
+                        <input type="submit" class="btn btn-default" value="Report Incident" formaction="ReportIncident" /><br />
+                        <input type="submit" class="btn btn-default" value="Job Applicatons" formaction="Incidents" />
+                    </div>
                 </div>
-                <div class="col-md-12">
-                    <dl>
-                        <dt>EMPLOYER</dt>
-                        <dt class="hot">Password:</dt>
-                        <dt>
-                            @Html.ActionLink("Change Password", "ChangePassword");
-                        </dt>
-                    </dl>
-                    <input type="submit" class="btn btn-default" value="Manage Jobs" formaction="ManageJobs" />
-                    <input type="submit" class="btn btn-default" value="Report Incident" formaction="ReportIncident" />
-                    <input type="submit" class="btn btn-default" value="Update Personal Details" formaction="Incidents" />
-                    <input type="submit" class="btn btn-default" value="Job Applicatons" formaction="Incidents" />
-                </div>                
-            </div>
 
-            <div class="col-md-md-4">
+
+                <div class="col-md-4">
                 <h3>PERSONAL DETAILS</h3>
-                <dl class="dl-horizontal">
+                <dl>
                     <dt>@Html.DisplayNameFor(model => model.FirstName):</dt>
                     <dd>
-                        @Html.DisplayFor(model=>model.FirstName)
+                        @user.FirstName
                     </dd>
 
                     <dt>@Html.DisplayNameFor(Model=>Model.LastName):</dt>
-                    <dd>     @Html.DisplayFor(model=>model.LastName)      </dd>
+                    <dd>     @user.LastName   </dd>
 
                     <dt>@Html.DisplayNameFor(Model => Model.Gender):</dt>
-                    <dd>     @Html.DisplayFor(model=>model.Gender)       </dd>
+                    <dd>     @user.Gender    </dd>
 
                     <dt>@Html.DisplayNameFor(model => model.Suburb):</dt>
-                    <dt>     @Html.DisplayFor(model => model.Suburb)       </dt>
+                    <dt>     @user.Suburb.SubName       </dt>
 
-                    <dt>@Html.DisplayNameFor(model=>model.WorkAddressLine1)</dt>
-                    <dd>     @Html.DisplayFor(model => model.WorkAddressLine1)   </dd>
+                    <dt>@Html.DisplayNameFor(model=>model.AddressLine1)</dt>
+                    <dd>     @user.AddressLine1  </dd>
 
-                    <dt>@Html.DisplayNameFor(model => model.WorkAddressLine2):</dt>
-                    <dd>     @Html.DisplayFor(model => model.WorkAddressLine2)   </dd>
+                    <dt>@Html.DisplayNameFor(model => model.AddressLine2):</dt>
+                    <dd>     @user.AddressLine2  </dd>
 
                     <dt>@Html.DisplayNameFor(model => model.Email)</dt>
-                    <dd>     @Html.DisplayFor(model=>model.Email )        </dd>
+                    <dd>     @user.Email       </dd>
 
                     <dt>@Html.DisplayNameFor(model=>model.PhoneNumber):</dt>
                     <dd>                        
@@ -117,30 +127,74 @@
 
                     </dd>
                  </dl>
-            </div>
-            
-            <div class="col-md-4">
-                <h2>WORK DETAILS</h2>
+                       <input type="submit" class="btn btn-default" value="Update Personal Details" formaction="Incidents" /><br />
+
+                 </div>
+
+                <div class="col-md-4">
+                <h3>WORK DETAILS</h3>
                 <div class="col-md-12">
                     <dl>
                         <dt>@Html.DisplayNameFor(model => model.WorkName) </dt>
-                        <dd>    @Html.DisplayFor(model=> model.WorkName ?? "None")    </dd>
+                        <dd>    
+                            @if (Model.WorkName == null)
+                            {
+                                   <p>None</p> 
+                            } else
+                            {
+                                @Html.DisplayFor(model => model.WorkName)
+                            }
+                        </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.WorkAddressLine1)</dt>
-                        <dd>    @Html.DisplayFor(model=>model.WorkAddressLine1 ?? "None" ) </dd>
-                        <dt>@Html.DisplayNameFor(model => model.WorkAddressLine2) </dt>
-                        <dd>    @Html.DisplayFor(model=>model.WorkAddressLine2 ?? "None")    </dd>
-                        <dt>@Html.DisplayNameFor(model => model.Suburb) </dt>
-                        <dd>    @Html.DisplayFor(model => model.Location ?? "None")  </dd>
+                        <dd>
+                            @if (Model.WorkAddressLine1 == null)
+                            {
+                                   <p>None</p> 
+                            } else
+                            {
+                                @Html.DisplayFor(model => model.WorkAddressLine1)
+                            }
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.WorkAddressLine2) 
+                        </dt>
+                        <dd>     
+                            @if (Model.WorkAddressLine2 == null)
+                            {
+                                   <p>None</p> 
+                            } else
+                            {
+                                @Html.DisplayFor(model => model.WorkAddressLine2)
+                            }  
+                        </dd>
+                        <dt>@Html.DisplayNameFor(model => model.Location) </dt>
+                        <dd> 
+                            @if (Model.Suburb == null)
+                            {
+                                   <p>None</p> 
+                            } else
+                            {
+                                @Html.DisplayFor(model => model.Location)
+                            }
+                        </dd>
                         <dt>@Html.DisplayNameFor(model =>model.WorkNumber )</dt>
-                        <dd>    @Html.DisplayFor(model => model.WorkNumber ?? "None")   </dd>
+                        <dd>   
+                            @if (Model.WorkNumber == null)
+                            {
+                                   <p>None</p> 
+                            } else
+                            {
+                                @Html.DisplayFor(model=>model.WorkNumber)
+                            }
+                        </dd>
                     </dl>
                 </div>
                 <input type="submit" class="btn btn-default" value="Update Work Details" formaction="UpdateWorkDetails" />
 
-            </div>
+                </div>
 
-
+            </div>      
         </div>
        
     }

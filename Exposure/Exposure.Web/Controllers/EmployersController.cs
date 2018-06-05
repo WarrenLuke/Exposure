@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
+using Exposure.Web.Controllers;
+using Microsoft.AspNet.Identity;
 
 namespace Exposure.Web.Controllers
 {
@@ -41,7 +43,7 @@ namespace Exposure.Web.Controllers
         
         public ActionResult Create()
         {
-            ViewBag.EmployerID = User.Identity;
+            ViewBag.EmployerID = User.Identity.GetUserId();
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName");
             return View();
         }

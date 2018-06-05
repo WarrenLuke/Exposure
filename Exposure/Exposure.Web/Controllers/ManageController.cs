@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Exposure.Web.Models;
 using System.Collections.Generic;
+using Exposure.Entities;
+using Exposure.Web.DataContexts;
 
 namespace Exposure.Web.Controllers
 {
@@ -16,6 +18,7 @@ namespace Exposure.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private IdentityDb db;
 
         public ManageController()
         {
@@ -64,22 +67,15 @@ namespace Exposure.Web.Controllers
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
-            var userId = User.Identity.GetUserId();           
+            var userId = User.Identity.GetUserId();  
+            
 
             var model = new IndexViewModel
-            {
-                
-                FirstName = UserManager.FindById(userId).FirstName,
-                LastName = UserManager.FindById(userId).LastName,
-                Gender = UserManager.FindById(userId).Gender,
-                Suburb = UserManager.FindById(userId).Suburb.SubName,
-                AddressLine1 = UserManager.FindById(userId).AddressLine1,
-                AddressLine2 = UserManager.FindById(userId).AddressLine2,
+            {   
                 WorkName = UserManager.FindById(userId).Employer.WorkName,
                 WorkAddressLine1 = UserManager.FindById(userId).Employer.WorkAddress1,
-                WorkAddressLine2 = UserManager.FindById(userId).Employer.WorkAddress2,
+                WorkAddressLine2= UserManager.FindById(userId).Employer.WorkAddress2,
                 WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
-                Location = UserManager.FindById(userId).Employer.Suburb.SubName,
                 Email = UserManager.FindById(userId).Email,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -87,6 +83,28 @@ namespace Exposure.Web.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
+
+            ApplicationUser user = UserManager.FindById(userId);            
+
+            user = new ApplicationUser
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Gender = user.Gender,
+                AddressLine1 = user.AddressLine1,
+                AddressLine2 = user.AddressLine2,
+                Email = user.Email,
+
+            };
+
+            ViewBag.EmpSub = from s in db.Suburbs
+                             where s.SuburbID == user.Employer.SuburbID
+                             select s.SubName;
+
+
+            //ViewData["employer"] = employer;
+            ViewData["user"] = user;
+
             return View(model);
         }
 
@@ -128,7 +146,7 @@ namespace Exposure.Web.Controllers
 
         public ActionResult UpdateWorkDetails()
         {
-            return RedirectToRoute("Defaul", new { controller = "Employer", action = "Edit" });
+            return RedirectToRoute("Default", new { controller = "Suburbs", action = "Index" });
         }
 
         //public ActionResult PersonalDetails()

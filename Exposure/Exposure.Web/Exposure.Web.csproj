@@ -273,6 +273,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201806031334581_JobAddress.Designer.cs">
       <DependentUpon>201806031334581_JobAddress.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806042211115_Update.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806042211115_Update.Designer.cs">
+      <DependentUpon>201806042211115_Update.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -474,6 +478,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201806031334581_JobAddress.resx">
       <DependentUpon>201806031334581_JobAddress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806042211115_Update.resx">
+      <DependentUpon>201806042211115_Update.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
