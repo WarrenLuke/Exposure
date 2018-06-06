@@ -3880,9 +3880,9 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-  color: #555555;
+  color: #fff;
   cursor: default;
-  background-color: #ffffff;
+  background-color: #ddd;
   border: 1px solid #dddddd;
   border-bottom-color: transparent;
 }
@@ -3931,7 +3931,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
-  color: #ffffff;
+  color: #fff;
   background-color: #428bca;
 }
 
@@ -4389,27 +4389,27 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-default .navbar-brand {
-  color: #777777;
+  color: #fff;
 }
 
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
-  color: #5e5e5e;
-  background-color: transparent;
+  color: #ff6a00;
+  background-color: #fff;
 }
 
 .navbar-default .navbar-text {
-  color: #777777;
+  color: #fff;
 }
 
 .navbar-default .navbar-nav > li > a {
-  color: #777777;
+  color: #fff;
 }
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-  color: #333333;
-  background-color: transparent;
+  color: #ff6a00;
+  background-color: #fff;
 }
 
 .navbar-default .navbar-nav > .active > a,

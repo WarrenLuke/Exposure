@@ -89,7 +89,7 @@ namespace Exposure.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles =("Admin, Employer"))]
-        public ActionResult Create([Bind(Include = "JobID,EmployerID,Title,DateAdvertised,SkillID,Description,StartDate,EndDate,StartTime,EndTime,Rate,SuburbID")] Job job)
+        public ActionResult Create([Bind(Include = "JobID,EmployerID,Title,DateAdvertised,SkillID,Description,StartDate,EndDate,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2")] Job job)
         {
             if (ModelState.IsValid)
             {

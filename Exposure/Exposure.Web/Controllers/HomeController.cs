@@ -26,5 +26,15 @@ namespace Exposure.Web.Controllers
 
             return View();
         }
+
+        public ActionResult Help()
+        {
+            return View();
+        }
+
+        public ActionResult Search()
+        {
+            return View();
+        }
     }
 }

@@ -1,8 +1,8 @@
 ﻿@model Exposure.Web.Models.IndexViewModel
-@using  Exposure.Web.Models
+@using Exposure.Web.Models
 @using Exposure.Entities
 @{
-    if(User.IsInRole("Employer"))
+    if (User.IsInRole("Employer"))
     {
         ViewBag.Title = "Employer Profile";
     }
@@ -10,7 +10,7 @@
     {
         ViewBag.Title = "Worker Profile";
     }
-    else if(User.IsInRole("Admin"))
+    else if (User.IsInRole("Admin"))
     {
         ViewBag.Title = "Administrator";
     }
@@ -25,7 +25,7 @@
     if (User.IsInRole("Admin"))
     {
         <div class="form-group form-actions container">
-            
+
             <div class="col-md-3"></div>
             <div class="col-md-6 text-center">
                 <h4>What would you like to do?</h4>
@@ -42,270 +42,347 @@
                 <br />
                 <div class="col-md-offset-2 col-md-10">
 
-                    <input type="submit" class="btn btn-default btn-lg" value="Manage Suburbs" formaction="Suburbs"/>
-                    
+                    <input type="submit" class="btn btn-default btn-lg" value="Manage Suburbs" formaction="Suburbs" />
+
                 </div>
                 <br />
-                <div class="col-md-offset-2 col-md-10">                    
-                        <input type="submit" class="btn btn-default btn-lg" value="Manage Cities" formaction="Cities"/>                   
-                                   
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default btn-lg" value="Manage Cities" formaction="Cities" />
+
                 </div>
                 <br />
                 <div class="col-md-offset-2 col-md-10">
                     <a href="Manage/Jobs">
-                        <input type="submit" class="btn btn-default btn-lg" value="View Jobs" formaction="Jobs"/>
+                        <input type="submit" class="btn btn-default btn-lg" value="View Jobs" formaction="Jobs" />
                     </a>
                 </div>
                 <br />
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-default btn-lg" value="Manage Compnay information" formaction="Company"/>
+                    <input type="submit" class="btn btn-default btn-lg" value="Manage Compnay information" formaction="Company" />
                 </div>
-            </div>         
-         </div>
+            </div>
+        </div>
     }
     else if (User.IsInRole("Employer"))
     {
-         
-            var emp = (Employer)ViewData["employer"];
-            var user = (ApplicationUser)ViewData["user"];
 
-           
-        
+        var emp = (Employer)ViewData["employer"];
+        var user = (ApplicationUser)ViewData["user"];
+
+
+
         <div class="form-group form-actions">
             <div class="row">
                 <div class="col-md-3">
                     <div class="col-md-12">
-                        
-                            <h3>PROFILE PICTURE</h3>
-                        
+
+                        <h3>PROFILE PICTURE</h3>
+
                     </div>
-                    <div class="col-md-8 btn-group-vertical text-center" role="group">                        
-                         @Html.ActionLink("Change Password", "ChangePassword")   <br/>                                            
-                        <input type="submit" class="btn btn-default btn-sm" value="Manage Jobs" formaction="ManageJobs" />
-                        <input type="submit" class="btn btn-default btn-sm" value="Report Incident" formaction="ReportIncident" />
-                        <input type="submit" class="btn btn-default btn-sm" value="Job Applicatons" formaction="Incidents" />
+                    <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
+                        @Html.ActionLink("Change Password", "ChangePassword")   <br />
+                        <input type="submit" class="btn btn-default" value="Manage Jobs" formaction="ManageJobs" />
+                        <input type="submit" class="btn btn-default" value="Report Incident" formaction="ReportIncident" />
+                        <input type="submit" class="btn btn-default" value="Job Applicatons" formaction="Incidents" />
                     </div>
                 </div>
 
 
                 <div class="col-md-4">
-                <h3>PERSONAL DETAILS</h3>
-                <dl>
-                    <dt>@Html.DisplayNameFor(model => model.FirstName):</dt>
-                    <dd>
-                        @user.FirstName
-                    </dd>
-
-                    <dt>@Html.DisplayNameFor(Model=>Model.LastName):</dt>
-                    <dd>     @user.LastName   </dd>
-
-                    <dt>@Html.DisplayNameFor(Model => Model.Gender):</dt>
-                    <dd>     @user.Gender    </dd>
-
-                    <dt>@Html.DisplayNameFor(model => model.Suburb):</dt>
-                    <dt>     @*@Html.DisplayFor(model => model.Suburb)*@    </dt>
-
-                    <dt>@Html.DisplayNameFor(model=>model.AddressLine1)</dt>
-                    <dd>     @user.AddressLine1  </dd>
-
-                    <dt>@Html.DisplayNameFor(model => model.AddressLine2):</dt>
-                    <dd>     @user.AddressLine2  </dd>
-
-                    <dt>@Html.DisplayNameFor(model => model.Email)</dt>
-                    <dd>     @user.Email       </dd>
-
-                    <dt>@Html.DisplayNameFor(model=>model.PhoneNumber):</dt>
-                    <dd>                        
-                        @if (@Html.DisplayFor(model=>model.PhoneNumber) == null)
-                        {
-                            @Html.ActionLink("Add Phone Number", "AddPhoneNumber")
-                        }
-                        else
-                        {
-                            @Html.DisplayFor(model=>model.PhoneNumber)
-                            
-                        }
-
-                    </dd>
-                 </dl>
-                       <input type="submit" class="btn btn-default" value="Update Personal Details" formaction="Incidents" /><br />
-
-                 </div>
-
-                <div class="col-md-4">
-                <h3>WORK DETAILS</h3>
-                <div class="col-md-12">
+                    <h3>PERSONAL DETAILS</h3>
                     <dl>
-                        <dt>@Html.DisplayNameFor(model => model.WorkName) </dt>
-                        <dd>    
-                            @if (Model.WorkName == null)
-                            {
-                                   <p>None</p> 
-                            } else
-                            {
-                                @Html.DisplayFor(model => model.WorkName)
-                            }
+                        <dt>@Html.DisplayNameFor(model => model.FirstName):</dt>
+                        <dd>
+                            @user.FirstName
                         </dd>
 
-                        <dt>@Html.DisplayNameFor(model => model.WorkAddressLine1)</dt>
+                        <dt>@Html.DisplayNameFor(Model => Model.LastName):</dt>
+                        <dd>     @user.LastName   </dd>
+
+                        <dt>@Html.DisplayNameFor(Model => Model.Gender):</dt>
+                        <dd>     @user.Gender    </dd>
+
+                        <dt>@Html.DisplayNameFor(model => model.Suburb):</dt>
+                        <dt>     @*@Html.DisplayFor(model => model.Suburb)*@    </dt>
+
+                        <dt>@Html.DisplayNameFor(model => model.AddressLine1)</dt>
+                        <dd>     @user.AddressLine1  </dd>
+
+                        <dt>@Html.DisplayNameFor(model => model.AddressLine2):</dt>
+                        <dd>     @user.AddressLine2  </dd>
+
+                        <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+                        <dd>     @user.Email       </dd>
+
+                        <dt>@Html.DisplayNameFor(model => model.PhoneNumber):</dt>
                         <dd>
-                            @if (Model.WorkAddressLine1 == null)
+                            @if (@Html.DisplayFor(model => model.PhoneNumber) == null)
                             {
-                                   <p>None</p> 
-                            } else
-                            {
-                                @Html.DisplayFor(model => model.WorkAddressLine1)
+                                @Html.ActionLink("Add Phone Number", "AddPhoneNumber")
                             }
-                        </dd>
-                        <dt>
-                            @Html.DisplayNameFor(model => model.WorkAddressLine2) 
-                        </dt>
-                        <dd>     
-                            @if (Model.WorkAddressLine2 == null)
+                            else
                             {
-                                   <p>None</p> 
-                            } else
-                            {
-                                @Html.DisplayFor(model => model.WorkAddressLine2)
-                            }  
-                        </dd>
-                        <dt>@Html.DisplayNameFor(model => model.Location) </dt>
-                        <dd> 
-                            @if (Model.Location == null)
-                            {
-                                   <p>None</p> 
-                            } else
-                            {
-                                @Html.DisplayFor(model=>model.Location)
+                                @Html.DisplayFor(model => model.PhoneNumber)
+
                             }
-                        </dd>
-                        <dt>@Html.DisplayNameFor(model =>model.WorkNumber )</dt>
-                        <dd>   
-                            @if (Model.WorkNumber == null)
-                            {
-                                   <p>None</p> 
-                            } else
-                            {
-                                @Html.DisplayFor(model=>model.WorkNumber)
-                            }
+
                         </dd>
                     </dl>
+                    <input type="submit" class="btn btn-default" value="Update Personal Details" formaction="Incidents" /><br />
+
                 </div>
-                <input type="submit" class="btn btn-default" value="Update Work Details" formaction="UpdateWorkDetails" id="UserID"/>
+
+                <div class="col-md-4">
+                    <h3>WORK DETAILS</h3>
+                    <div class="col-md-12">
+                        <dl>
+                            <dt>@Html.DisplayNameFor(model => model.WorkName) </dt>
+                            <dd>
+                                @if (Model.WorkName == null)
+                                {
+                                    <p>None</p>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(model => model.WorkName)
+                                }
+                            </dd>
+
+                            <dt>@Html.DisplayNameFor(model => model.WorkAddressLine1)</dt>
+                            <dd>
+                                @if (Model.WorkAddressLine1 == null)
+                                {
+                                    <p>None</p>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(model => model.WorkAddressLine1)
+                                }
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.WorkAddressLine2)
+                            </dt>
+                            <dd>
+                                @if (Model.WorkAddressLine2 == null)
+                                {
+                                    <p>None</p>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(model => model.WorkAddressLine2)
+                                }
+                            </dd>
+                            <dt>@Html.DisplayNameFor(model => model.Location) </dt>
+                            <dd>
+                                @if (Model.Location == null)
+                                {
+                                    <p>None</p>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(model => model.Location)
+                                }
+                            </dd>
+                            <dt>@Html.DisplayNameFor(model => model.WorkNumber)</dt>
+                            <dd>
+                                @if (Model.WorkNumber == null)
+                                {
+                                    <p>None</p>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(model => model.WorkNumber)
+                                }
+                            </dd>
+                        </dl>
+                    </div>
+                    <input type="submit" class="btn btn-default" value="Update Work Details" formaction="UpdateWorkDetails" />
                     @Html.ActionLink("Update Details", "UpdateWorkDetails", new { id = "UserID" })
                 </div>
 
-            </div>      
+            </div>
         </div>
-       
+
     }
-    //else if (User.IsInRole("Worker"))
-    //{
+    else if (User.IsInRole("Worker"))
+    {
+        var user = (ApplicationUser)ViewData["user"];
 
 
 
-    //}
+        <div class="form-group form-actions">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="col-md-12">
+
+                        <h3>PROFILE PICTURE</h3>
+
+                    </div>
+                    <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
+                        @Html.ActionLink("Change Password", "ChangePassword")   <br />
+                        <input type="submit" class="btn btn-default" value="Manage Jobs" formaction="ManageJobs" />
+                        <input type="submit" class="btn btn-default" value="Report Incident" formaction="ReportIncident" />
+                        <input type="submit" class="btn btn-default" value="Job Applicatons" formaction="Incidents" />
+                    </div>
+                </div>
 
 
-}
+                <div class="col-md-4">
+                    <h3>PERSONAL DETAILS</h3>
+                    <dl>
+                        <dt>@Html.DisplayNameFor(model => model.FirstName):</dt>
+                        <dd>
+                            @user.FirstName
+                        </dd>
+
+                        <dt>@Html.DisplayNameFor(Model => Model.LastName):</dt>
+                        <dd>     @user.LastName   </dd>
+
+                        <dt>@Html.DisplayNameFor(Model => Model.Gender):</dt>
+                        <dd>     @user.Gender    </dd>
+
+                        <dt>@Html.DisplayNameFor(model => model.Suburb):</dt>
+                        <dt>     @*@Html.DisplayFor(model => model.Suburb)*@    </dt>
+
+                        <dt>@Html.DisplayNameFor(model => model.AddressLine1)</dt>
+                        <dd>     @user.AddressLine1  </dd>
+
+                        <dt>@Html.DisplayNameFor(model => model.AddressLine2):</dt>
+                        <dd>     @user.AddressLine2  </dd>
+
+                        <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+                        <dd>     @user.Email       </dd>
+
+                        <dt>@Html.DisplayNameFor(model => model.PhoneNumber):</dt>
+                        <dd>
+                            @if (@Html.DisplayFor(model => model.PhoneNumber) == null)
+                            {
+                                @Html.ActionLink("Add Phone Number", "AddPhoneNumber")
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.PhoneNumber)
+
+                            }
+
+                        </dd>
+                    </dl>
+                    <input type="submit" class="btn btn-default" value="Update Personal Details" formaction="Incidents" /><br />
+
+                </div>
+
+                <div class="col-md-4">
+                    <h3>SKILL</h3>
+                    <input type="submit" class="btn-default" value="Add Skill" formaction="AddSkill"/>
+
+                </div>
+
+             </div>
+        </div>
 
 
-@*<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>First Name:</dt>
-        <dd>
-            @(Model.FirstName ?? "None")
-        </dd>
-        <dt>Last Name:</dt>
-        <dd>
-            @Model.LastName
-        </dd>
-        <dt>Address Line 1:</dt>
-        <dd>
-            @Model.AddressLine1
-        </dd>
-        <dt>Address Line 2:</dt>
-        <dd>
-            @Model.AddressLine2
-
-        </dd>
-        <dt></dt>
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-        @*<dt>External Logins:</dt>
-            <dd>
-                @Model.Logins.Count [
-                @Html.ActionLink("Manage", "ManageLogins") ]
-            </dd>*@
-        @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-
-             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-
-             Uncomment the following block after you have set up two-factor authentication
-        *@
-
-        @*<dt>Phone Number:</dt>
-        <dd>
-            @(Model.PhoneNumber ?? "None")
-            @if (Model.PhoneNumber != null)
-            {
-                <br />
-                <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
                 }
-            }
 
-            else
-            {
-                <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")</text>
-            }
-        </dd>*@
 
-        @*<dt>Two-Factor Authentication:</dt>
-            <dd>
-                <p>
-                    There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                    for details on setting up this ASP.NET application to support two-factor authentication.
-                </p>*@
-        @*@if (Model.TwoFactor)
-            {
-                using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <text>Enabled
-                    <input type="submit" value="Disable" class="btn btn-link" />
-                    </text>
                 }
-            }
-            else
-            {
-                using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <text>Disabled
-                    <input type="submit" value="Enable" class="btn btn-link" />
-                    </text>
-                }
-            }*@
-        @*</dd>*@
-    @*</dl>
-</div>*@
+
+
+                @*<p class="text-success">@ViewBag.StatusMessage</p>
+                    <div>
+                        <h4>Change your account settings</h4>
+                        <hr />
+                        <dl class="dl-horizontal">
+                            <dt>First Name:</dt>
+                            <dd>
+                                @(Model.FirstName ?? "None")
+                            </dd>
+                            <dt>Last Name:</dt>
+                            <dd>
+                                @Model.LastName
+                            </dd>
+                            <dt>Address Line 1:</dt>
+                            <dd>
+                                @Model.AddressLine1
+                            </dd>
+                            <dt>Address Line 2:</dt>
+                            <dd>
+                                @Model.AddressLine2
+
+                            </dd>
+                            <dt></dt>
+                            <dt>Password:</dt>
+                            <dd>
+                                [
+                                @if (Model.HasPassword)
+                                {
+                                    @Html.ActionLink("Change your password", "ChangePassword")
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Create", "SetPassword")
+                                }
+                                ]
+                            </dd>
+                            @*<dt>External Logins:</dt>
+                                <dd>
+                                    @Model.Logins.Count [
+                                    @Html.ActionLink("Manage", "ManageLogins") ]
+                                </dd>*@
+                @*
+                    Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+                     See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                        for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+                     Uncomment the following block after you have set up two-factor authentication
+                *@
+
+                @*<dt>Phone Number:</dt>
+                    <dd>
+                        @(Model.PhoneNumber ?? "None")
+                        @if (Model.PhoneNumber != null)
+                        {
+                            <br />
+                            <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                            using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                            }
+                        }
+
+                        else
+                        {
+                            <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")</text>
+                        }
+                    </dd>*@
+
+                @*<dt>Two-Factor Authentication:</dt>
+                    <dd>
+                        <p>
+                            There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                            for details on setting up this ASP.NET application to support two-factor authentication.
+                        </p>*@
+                @*@if (Model.TwoFactor)
+                    {
+                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Enabled
+                            <input type="submit" value="Disable" class="btn btn-link" />
+                            </text>
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Disabled
+                            <input type="submit" value="Enable" class="btn btn-link" />
+                            </text>
+                        }
+                    }*@
+                @*</dd>*@
+                @*</dl>
+                    </div>*@

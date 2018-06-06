@@ -74,11 +74,10 @@ namespace Exposure.Web.Controllers
                         
             var model = new IndexViewModel
             {   
-                WorkName = UserManager.FindById(userId).Employer.WorkName,
-                WorkAddressLine1 = UserManager.FindById(userId).Employer.WorkAddress1,
-                WorkAddressLine2= UserManager.FindById(userId).Employer.WorkAddress2,
-                WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
-                Location = UserManager.FindById(userId).Employer.SuburbID,
+                
+
+                
+                
                 Email = UserManager.FindById(userId).Email,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -87,6 +86,17 @@ namespace Exposure.Web.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
 
+            if (User.IsInRole("Employer"))
+            {
+                model = new IndexViewModel
+                {
+                    Location = UserManager.FindById(userId).Employer.SuburbID,
+                    WorkName = UserManager.FindById(userId).Employer.WorkName,
+                    WorkAddressLine1 = UserManager.FindById(userId).Employer.WorkAddress1,
+                    WorkAddressLine2 = UserManager.FindById(userId).Employer.WorkAddress2,
+                    WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
+                };
+            }
             ApplicationUser user = UserManager.FindById(userId);
 
                         
@@ -103,7 +113,16 @@ namespace Exposure.Web.Controllers
 
             };
 
+            if(User.IsInRole("Worker"))
+            {
+                var skillsLst = new List<string>();
 
+                var skillsQry = (from s in db.WorkerSkills
+                             where s.WorkerID == user.Id
+                             select s).ToList();
+
+                ViewData["Skills"] = skillsQry;
+            }
 
             var uSub = user.SuburbID;
             //var userSub = db.Suburbs.SqlQuery("exec UserSuburb @suburb", uSub);
@@ -165,6 +184,13 @@ namespace Exposure.Web.Controllers
             ApplicationUser user = UserManager.FindById(userID);
             return RedirectToRoute("Default", new { controller = "Employers", action = "Edit", id = userID});         
         }
+
+        public ActionResult AddSkill()
+        {
+            var userID = User.Identity.GetUserId();
+            return RedirectToRoute("Default", new { controller = "WorkerSkills", action = "Create", id = userID });
+        }
+        
 
         //public ActionResult PersonalDetails()
         //{
