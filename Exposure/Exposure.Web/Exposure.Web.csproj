@@ -277,6 +277,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201806042211115_Update.Designer.cs">
       <DependentUpon>201806042211115_Update.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806062352103_UserProfile.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806062352103_UserProfile.Designer.cs">
+      <DependentUpon>201806062352103_UserProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -407,9 +411,11 @@
     <Content Include="Views\WorkerSkills\Details.cshtml" />
     <Content Include="Views\WorkerSkills\Edit.cshtml" />
     <Content Include="Views\WorkerSkills\Index.cshtml" />
+    <Content Include="Views\Account\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -481,6 +487,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201806042211115_Update.resx">
       <DependentUpon>201806042211115_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806062352103_UserProfile.resx">
+      <DependentUpon>201806062352103_UserProfile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -65,6 +65,11 @@ namespace Exposure.Web.Models
 
     public class RegisterViewModel
     {
+        public string Id { get; set; }
+
+        [DisplayName("Profile Picture")]
+        public byte[] ProfilePic { get; set; }
+
         [Required]
         [DisplayName("Intended Use")]
         public string Role { get; set; }
@@ -116,6 +121,8 @@ namespace Exposure.Web.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+
+    
 
     public class ResetPasswordViewModel
     {

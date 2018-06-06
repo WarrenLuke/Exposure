@@ -1,6 +1,7 @@
 ﻿@model Exposure.Web.Models.IndexViewModel
 @using Exposure.Web.Models
 @using Exposure.Entities
+@using Microsoft.AspNet.Identity
 @{
     if (User.IsInRole("Employer"))
     {
@@ -73,14 +74,21 @@
 
         <div class="form-group form-actions">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3 text-center">
                     <div class="col-md-12">
 
                         <h3>PROFILE PICTURE</h3>
-
+                        <img src="@Url.Action("ProfilePic", "Home")" style="width:160px; height:160px; background:
+                        #ff6a00;
+                        margin:auto;
+                        -moz-border-radius:60px;
+                        border-radius:90px;
+                        padding:2px;
+                        box-shadow:0px 0px 20px #888" />
                     </div>
+                    @Html.ActionLink("Change Password", "ChangePassword")<br/>
                     <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
-                        @Html.ActionLink("Change Password", "ChangePassword")   <br />
+                        <br />
                         <input type="submit" class="btn btn-default" value="Manage Jobs" formaction="ManageJobs" />
                         <input type="submit" class="btn btn-default" value="Report Incident" formaction="ReportIncident" />
                         <input type="submit" class="btn btn-default" value="Job Applicatons" formaction="Incidents" />
@@ -180,7 +188,10 @@
                                 }
                                 else
                                 {
-                                    @Html.DisplayFor(model => model.Location)
+                                    foreach(var item in ViewBag.empSub)
+                                    {
+                                       @item.Suburb.SubName
+                                    }
                                 }
                             </dd>
                             <dt>@Html.DisplayNameFor(model => model.WorkNumber)</dt>
@@ -212,14 +223,22 @@
 
         <div class="form-group form-actions">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3 text-center">
                     <div class="col-md-12">
 
                         <h3>PROFILE PICTURE</h3>
+                        <img src="@Url.Action("ProfilePic", "Home")" style="width:160px; height:160px; background:
+                        #ff6a00;
+                        margin:auto;
+                        -moz-border-radius:60px;
+                        border-radius:90px;
+                        padding:2px;
+                        box-shadow:0px 0px 20px #888" />
 
                     </div>
+                    @Html.ActionLink("Change Password", "ChangePassword")   <br />
+
                     <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
-                        @Html.ActionLink("Change Password", "ChangePassword")   <br />
                         <input type="submit" class="btn btn-default" value="Manage Jobs" formaction="ManageJobs" />
                         <input type="submit" class="btn btn-default" value="Report Incident" formaction="ReportIncident" />
                         <input type="submit" class="btn btn-default" value="Job Applicatons" formaction="Incidents" />
@@ -242,7 +261,13 @@
                         <dd>     @user.Gender    </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.Suburb):</dt>
-                        <dt>     @*@Html.DisplayFor(model => model.Suburb)*@    </dt>
+                        <dd>     
+                            @foreach(var item in ViewBag.userSub)
+                            {
+                                @item.Suburb.SubName
+                            }
+
+                        </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.AddressLine1)</dt>
                         <dd>     @user.AddressLine1  </dd>
@@ -267,13 +292,44 @@
 
                         </dd>
                     </dl>
-                    <input type="submit" class="btn btn-default" value="Update Personal Details" formaction="Incidents" /><br />
+                    <input type="submit" class="btn btn-default" value="Update Profile" formaction="EditProfile" /><br />
 
                 </div>
 
                 <div class="col-md-4">
-                    <h3>SKILL</h3>
-                    <input type="submit" class="btn-default" value="Add Skill" formaction="AddSkill"/>
+                    <h3>SKILLS</h3>
+                    <div class="row col-md-12" style="height: 250px; overflow:auto">
+                        <table class="table ">
+                            <tr>
+                                <th>Skill</th>
+                                <th>Years of Experience</th>
+                                <th></th>
+
+                            </tr>
+                            
+                            @{
+
+                            }
+                            @foreach (var ws in ViewBag.Skills)
+    {
+                        <tr>
+                            <td>
+                                @ws.Skill.SkillDescription
+                            </td>
+                            <td>
+                                @ws.YearsOfExperience
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "EditSkill", new { id = User.Identity.GetUserId(), skill = ws.Skill.SkillID })
+                            </td>
+                        </tr>
+
+}
+                        </table>
+                    </div>
+                    
+                    <input type="submit" class=" btn btn-default" value="Add Skill" formaction="AddSkill" />
+                    
 
                 </div>
 

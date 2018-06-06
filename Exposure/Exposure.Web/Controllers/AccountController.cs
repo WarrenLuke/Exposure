@@ -13,6 +13,8 @@ using Exposure.Web.DataContexts;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Exposure.Entities;
 using System.Collections.Generic;
+using System.IO;
+using System.Data.Entity;
 
 namespace Exposure.Web.Controllers
 {
@@ -97,6 +99,81 @@ namespace Exposure.Web.Controllers
             }
         }
 
+        //GET: /Account/EditProfile
+        public ActionResult EditProfile()
+        {
+            var suburbsList = new List<string>();
+            var suburbsQry = (from s in db.Suburbs
+                              orderby s.SubName, s.SuburbID
+                              select s).ToList();
+
+
+
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Include(m => m.Suburb).Where(m => m.Id == userId);
+            ViewBag.Suburbs = new SelectList(suburbsQry, "SuburbID", "SubName");
+            ViewBag.user = user;
+
+            return View();
+
+        }
+
+        public ActionResult EditProfile ([Bind(Exclude="Id, ProfilePic")]RegisterViewModel model)
+        {
+            var userId = User.Identity.GetUserId();
+            var suburbsList = new List<string>();
+            var suburbsQry = (from s in db.Suburbs
+                              orderby s.SubName, s.SuburbID
+                              select s).ToList();
+            ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
+
+            byte[] imageData = null;
+
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase poImgFile = Request.Files["ProfilePic"];
+
+                using (var binary = new BinaryReader(poImgFile.InputStream))
+                {
+                    imageData = binary.ReadBytes(poImgFile.ContentLength);
+                }
+            }
+
+            model = new RegisterViewModel
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                SuburbID = model.SuburbID,
+                AddressLine1 = model.AddressLine1,
+                AddressLine2 = model.AddressLine2,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber
+
+            };
+
+            model. = userId;
+            model.ProfilePic = imageData;
+            
+            var user = db.Users.Include(m => m.Suburb).Where(m => m.Id == userId);
+            ViewBag.Suburbs = new SelectList(suburbsQry, "SuburbID", "SubName");
+            ViewBag.user = user;
+
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else if(ModelState.IsValid)
+            {
+                db.Entry(model).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToRoute("Default", new { controller = "Manage", action = "EditProfile" });
+            }
+
+            return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+
+        }
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -160,56 +237,81 @@ namespace Exposure.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register([Bind(Exclude = "ProfilePic")]RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
                 ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
 
-                var user = new ApplicationUser { UserName = model.Email, Gender = model.Gender, Email = model.Email, FirstName =model.FirstName, LastName = model.LastName,
-                                    AddressLine1 = model.AddressLine1, AddressLine2 = model.AddressLine2, PhoneNumber=model.PhoneNumber, SuburbID=model.SuburbID  };
-                var role = model.Role; 
+                byte[] imageData = null;
+
+                if (Request.Files.Count > 0)
+                {
+                    HttpPostedFileBase poImgFile = Request.Files["ProfilePic"];
+
+                    using (var binary = new BinaryReader(poImgFile.InputStream))
+                    {
+                        imageData = binary.ReadBytes(poImgFile.ContentLength);
+                    }
+
+                }
+
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Gender = model.Gender,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    AddressLine1 = model.AddressLine1,
+                    AddressLine2 = model.AddressLine2,
+                    PhoneNumber = model.PhoneNumber,
+                    SuburbID = model.SuburbID
+                };
+
+                user.ProfilePic = imageData;
+
+                var role = model.Role;
                 var result = await UserManager.CreateAsync(user, model.Password);
-
-
-
+                
                 if (result.Succeeded)
                 {
-                    //Binding user to selected role by using the UserManager class
-                    UserManager.AddToRole(user.Id, role);
+                        //Binding user to selected role by using the UserManager class
+                        UserManager.AddToRole(user.Id, role);
 
 
-                    //If statement used to determine which table user should be added to
-                    if(role=="Employer")
-                    {
-                        var employer = new Employer { EmployerID = user.Id };
-                        db.Employers.Add(employer);
-                        db.SaveChanges();
-                    }
-                    else if(role == "Worker")
-                    {
-                        var worker = new Worker { WorkerID = user.Id };
-                        db.Workers.Add(worker);
-                        db.SaveChanges();
-                    }
-                    
+                        //If statement used to determine which table user should be added to
+                        if (role == "Employer")
+                        {
+                            var employer = new Employer { EmployerID = user.Id };
+                            db.Employers.Add(employer);
+                            db.SaveChanges();
+                        }
+                        else if (role == "Worker")
+                        {
+                            var worker = new Worker { WorkerID = user.Id };
+                            db.Workers.Add(worker);
+                            db.SaveChanges();
+                        }
 
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                        // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                        return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
                 }
-                AddErrors(result);
-            }
+                    AddErrors(result);
+                }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
+                // If we got this far, something failed, redisplay form
+                return View(model);
+            }
+        
 
         //
         // GET: /Account/ConfirmEmail

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
+using Microsoft.AspNet.Identity;
 
 namespace Exposure.Web.Controllers
 {
@@ -41,7 +42,7 @@ namespace Exposure.Web.Controllers
         public ActionResult Create()
         {
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription");
-            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID");
+            
             return View();
         }
 
@@ -50,8 +51,12 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "WorkerID,SkillID,YearsOfExperience")] WorkerSkill workerSkill)
+        public ActionResult Create([Bind(Exclude ="WorkerID" ,Include = "SkillID,YearsOfExperience")] WorkerSkill workerSkill)
         {
+            string user = User.Identity.GetUserId();
+
+            workerSkill.WorkerID = user;
+
             if (ModelState.IsValid)
             {
                 db.WorkerSkills.Add(workerSkill);
@@ -60,24 +65,24 @@ namespace Exposure.Web.Controllers
             }
 
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", workerSkill.SkillID);
-            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID", workerSkill.WorkerID);
-            return View(workerSkill);
+            ViewBag.WorkerID = User.Identity.GetUserId();
+            return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
         }
 
         // GET: WorkerSkills/Edit/5
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string id, int skill)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WorkerSkill workerSkill = db.WorkerSkills.Find(id);
+            WorkerSkill workerSkill = db.WorkerSkills.Find(id, skill);
             if (workerSkill == null)
             {
                 return HttpNotFound();
             }
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", workerSkill.SkillID);
-            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID", workerSkill.WorkerID);
+            
             return View(workerSkill);
         }
 
@@ -86,16 +91,18 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "WorkerID,SkillID,YearsOfExperience")] WorkerSkill workerSkill)
+        public ActionResult Edit([Bind(Exclude ="WorkerID" ,Include = "SkillID,YearsOfExperience")] WorkerSkill workerSkill)
         {
+            workerSkill.WorkerID = User.Identity.GetUserId();
+
             if (ModelState.IsValid)
             {
                 db.Entry(workerSkill).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToRoute("Default", new { controller = "Manage", action = "Index" }); ;
             }
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", workerSkill.SkillID);
-            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID", workerSkill.WorkerID);
+            
             return View(workerSkill);
         }
 

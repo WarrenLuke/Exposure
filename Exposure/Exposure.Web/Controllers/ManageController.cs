@@ -96,6 +96,9 @@ namespace Exposure.Web.Controllers
                     WorkAddressLine2 = UserManager.FindById(userId).Employer.WorkAddress2,
                     WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
                 };
+
+                var empSub = db.Employers.Include(m => m.Suburb).Where(m => m.SuburbID == model.Location);
+                ViewBag.empSub = empSub;
             }
             ApplicationUser user = UserManager.FindById(userId);
 
@@ -112,7 +115,7 @@ namespace Exposure.Web.Controllers
                 SuburbID = user.SuburbID
 
             };
-
+           
             if(User.IsInRole("Worker"))
             {
                 var skillsLst = new List<string>();
@@ -121,24 +124,23 @@ namespace Exposure.Web.Controllers
                              where s.WorkerID == user.Id
                              select s).ToList();
 
-                ViewData["Skills"] = skillsQry;
+                var skills = db.WorkerSkills.Include(m => m.Skill).Include(m => m.Worker).OrderBy(m => m.Skill.SkillDescription).Where(m => m.WorkerID == userId);
+                ViewBag.Skills = skills;
             }
 
             var uSub = user.SuburbID;
-            //var userSub = db.Suburbs.SqlQuery("exec UserSuburb @suburb", uSub);
 
-
-            //ViewBag.UserSub = userSub;
+            var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID);
 
             //var empSub = from s in db.Suburbs
             //             where s.SuburbID == user.Employer.SuburbID
             //             select s.SubName;
 
-            //ViewBag.EmpSub = empSub;
+            ViewBag.userSub = userSub;
             ViewBag.UserID = userId;
 
             ViewData["user"] = user;
-
+            
             return View(model);
         }
 
@@ -190,13 +192,17 @@ namespace Exposure.Web.Controllers
             var userID = User.Identity.GetUserId();
             return RedirectToRoute("Default", new { controller = "WorkerSkills", action = "Create", id = userID });
         }
-        
 
-        //public ActionResult PersonalDetails()
-        //{
-        //    return RedirectToRoute();
+        public ActionResult EditSkill(string id, int skill)
+        {
+            return RedirectToRoute("Default", new { controller = "WorkerSkills", action = "Edit", id = id ,skill = skill});
+        }
 
-        //}
+        public ActionResult EditProfile()
+        {
+            return RedirectToRoute("Defualt", new { controller = "Account", action = "EditProfile" });
+
+        }
 
         public ActionResult JobApplications()
         {
