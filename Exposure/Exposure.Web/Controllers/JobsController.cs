@@ -76,7 +76,7 @@ namespace Exposure.Web.Controllers
         [Authorize(Roles =("Admin, Employer"))]
         public ActionResult Create()
         {
-            ViewBag.EmployerID = User.Identity.GetUserId();
+            
             ViewBag.EmployerName = User.Identity.Name;
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription");
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName");
@@ -89,8 +89,16 @@ namespace Exposure.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles =("Admin, Employer"))]
-        public ActionResult Create([Bind(Include = "JobID,EmployerID,Title,DateAdvertised,SkillID,Description,StartDate,EndDate,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2")] Job job)
+        public ActionResult Create([Bind(Exclude ="EmployerID,StartDate, EndDate" ,Include = "JobID,Title,DateAdvertised,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2")] Job model)
         {
+            model.EmployerID = User.Identity.GetUserId();
+
+            var job = new Job();
+
+            job.StartDate = Convert.ToDateTime(model.StartDate);
+            job.EndDate = Convert.ToDateTime(model.EndDate);
+            job.DateAdvertised = DateTime.UtcNow;
+
             if (ModelState.IsValid)
             {
                 db.Jobs.Add(job);
@@ -98,7 +106,7 @@ namespace Exposure.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EmployerID = User.Identity.GetUserId();
+            
             ViewBag.EmployerName = User.Identity.Name;
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", job.SkillID);
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", job.SuburbID);

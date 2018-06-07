@@ -151,7 +151,7 @@ namespace Exposure.Web.Controllers
 
             };
 
-            model. = userId;
+            model.Id = userId;
             model.ProfilePic = imageData;
             
             var user = db.Users.Include(m => m.Suburb).Where(m => m.Id == userId);

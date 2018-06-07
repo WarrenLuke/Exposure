@@ -42,14 +42,13 @@ namespace Exposure.Entities
         [DataType(DataType.Date)]
         [DisplayName("Start Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Column(TypeName = "datetime2")]
         public DateTime? StartDate { get; set; }
 
         [Required(ErrorMessage = "Please enter a end date")]
         [DataType(DataType.Date)]
         [DisplayName("Est. End Date")]
-        [Column(TypeName = "datetime2")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+
         public DateTime? EndDate { get; set; }
 
         [Required(ErrorMessage = "Please enter a start time")]

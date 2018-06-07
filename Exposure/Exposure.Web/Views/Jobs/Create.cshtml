@@ -18,8 +18,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.EmployerID, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.TextBox("EmployerName", null, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
-            @Html.Hidden("EmployerID", null, htmlAttributes: new { @class = "form-control" })
+            
             @Html.ValidationMessageFor(model => model.EmployerID, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -60,7 +59,7 @@
         @Html.LabelFor(model => model.AddressLine1, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.AddressLine1, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -68,22 +67,22 @@
         @Html.LabelFor(model => model.AddressLine2, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.AddressLine2, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger " })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
             @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -126,4 +125,34 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery-3.1.1.min.js")
+    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js")
+    <script type="text/javascript">
+        $(function () {
+            $(".date-picker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-100:+0",
+                dateFormat: 'dd-MM-yy',
+                parseDate:"dd-MM-yy"
+                
+            });
+
+            function toDate(selector) {
+                var from = $(selector).val.split("-")
+                return new Date(from[2], from[1] - 1, from[0])
+            }
+
+            jQuery.validator.methods.date = function (value, element) {
+                var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+                if (isChrome) {
+                    var d = new Date();
+                    return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
+                }
+                else {
+                    return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
+                }
+            };
+        });
+    </script>
 }
