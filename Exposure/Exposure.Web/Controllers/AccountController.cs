@@ -15,6 +15,7 @@ using Exposure.Entities;
 using System.Collections.Generic;
 using System.IO;
 using System.Data.Entity;
+using System.Net;
 
 namespace Exposure.Web.Controllers
 {
@@ -100,8 +101,13 @@ namespace Exposure.Web.Controllers
         }
 
         //GET: /Account/EditProfile
-        public ActionResult EditProfile()
+        public ActionResult EditProfile(string id)
         {
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+
             var suburbsList = new List<string>();
             var suburbsQry = (from s in db.Suburbs
                               orderby s.SubName, s.SuburbID
@@ -110,15 +116,19 @@ namespace Exposure.Web.Controllers
 
 
             var userId = User.Identity.GetUserId();
+            var u = UserManager.FindById(userId);
             var user = db.Users.Include(m => m.Suburb).Where(m => m.Id == userId);
-            ViewBag.Suburbs = new SelectList(suburbsQry, "SuburbID", "SubName");
-            ViewBag.user = user;
+            
+            ViewBag.Suburbs = new SelectList(suburbsQry, "SuburbID", "SubName", u.SuburbID);
+            ViewBag.User = user;
 
             return View();
 
         }
 
-        public ActionResult EditProfile ([Bind(Exclude="Id, ProfilePic")]RegisterViewModel model)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile ([Bind(Exclude="Id, ProfilePic")]ApplicationUser model)
         {
             var userId = User.Identity.GetUserId();
             var suburbsList = new List<string>();
@@ -127,19 +137,8 @@ namespace Exposure.Web.Controllers
                               select s).ToList();
             ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
 
-            byte[] imageData = null;
-
-            if (Request.Files.Count > 0)
-            {
-                HttpPostedFileBase poImgFile = Request.Files["ProfilePic"];
-
-                using (var binary = new BinaryReader(poImgFile.InputStream))
-                {
-                    imageData = binary.ReadBytes(poImgFile.ContentLength);
-                }
-            }
-
-            model = new RegisterViewModel
+            var u = UserManager.FindById(userId);
+            model = new ApplicationUser
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -147,15 +146,18 @@ namespace Exposure.Web.Controllers
                 AddressLine1 = model.AddressLine1,
                 AddressLine2 = model.AddressLine2,
                 Email = model.Email,
-                PhoneNumber = model.PhoneNumber
-
+                PhoneNumber = model.PhoneNumber,
+                Gender = model.Gender,
+                UserName = model.UserName,
+                PasswordHash = model.PasswordHash
+                
             };
 
             model.Id = userId;
-            model.ProfilePic = imageData;
+            
             
             var user = db.Users.Include(m => m.Suburb).Where(m => m.Id == userId);
-            ViewBag.Suburbs = new SelectList(suburbsQry, "SuburbID", "SubName");
+            ViewBag.Suburbs = new SelectList(suburbsQry, "SuburbID", "SubName", u.SuburbID );
             ViewBag.user = user;
 
             if(!ModelState.IsValid)

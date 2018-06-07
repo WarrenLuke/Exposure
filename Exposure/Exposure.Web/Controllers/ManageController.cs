@@ -198,9 +198,10 @@ namespace Exposure.Web.Controllers
             return RedirectToRoute("Default", new { controller = "WorkerSkills", action = "Edit", id = id ,skill = skill});
         }
 
-        public ActionResult EditProfile()
+        public ActionResult EditProfile(string id)
         {
-            return RedirectToRoute("Defualt", new { controller = "Account", action = "EditProfile" });
+            var userId = User.Identity.GetUserId();
+            return RedirectToRoute("Default", new { controller = "Account", action = "EditProfile", id = userId});
 
         }
 

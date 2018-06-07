@@ -136,7 +136,7 @@
 
                         </dd>
                     </dl>
-                    <input type="submit" class="btn btn-default" value="Update Personal Details" formaction="Incidents" /><br />
+                    <input type="submit" class="btn btn-default" value="Update Personal Details" formaction="EditProfile" /><br />
 
                 </div>
 
@@ -188,7 +188,7 @@
                                 }
                                 else
                                 {
-                                    foreach(var item in ViewBag.empSub)
+                                    foreach (var item in ViewBag.empSub)
                                     {
                                        @item.Suburb.SubName
                                     }
@@ -262,7 +262,7 @@
 
                         <dt>@Html.DisplayNameFor(model => model.Suburb):</dt>
                         <dd>     
-                            @foreach(var item in ViewBag.userSub)
+                            @foreach (var item in ViewBag.userSub)
                             {
                                 @item.Suburb.SubName
                             }
