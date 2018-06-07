@@ -826,3 +826,4 @@ C:\Users\s215047370\Documents\Exposure\Exposure.Web\obj\Debug\Exposure.Web.cspro
 C:\Users\s215047370\Documents\Exposure\Exposure.Web\obj\Debug\Exposure.Web.csproj.CoreCompileInputs.cache
 C:\Users\s215047370\Documents\Exposure\Exposure.Web\obj\Debug\Exposure.Web.dll
 C:\Users\s215047370\Documents\Exposure\Exposure.Web\obj\Debug\Exposure.Web.pdb
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.RemoveDT2.resources

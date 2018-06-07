@@ -103,76 +103,51 @@ namespace Exposure.Web.Controllers
         //GET: /Account/EditProfile
         public ActionResult EditProfile(string id)
         {
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
+            id = User.Identity.GetUserId();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-            var suburbsList = new List<string>();
-            var suburbsQry = (from s in db.Suburbs
-                              orderby s.SubName, s.SuburbID
-                              select s).ToList();
+            ApplicationUser user = UserManager.FindById(id);
 
-
-
-            var userId = User.Identity.GetUserId();
-            var u = UserManager.FindById(userId);
-            var user = db.Users.Include(m => m.Suburb).Where(m => m.Id == userId);
+            if(user==null)
+            {
+                return HttpNotFound();
+            }          
             
-            ViewBag.Suburbs = new SelectList(suburbsQry, "SuburbID", "SubName", u.SuburbID);
-            ViewBag.User = user;
+            //var user = db.Users.Include(m => m.Suburb).Where(m => m.Id == userId);
+            ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName", user.SuburbID);
+            
 
-            return View();
+            return View(user);
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProfile ([Bind(Exclude="Id, ProfilePic")]ApplicationUser model)
+        public async Task<ActionResult> EditProfile ([Bind(Exclude="ProfilePic, PasswordHash, UserName, Email", Include = "SuburbID, FirstName, LastName, AddressLine1, AddressLine2")]ApplicationUser model)
         {
             var userId = User.Identity.GetUserId();
-            var suburbsList = new List<string>();
-            var suburbsQry = (from s in db.Suburbs
-                              orderby s.SubName, s.SuburbID
-                              select s).ToList();
-            ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
+            ApplicationUser user = await UserManager.FindByIdAsync(userId);
+            model.UserName = User.Identity.GetUserName();
+            model.Email = await UserManager.GetEmailAsync(userId);
 
-            var u = UserManager.FindById(userId);
-            model = new ApplicationUser
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                SuburbID = model.SuburbID,
-                AddressLine1 = model.AddressLine1,
-                AddressLine2 = model.AddressLine2,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-                Gender = model.Gender,
-                UserName = model.UserName,
-                PasswordHash = model.PasswordHash
-                
-            };
+            var result = await UserManager.UpdateAsync(model);
 
-            model.Id = userId;
-            
-            
-            var user = db.Users.Include(m => m.Suburb).Where(m => m.Id == userId);
-            ViewBag.Suburbs = new SelectList(suburbsQry, "SuburbID", "SubName", u.SuburbID );
-            ViewBag.user = user;
-
-            if(!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            else if(ModelState.IsValid)
+            if(result.Succeeded)
             {
                 db.Entry(model).State = EntityState.Modified;
                 db.SaveChanges();
+                return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+           }
+            
+            
+            ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName", user.SuburbID);
+            
+            ViewBag.user = user;
 
-                return RedirectToRoute("Default", new { controller = "Manage", action = "EditProfile" });
-            }
-
-            return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+            return View(model);
 
         }
 
