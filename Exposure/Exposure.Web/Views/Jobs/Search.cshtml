@@ -3,5 +3,46 @@
     ViewBag.Title = "Search";
 }
 
-<h2>Search</h2>
+<h2>Search</h2><br /><br />
+@using (Html.BeginForm("Search", "Jobs", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-md-3">
+            <p>Category: </p>@Html.DropDownList("Skills", null, "All", new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            <p>Location: </p>@Html.DropDownList("location", null, "All", new { @class="form-control"})
+        </div>
+        <div class="col-md-3">
+            <p>Sort by: </p>@Html.DropDownList("sortOrder",new SelectList(
+                           new List<Object>
+                       {
+                           new{value="date", text= "Date Advertised"},
+                           new{value="date_desc", text="Date Advitised(Desc)"},
+                           new {value="rate", text="Rate"},
+                           new {value="rate_desc", text="Rate(Desc)"}                           
+                       },
+                       "value", "text", 2))
+        </div>
+        <div class="col-md-3">
+            <p>Search: </p>@Html.TextBox("search", new { @class ="form-control"})
+        </div>
+        <input type="submit" class="btn btn-default" value="Filter" />
+    </div>
+}
 
+<table class="table">
+    @foreach (var item in ViewBag.Jobs)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("Create", "JobApplications", new { id = item.JobID })">@item.Jobs.Title</a><br />
+                @item.Jobs.Suburb.SubName <br />
+                @item.Jobs.Rate <br />
+                @item.Employer.ApplicationUser.FirstName + " " + @item.Employer.ApplicationUser.LastName)<br />
+                @item.Jobs.Description<br />
+            </td>
+        </tr>
+
+    }
+</table>

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace Exposure.Web.Controllers
 {
@@ -18,7 +19,7 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Jobs
-        public ActionResult Index(string id, int? skill, DateTime? startDate, string search)
+        public ActionResult Index(string id, int? skill, DateTime? startDate, string search, int? page)
         {
 
             var skillsList = new List<string>();
@@ -28,7 +29,7 @@ namespace Exposure.Web.Controllers
 
             skillsList.AddRange(SkillsQry.Distinct());
 
-            ViewBag.jobSkills = new SelectList(skillsList, "SkillID", "SkillDescription");
+            ViewBag.Skills = new SelectList(skillsList, "SkillID", "SkillDescription");
 
             var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised);
 
@@ -52,8 +53,81 @@ namespace Exposure.Web.Controllers
             {
                 jobs = jobs.Where(j => j.Title.Contains(search)).OrderBy(j => j.DateAdvertised);
             }
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            jobs.ToPagedList(pageNumber, pageSize);
+            ViewBag.Jobs = jobs;
 
-            return View(jobs);
+
+            return View();
+        }
+
+        public ActionResult Search(string sortOrder, int? skill, string search, int? page, string location)
+        {
+            var skillsList = new List<string>();
+            var SkillsQry = (from s in db.Skills
+                             orderby s.SkillDescription
+                             select s.SkillDescription);
+
+            skillsList.AddRange(SkillsQry.Distinct());
+
+            var suburbs = db.Suburbs;
+
+            ViewBag.skill = new SelectList(skillsList, "SkillID", "SkillDescription");
+            ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.location = new SelectList(suburbs, "SuburbID", "SubName");
+            var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb);
+
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    jobs = jobs.OrderByDescending(j => j.Title);
+                    break;
+                case "date":
+                    jobs = jobs.OrderBy(j => j.DateAdvertised);
+                    break;
+                case "date_desc":
+                    jobs = jobs.OrderByDescending(j => j.DateAdvertised);
+                    break;
+                case "rate_desc":
+                    jobs = jobs.OrderByDescending(j => j.Rate);
+                    break;
+                case "rate":
+                    jobs = jobs.OrderBy(j => j.Rate);
+                    break;
+                default:
+                    jobs = jobs.OrderBy(j => j.DateAdvertised);
+                    break;
+            }
+        
+            if (skill != null)
+            {                              
+                   jobs = jobs.Where(j => j.SkillID.Equals(skill));             
+                                
+            }
+
+            if (!String.IsNullOrEmpty(location))
+            {
+                jobs = jobs.Where(j => j.Suburb.SubName.Contains(location));
+            }
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                jobs = jobs.Where(j => j.Title.Contains(search)).Where(j=>j.Description.Contains(search));
+            }
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            jobs.ToPagedList(pageNumber, pageSize);
+            ViewBag.Jobs = jobs;
+
+            return View();
+        }
+
+        public ActionResult JobApplication(int? id)
+        {
+            return RedirectToRoute("Default", new { controller = "JobApplications", action = "Create", id=id });
         }
 
         //GET: Jobs/Update
