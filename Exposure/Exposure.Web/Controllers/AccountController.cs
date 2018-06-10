@@ -126,19 +126,30 @@ namespace Exposure.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditProfile ([Bind(Exclude="ProfilePic, PasswordHash, UserName, Email", Include = "SuburbID, FirstName, LastName, AddressLine1, AddressLine2")]ApplicationUser model)
+        public async Task<ActionResult> EditProfile ([Bind(Exclude="ProfilePic, PasswordHash, UserName, Email")]ApplicationUser model)
         {
             var userId = User.Identity.GetUserId();
             ApplicationUser user = await UserManager.FindByIdAsync(userId);
-            model.UserName = User.Identity.GetUserName();
-            model.Email = await UserManager.GetEmailAsync(userId);
+            
 
-            var result = await UserManager.UpdateAsync(model);
+            user.AddressLine1 = model.AddressLine1;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.AddressLine2 = model.AddressLine2;
+
+            var result = await UserManager.UpdateAsync(user);
 
             if(result.Succeeded)
             {
-                db.Entry(model).State = EntityState.Modified;
-                db.SaveChanges();
+                try
+                {
+                    db.Entry(user).State = user.Id == null ? EntityState.Added : EntityState.Modified;
+                }catch
+                {
+                    db.SaveChanges();
+                }
+                
+                
                 return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
            }
             
@@ -274,13 +285,13 @@ namespace Exposure.Web.Controllers
 
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                        // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                        // Send an email with this link
-                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                        return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
                 }
                     AddErrors(result);
                 }
@@ -329,10 +340,10 @@ namespace Exposure.Web.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form

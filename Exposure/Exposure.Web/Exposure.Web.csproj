@@ -456,6 +456,8 @@
     <Content Include="Views\WorkerSkills\Edit.cshtml" />
     <Content Include="Views\WorkerSkills\Index.cshtml" />
     <Content Include="Views\Account\EditProfile.cshtml" />
+    <Content Include="Views\Jobs\Update.cshtml" />
+    <Content Include="Views\Jobs\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

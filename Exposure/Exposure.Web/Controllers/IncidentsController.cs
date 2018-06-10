@@ -11,6 +11,7 @@ using Exposure.Web.DataContexts;
 
 namespace Exposure.Web.Controllers
 {
+    [Authorize]
     public class IncidentsController : Controller
     {
         private IdentityDb db = new IdentityDb();

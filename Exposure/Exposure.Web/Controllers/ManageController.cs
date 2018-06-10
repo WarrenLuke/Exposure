@@ -73,10 +73,7 @@ namespace Exposure.Web.Controllers
 
                         
             var model = new IndexViewModel
-            {   
-                
-
-                
+            {                                 
                 
                 Email = UserManager.FindById(userId).Email,
                 HasPassword = HasPassword(),
@@ -103,7 +100,6 @@ namespace Exposure.Web.Controllers
             ApplicationUser user = UserManager.FindById(userId);
 
                         
-
             user = new ApplicationUser
             {
                 FirstName = user.FirstName,
@@ -112,7 +108,9 @@ namespace Exposure.Web.Controllers
                 AddressLine1 = user.AddressLine1,
                 AddressLine2 = user.AddressLine2,
                 Email = user.Email,
-                SuburbID = user.SuburbID
+                SuburbID = user.SuburbID,
+                PhoneNumber = user.PhoneNumber
+               
 
             };
            
@@ -172,7 +170,7 @@ namespace Exposure.Web.Controllers
 
         public ActionResult ManageJobs()
         {
-            return RedirectToRoute("Default", new { controller = "Jobs", action = "EmployerJobs" });
+            return RedirectToRoute("Default", new { controller = "Jobs", action = "Index" });
         }
 
         public ActionResult ReportIncident()
@@ -198,7 +196,7 @@ namespace Exposure.Web.Controllers
             return RedirectToRoute("Default", new { controller = "WorkerSkills", action = "Edit", id = id ,skill = skill});
         }
 
-        public ActionResult EditProfile(string id)
+        public ActionResult EditProfile()
         {
             var userId = User.Identity.GetUserId();
             return RedirectToRoute("Default", new { controller = "Account", action = "EditProfile", id = userId});

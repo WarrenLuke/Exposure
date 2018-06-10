@@ -12,21 +12,22 @@ using Microsoft.AspNet.Identity;
 
 namespace Exposure.Web.Controllers
 {
+    [Authorize]
     public class JobsController : Controller
     {
         private IdentityDb db = new IdentityDb();
 
         // GET: Jobs
-        public ActionResult Index(string id, int? skill ,DateTime? startDate, string search)
+        public ActionResult Index(string id, int? skill, DateTime? startDate, string search)
         {
 
             var skillsList = new List<string>();
             var SkillsQry = (from s in db.Skills
-                            orderby s.SkillDescription
-                            select s.SkillDescription);
+                             orderby s.SkillDescription
+                             select s.SkillDescription);
 
             skillsList.AddRange(SkillsQry.Distinct());
-            
+
             ViewBag.jobSkills = new SelectList(skillsList, "SkillID", "SkillDescription");
 
             var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised);
@@ -34,12 +35,12 @@ namespace Exposure.Web.Controllers
 
             if (!String.IsNullOrEmpty(id))
             {
-                jobs = jobs.Where(j => j.EmployerID.Equals(id)).OrderBy(j=>j.DateAdvertised);
+                jobs = jobs.Where(j => j.EmployerID.Equals(id)).OrderBy(j => j.DateAdvertised);
             }
 
-            if (skill !=null)
+            if (skill != null)
             {
-                jobs = jobs.Where(j => j.SkillID.Equals(skill)).OrderBy(j=>j.DateAdvertised);
+                jobs = jobs.Where(j => j.SkillID.Equals(skill)).OrderBy(j => j.DateAdvertised);
             }
 
             if (startDate != null)
@@ -53,6 +54,49 @@ namespace Exposure.Web.Controllers
             }
 
             return View(jobs);
+        }
+
+        //GET: Jobs/Update
+        [Authorize(Roles = "Admin, Employer")]
+        public ActionResult Update(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Job job = db.Jobs.Find(id);
+
+            if (job == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(job);
+
+        }
+
+        //POST: Jobs/Details
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update([Bind(Include ="Completed")]Job job)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    db.Entry(job).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    db.SaveChanges();
+                }
+                
+                return RedirectToAction("Index");
+            }
+
+            return View(job);
         }
 
 
@@ -114,7 +158,7 @@ namespace Exposure.Web.Controllers
         }
 
         // GET: Jobs/Edit/5
-        public ActionResult Edit(string id, int? skill)
+        public ActionResult Edit(int? id)
         {
             var SkillsLst = new List<string>();
 
@@ -123,23 +167,22 @@ namespace Exposure.Web.Controllers
                             select d.SkillDescription;
 
             SkillsLst.AddRange(SkillsQry.Distinct());
+
             ViewBag.jobSkills = new SelectList(SkillsLst, "SkillID", "SkillDescription");
 
-            var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j=>j.DateAdvertised);
-
-
-            if (!string.IsNullOrEmpty(id))
+            if(id == null)
             {
-                jobs = jobs.Where(j => j.EmployerID.Equals(id)).OrderBy(j=>j.DateAdvertised);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            if (skill!=null)
+            Job job = db.Jobs.Find(id);
+            if(job==null)
             {
-                jobs = jobs.Where(j => j.SkillID.Equals(skill)).OrderBy(j=>j.DateAdvertised);
+                return HttpNotFound();
             }
+            
 
 
-            return View(jobs.ToList());
+            return View(job);
             
         }
 
@@ -148,14 +191,23 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Completed")] Job job)
+        public ActionResult Edit([Bind(Include = "Title,DateAdvertised,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2,StartDate, EndDate")] Job job)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(job).State = EntityState.Modified;
-                db.SaveChanges();
+                try
+                {
+                    db.Entry(job).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch
+                {
+                    db.SaveChanges();
+                }               
+                
                 return RedirectToAction("Index");
             }
+
             var SkillsLst = new List<string>();
 
             var SkillsQry = from d in db.Skills
@@ -164,8 +216,8 @@ namespace Exposure.Web.Controllers
 
             SkillsLst.AddRange(SkillsQry.Distinct());
             ViewBag.jobSkills = new SelectList(SkillsLst, "SkillID", "SkillDescription");
-            var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb);
-            return View(jobs.ToList());
+            
+            return View(job);
         }
 
         // GET: Jobs/Delete/5

@@ -1,111 +1,230 @@
 ﻿@model IEnumerable<Exposure.Entities.Job>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Jobs";
 }
 
-<h2>Index</h2>
+<h2>Jobs</h2>
+@if (User.IsInRole("Employer"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <div style="overflow-x:auto">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Skill.SkillDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suburb.SubName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddressLine1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddressLine2)
+            </th>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Employer.ApplicationUser.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Skill.SkillDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Suburb.SubName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AddressLine1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AddressLine2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateAdvertised)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Rate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Completed)
-        </th>
-        <th></th>
-    </tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAdvertised)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Completed)
+            </th>
+            <th></th>
+        </tr>
+        @if(Model == null)
+        {
+            <tr>No jobs to display</tr>
+        }
+        else
+        {
+           foreach (var item in Model)
+           {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Suburb.SubName)
+                </td>
+                <th>
+                    @Html.DisplayFor(modelItem => item.AddressLine1)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelItem => item.AddressLine2)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateAdvertised)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rate)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => item.Completed)
+                </td>
+                <td>
+                    @{ 
+                        var jID = item.JobID;
+                    }
+                    <input type="submit" value="Update" formmethod="post" class="btn btn-default" id= jID  />
+                    <form action="@Url.Action("Update", "Jobs", new { id = item.JobID })"/>
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.JobID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.JobID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
+                </td>
+            </tr>
+            }
+        }       
+    </table>
+    </div>
+}
+else if (User.IsInRole("Admin"))
+{
+    <div style="overflow-x:auto">        
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Employer.ApplicationUser.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Skill.SkillDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suburb.SubName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddressLine1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddressLine2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAdvertised)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Completed)
+            </th>
+            <th></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName + " " + item.Employer.ApplicationUser.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Suburb.SubName)
-        </td>
-        <th>
-            @Html.DisplayFor(modelItem => item.AddressLine1)
-        </th>
-        <th>
-            @Html.DisplayFor(modelItem => item.AddressLine2)
-        </th>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateAdvertised)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Rate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Completed)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.JobID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.JobID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
-        </td>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName + " " + item.Employer.ApplicationUser.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Suburb.SubName)
+                </td>
+                <th>
+                    @Html.DisplayFor(modelItem => item.AddressLine1)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelItem => item.AddressLine2)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateAdvertised)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Completed)
+                </td>
+                <td>                    
+                    @Html.ActionLink("Details", "Details", new { id = item.JobID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
+                </td>
+            </tr>
+        }
+
+    </table>
+    </div>
 }
 
-</table>
+

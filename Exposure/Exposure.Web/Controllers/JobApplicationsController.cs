@@ -11,7 +11,7 @@ using Exposure.Web.DataContexts;
 
 namespace Exposure.Web.Controllers
 {
-    [Authorize(Roles =("Admin, Employer"))]
+    [Authorize]
     public class JobApplicationsController : Controller
     {
         private IdentityDb db = new IdentityDb();

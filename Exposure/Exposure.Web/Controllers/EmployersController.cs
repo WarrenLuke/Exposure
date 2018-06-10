@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Exposure.Web.Controllers
 {
+    [Authorize(Roles ="Admin, Employer")]
     public class EmployersController : Controller
     {
         private IdentityDb db = new IdentityDb();
@@ -41,6 +42,7 @@ namespace Exposure.Web.Controllers
 
         // GET: Employers/Create
         
+        [Authorize(Roles ="Employer, Admin")]
         public ActionResult Create()
         {
             ViewBag.EmployerID = User.Identity.GetUserId();

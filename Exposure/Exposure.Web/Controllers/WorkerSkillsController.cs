@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Exposure.Web.Controllers
 {
+    [Authorize(Roles ="Admin, Worker")]
     public class WorkerSkillsController : Controller
     {
         private IdentityDb db = new IdentityDb();
@@ -39,6 +40,7 @@ namespace Exposure.Web.Controllers
         }
 
         // GET: WorkerSkills/Create
+        [Authorize(Roles = "Admin, Worker")]
         public ActionResult Create()
         {
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription");
@@ -50,7 +52,7 @@ namespace Exposure.Web.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]        
         public ActionResult Create([Bind(Exclude ="WorkerID" ,Include = "SkillID,YearsOfExperience")] WorkerSkill workerSkill)
         {
             string user = User.Identity.GetUserId();
@@ -61,12 +63,14 @@ namespace Exposure.Web.Controllers
             {
                 db.WorkerSkills.Add(workerSkill);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
             }
 
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", workerSkill.SkillID);
             ViewBag.WorkerID = User.Identity.GetUserId();
-            return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+
+            return View(workerSkill);
+            
         }
 
         // GET: WorkerSkills/Edit/5

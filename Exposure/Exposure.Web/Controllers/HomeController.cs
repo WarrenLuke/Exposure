@@ -8,11 +8,13 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Exposure.Web.Controllers;
 
 namespace Exposure.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private IdentityDb db = new IdentityDb();
         public ActionResult Index()
         {
             return View();
@@ -55,8 +57,17 @@ namespace Exposure.Web.Controllers
 
                 if (userImage.ProfilePic == null)
                 {
-                    
-                    string fileName = HttpContext.Server.MapPath(@"~/Images/noImg.png");
+                    var user = db.Users.Find(userId);
+                    string fileName = null;
+
+                    if(user.Gender == "Male")
+                    {
+                        fileName = HttpContext.Server.MapPath(@"~/Images/Male.jpg");
+                    }
+                    else
+                    {
+                        fileName = HttpContext.Server.MapPath(@"~/Images/Female.jpg");
+                    }                    
 
                     byte[] imageData = null;
                     FileInfo fileInfo = new FileInfo(fileName);
@@ -65,6 +76,7 @@ namespace Exposure.Web.Controllers
                     BinaryReader br = new BinaryReader(fs);
                     imageData = br.ReadBytes((int)imageFileLength);
                     return File(imageData, "image/jpeg");
+
                 }               
                 
                 

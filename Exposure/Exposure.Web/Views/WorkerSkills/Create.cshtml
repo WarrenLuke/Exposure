@@ -15,11 +15,7 @@
         <h4>WorkerSkill</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.WorkerID, "WorkerID")
-            </div>
-        </div>
+        
         <div class="form-group">
             
             @Html.LabelFor(model => model.SkillID, "SkillID", htmlAttributes: new { @class = "control-label col-md-2" })

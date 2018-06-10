@@ -74,9 +74,8 @@
 
         <div class="form-group form-actions">
             <div class="row">
-                <div class="col-md-3 text-center">
+                <div class="col-md-4 text-center">
                     <div class="col-md-12">
-
                         <h3>PROFILE PICTURE</h3>
                         <img src="@Url.Action("ProfilePic", "Home")" style="width:160px; height:160px; background:
                         #ff6a00;
@@ -86,13 +85,21 @@
                         padding:2px;
                         box-shadow:0px 0px 20px #888" />
                     </div>
-                    @Html.ActionLink("Change Password", "ChangePassword")<br/>
+                    <br/>
+                    @Html.ActionLink("Change Password", "ChangePassword")
+                    <br/>
+                    <br/>
+                    <div class="col-md-2"></div>
                     <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
                         <br />
                         <input type="submit" class="btn btn-default" value="Manage Jobs" formaction="ManageJobs" />
+                        <form action="@Url.Action("Index", "Jobs")" method="post"/>
                         <input type="submit" class="btn btn-default" value="Report Incident" formaction="ReportIncident" />
-                        <input type="submit" class="btn btn-default" value="Job Applicatons" formaction="Incidents" />
+                        <form action="@Url.Action("Create", "Incident")" method="post"/>
+                        <input type="submit" class="btn btn-default" value="Job Applicatons" formaction="JobApplication" />
+                        <form action="@Url.Action("Index","JobApplications")" method="post"/>
                     </div>
+                    <div class="col-md-2"></div>
                 </div>
 
 
@@ -111,14 +118,27 @@
                         <dd>     @user.Gender    </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.Suburb):</dt>
-                        <dt>     @*@Html.DisplayFor(model => model.Suburb)*@    </dt>
+                        <dd>     
+                            @foreach (var item in ViewBag.userSub)
+                            {
+                                @item.Suburb.SubName
+                            }    
+                        </dd>
 
-                        <dt>@Html.DisplayNameFor(model => model.AddressLine1)</dt>
+                        <dt>@Html.DisplayNameFor(model => model.AddressLine1):</dt>
                         <dd>     @user.AddressLine1  </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.AddressLine2):</dt>
-                        <dd>     @user.AddressLine2  </dd>
-
+                        <dd>     
+                            @if(user.AddressLine2==null)
+                            {
+                                <p>None</p>
+                            }
+                            else
+                            {
+                                @user.AddressLine2  
+                            }  
+                        </dd>
                         <dt>@Html.DisplayNameFor(model => model.Email)</dt>
                         <dd>     @user.Email       </dd>
 
@@ -130,14 +150,14 @@
                             }
                             else
                             {
-                                @Html.DisplayFor(model => model.PhoneNumber)
+                                @user.PhoneNumber
 
                             }
 
                         </dd>
                     </dl>
                     <input type="submit" class="btn btn-default" value="Update Personal Details" formaction="EditProfile" /><br />
-
+                    <form action="@Url.Action("EditProfile", "Employer")" method="post"/>
                 </div>
 
                 <div class="col-md-4">
@@ -208,7 +228,8 @@
                         </dl>
                     </div>
                     <input type="submit" class="btn btn-default" value="Update Work Details" formaction="UpdateWorkDetails" />
-                    @Html.ActionLink("Update Details", "UpdateWorkDetails", new { id = "UserID" })
+                    
+                    
                 </div>
 
             </div>
@@ -219,11 +240,9 @@
     {
         var user = (ApplicationUser)ViewData["user"];
 
-
-
         <div class="form-group form-actions">
             <div class="row">
-                <div class="col-md-3 text-center">
+                <div class="col-md-4 text-center">
                     <div class="col-md-12">
 
                         <h3>PROFILE PICTURE</h3>
@@ -236,13 +255,19 @@
                         box-shadow:0px 0px 20px #888" />
 
                     </div>
+                    <br/>
                     @Html.ActionLink("Change Password", "ChangePassword")   <br />
-
+                    <br/>
+                    <div class="col-md-2"></div>
                     <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
-                        <input type="submit" class="btn btn-default" value="Manage Jobs" formaction="ManageJobs" />
+                        <input type="submit" class="btn btn-default" value="Jobs" formaction="ManageJobs" />
+                        <form action="@Url.Action("Index", "Jobs")" method="post" />
                         <input type="submit" class="btn btn-default" value="Report Incident" formaction="ReportIncident" />
-                        <input type="submit" class="btn btn-default" value="Job Applicatons" formaction="Incidents" />
+                        <form action="@Url.Action("Create", "Incidents")" method="post" />
+                        <input type="submit" class="btn btn-default" value="Job Applicatons" formaction="JobApplications" />
+                        <form action="@Url.Action("Create", "JobApplications")" method="post" />
                     </div>
+                    <div class="col-md-2"></div>
                 </div>
 
 
@@ -269,11 +294,23 @@
 
                         </dd>
 
-                        <dt>@Html.DisplayNameFor(model => model.AddressLine1)</dt>
+                        <dt>@Html.DisplayNameFor(model => model.AddressLine1):</dt>
                         <dd>     @user.AddressLine1  </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.AddressLine2):</dt>
-                        <dd>     @user.AddressLine2  </dd>
+                        <dd>  
+                            @if(user.AddressLine2==null)
+                            {
+                                <p>None</p>
+                            }
+                            else
+                            {
+                                @user.AddressLine2  
+                            }
+
+
+                        
+                        </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.Email)</dt>
                         <dd>     @user.Email       </dd>
@@ -293,7 +330,7 @@
                         </dd>
                     </dl>
                     <input type="submit" class="btn btn-default" value="Update Profile" formaction="EditProfile" /><br />
-
+                    <form action="@Url.Action("EditProfile", "Account")" method="post"/>
                 </div>
 
                 <div class="col-md-4">
