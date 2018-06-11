@@ -92,6 +92,8 @@ hr {
   height: 0;
   -moz-box-sizing: content-box;
        box-sizing: content-box;
+    color:#428bca;
+    background-color:#428bca;
 }
 
 mark {

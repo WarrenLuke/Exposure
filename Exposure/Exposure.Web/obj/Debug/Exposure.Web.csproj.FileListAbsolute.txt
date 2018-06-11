@@ -831,3 +831,7 @@ C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\bin\Page
 C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\bin\PagedList.Mvc.dll
 C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\bin\PagedList.xml
 C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\bin\PagedList.Mvc.xml
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.FlagApp.resources
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.AppDate.resources
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.requiredWorker.resources
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.AppDateNull.resources

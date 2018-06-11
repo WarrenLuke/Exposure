@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
+using Microsoft.AspNet.Identity;
+
 
 namespace Exposure.Web.Controllers
 {
@@ -17,10 +19,30 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: JobApplications
-        public ActionResult Index()
+        public ActionResult Index(int? skill)
         {
-            var jobApplications = db.JobApplications.Include(j => j.Job).Include(j => j.Worker);
-            return View(jobApplications.ToList());
+
+            var jobApplications =db.JobApplications.Include(j => j.Job).Include(w=>w.Worker).Include(e=>e.Job.Employer).Include(s=>s.Job.Skill).Where(f=>f.Flagged.Equals(false)); 
+
+            if(User.IsInRole("Worker"))
+            {
+                var userID = User.Identity.GetUserId();
+                jobApplications = jobApplications.Where(w => w.Worker.WorkerID.Equals(userID)).Include(j => j.Job).Include(w => w.Worker).Include(e => e.Job.Employer).Include(s => s.Job.Skill).Where(f => f.Flagged.Equals(false)); ;
+            }
+            else if(User.IsInRole("Employer"))
+            {
+                var userID = User.Identity.GetUserId();
+                jobApplications = jobApplications.Where(e => e.Job.Employer.EmployerID.Equals(userID)).Include(w=>w.Worker).Include(j => j.Job).Include(w => w.Worker).Include(e => e.Job.Employer).Include(s => s.Job.Skill).Where(f => f.Flagged.Equals(false)); ;
+            }
+
+            if(skill!=null)
+            {
+                jobApplications = jobApplications.Where(s => s.Job.Skill.SkillID.Equals(skill)).Include(j => j.Job).Include(w => w.Worker).Include(e => e.Job.Employer).Include(s => s.Job.Skill).Where(f => f.Flagged.Equals(false)); ;
+            }
+            
+            ViewBag.Applications = jobApplications;
+            ViewBag.skill = new SelectList(db.Skills, "SkillID", "SkillDescription");
+            return View();
         }
 
         // GET: JobApplications/Details/5
@@ -40,10 +62,13 @@ namespace Exposure.Web.Controllers
 
         // GET: JobApplications/Create
         [Authorize(Roles =("Worker"))]
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            ViewBag.JobID = new SelectList(db.Jobs, "JobID", "EmployerID");
-            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID");
+            ViewBag.Job = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID.Equals(id));
+            ViewBag.JobID = id;
+            ViewBag.WorkerID = User.Identity.GetUserId(); 
+            
+            
             return View();
         }
 
@@ -52,17 +77,22 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "JobApplicationID,JobID,WorkerID,Motivation,Response")] JobApplication jobApplication)
+        public ActionResult Create([Bind(Exclude="WorkerID, ApplicationDate, Response",Include = "JobApplicationID,JobID,Motivation, Flagged")] JobApplication jobApplication)
         {
-            if (ModelState.IsValid)
-            {
-                db.JobApplications.Add(jobApplication);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            jobApplication.ApplicationDate = DateTime.UtcNow;
+            jobApplication.WorkerID = User.Identity.GetUserId();
+            jobApplication.Response = Reply.Pending;
+            var state = ModelState;
+            
+            db.JobApplications.Add(jobApplication);
+            db.SaveChanges();
+            
+            return RedirectToRoute("Defualt", new { controler = "JobApplications", action = "Index" });
+            
 
-            ViewBag.JobID = new SelectList(db.Jobs, "JobID", "EmployerID", jobApplication.JobID);
-            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID", jobApplication.WorkerID);
+            ViewBag.JobID = jobApplication.JobID;
+            ViewBag.Employer = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID.Equals(jobApplication.JobID));
+            ViewBag.WorkerID = User.Identity.GetUserId();
             return View(jobApplication);
         }
 
@@ -119,11 +149,25 @@ namespace Exposure.Web.Controllers
         // POST: JobApplications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, JobApplication jobApplication)
         {
-            JobApplication jobApplication = db.JobApplications.Find(id);
-            db.JobApplications.Remove(jobApplication);
-            db.SaveChanges();
+            jobApplication = db.JobApplications.Find(id);
+
+            jobApplication.Flagged = true;
+            //db.JobApplications.Remove(jobApplication);
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    db.Entry(jobApplication).State = EntityState.Modified;
+                    db.SaveChanges();
+                }catch
+                {
+                    db.SaveChanges();
+                }
+                
+            }
+            
             return RedirectToAction("Index");
         }
 

@@ -34,7 +34,7 @@ namespace Exposure.Web.Controllers
 
             if (skill != null)
             {
-                jobs = jobs.Where(j => j.SkillID.Equals(skill)).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Where(j => j.SkillID == skill).OrderBy(j => j.DateAdvertised);
             }
 
             if (startDate != null)
@@ -52,10 +52,10 @@ namespace Exposure.Web.Controllers
             ViewBag.Jobs = jobs;
 
 
-            return View(jobs.ToPagedList(pageNumber, pageSize););
+            return View(jobs.ToPagedList(pageNumber, pageSize));
         }
 
-        public ActionResult Search(string currentFilter,string sortOrder, int? skill, string search, int? page, string location)
+        public ActionResult Search(string currentFilter,string sortOrder, int? skill, string search, int? page, int? location)
         {                      
 
             if (search != null)
@@ -99,26 +99,26 @@ namespace Exposure.Web.Controllers
         
             if (skill != null)
             {                              
-                   jobs = jobs.Where(j => j.SkillID.Equals(skill));             
+                   jobs = jobs.Where(j => j.SkillID==skill);             
                                 
             }
 
-            if (!String.IsNullOrEmpty(location))
+            if (location!=null)
             {
-                jobs = jobs.Where(j => j.Suburb.SubName.Contains(location));
+                jobs = jobs.Where(j => j.Suburb.SuburbID==location);
             }
 
             if (!String.IsNullOrEmpty(search))
             {
-                jobs = jobs.Where(j => j.Title.Contains(search)).Where(j=>j.Description.Contains(search));
+                jobs = jobs.Where(j => j.Title.Contains(search));                                        
             }
 
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
+            //int pageSize = 3;
+            //int pageNumber = (page ?? 1);
             
             ViewBag.Jobs = jobs;
 
-            return View(jobs.ToPagedList(pageNumber, pageSize););
+            return View();
         }
 
         public ActionResult JobApplication(int? id)

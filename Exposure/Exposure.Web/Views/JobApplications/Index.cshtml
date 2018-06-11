@@ -4,48 +4,140 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<h2>Job Applications</h2>
+<div class="col-md-2">
+    <p>Category: </p>@Html.DropDownList("skill", null, "All", new { @class = "form-control" })
+</div>
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Job.EmployerID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Worker.WorkerID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Motivation)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Response)
-        </th>
-        <th></th>
-    </tr>
+    @if (User.IsInRole("Admin"))
+    {
+        <tr>
+            <th>
+                Employer
+            </th>
+            <th>
+                Worker            
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Motivation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Response)
+            </th>
+            <th></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Job.EmployerID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Worker.WorkerID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Motivation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Response)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.JobApplicationID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.JobApplicationID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.JobApplicationID })
-        </td>
-    </tr>
-}
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job.Employer.ApplicationUser.FirstName)+" "+@Html.DisplayFor(modelItem => item.Job.Employer.ApplicationUser.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Worker.ApplicationUser.FirstName)+ " " + @Html.DisplayFor(modelItem => item.Worker.ApplicationUser.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Motivation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Response)
+                </td>
+                <td>                    
+                    @Html.ActionLink("Details", "Details", new { id = item.JobApplicationID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.JobApplicationID })
+                </td>
+            </tr>
+        }
+    }
+    else if (User.IsInRole("Worker"))
+    {
+        <tr>
+            <th>Title</th>
+            <th>Skill</th>
+            <th>Employer</th>
+            <th>Start Date</th>
+            <th>Job Description</th>
+            <th>Rate (R)</th>
+            <th>Response</th>
+        </tr>
 
-</table>
+        foreach (var application in ViewBag.Applications)
+        {
+            <tr>
+                <td>
+                    @application.Job.Title
+                </td>
+                <td>
+                    @application.Job.Skill.SkillDescription
+                </td>
+                <td>
+                    <a href="@Url.Action("Profile", "Account", new {id= application.Employer.EmployerID })"> 
+                    @application.Job.Employer.ApplicationUser.FirstName + " " + @application.Job.Employer.ApplicationUser.LastName </a>
+                </td>
+                <td>
+                    @application.Job.StartDate
+                </td>
+                <td>
+                    @application.Job.Description
+                </td>
+                <td>
+                    @application.Job.Rate
+                </td>
+                <td>
+                    @application.Response
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = application.JobApplicationID })|
+                    @Html.ActionLink("Retract", "Delete", new { id = application.JobApplicationID })
+                </td>
+            </tr>
+
+        }
+
+    }
+    else if (User.IsInRole("Employer"))
+    {
+        <tr>
+            <th>Title</th>
+            <th>Skill</th>
+            <th>Worker</th>
+            <th>Start Date</th>
+            <th>Motivation</th>
+            <th>Rate (R)</th>
+            <th>Response</th>
+        </tr>
+
+        foreach (var application in ViewBag.Applications)
+        {
+            <tr>
+                <td>
+                    @application.Job.Title
+                </td>
+                <td>
+                    @application.Job.Skill.SkillDescription
+                </td>
+                <td>
+                    <a href="@Url.Action("Profile", "Account", new { id= application.Worker.WorkerID})"> 
+                    @application.Worker.ApplicationUser.FirstName @application.Worker.ApplicationUser.LastName</a>
+                </td>
+                <td>
+                    @application.Job.StartDate
+                </td>
+                <td>
+                    @application.Motivation
+                </td>
+                <td>
+                    @application.Job.Rate
+                </td>
+                <td>
+                    @application.Response
+                </td>
+                <td>
+                    @Html.ActionLink("Respond", "Edit", new { id = application.JobID })
+                </td>
+            </tr>
+        }
+    }
+    </table>
+
+    

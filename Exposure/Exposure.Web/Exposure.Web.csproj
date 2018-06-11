@@ -287,6 +287,22 @@
     <Compile Include="DataContexts\IdentityMigrations\201806071058148_RemoveDT2.Designer.cs">
       <DependentUpon>201806071058148_RemoveDT2.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806111404095_FlagApp.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806111404095_FlagApp.Designer.cs">
+      <DependentUpon>201806111404095_FlagApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806111408498_AppDate.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806111408498_AppDate.Designer.cs">
+      <DependentUpon>201806111408498_AppDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806111955424_requiredWorker.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806111955424_requiredWorker.Designer.cs">
+      <DependentUpon>201806111955424_requiredWorker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806112025090_AppDateNull.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806112025090_AppDateNull.Designer.cs">
+      <DependentUpon>201806112025090_AppDateNull.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -465,6 +481,7 @@
     <Content Include="Views\Account\EditProfile.cshtml" />
     <Content Include="Views\Jobs\Update.cshtml" />
     <Content Include="Views\Jobs\Search.cshtml" />
+    <Content Include="Views\Account\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -542,6 +559,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201806071058148_RemoveDT2.resx">
       <DependentUpon>201806071058148_RemoveDT2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806111404095_FlagApp.resx">
+      <DependentUpon>201806111404095_FlagApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806111408498_AppDate.resx">
+      <DependentUpon>201806111408498_AppDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806111955424_requiredWorker.resx">
+      <DependentUpon>201806111955424_requiredWorker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806112025090_AppDateNull.resx">
+      <DependentUpon>201806112025090_AppDateNull.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

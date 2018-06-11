@@ -11,8 +11,6 @@ namespace Exposure.Entities
     public class JobApplication
     {
         
-
-        [Required]
         public int  JobApplicationID { get; set; }
 
         [DisplayName("Job")]
@@ -20,6 +18,7 @@ namespace Exposure.Entities
 
             
         [DisplayName("Worker")]
+        [Required]
         public string WorkerID { get; set; }
 
         [Required(ErrorMessage = "Provide a short motivation why you should be hired")]
@@ -28,6 +27,11 @@ namespace Exposure.Entities
 
         [DefaultValue("Pending")]
         public Reply? Response  { get; set; }
+
+        public DateTime? ApplicationDate { get; set; }
+
+        [DefaultValue(false)]
+        public bool Flagged { get; set; }
 
         public virtual Job Job { get; set; }
 

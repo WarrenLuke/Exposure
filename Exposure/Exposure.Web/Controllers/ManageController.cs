@@ -130,9 +130,7 @@ namespace Exposure.Web.Controllers
 
             var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID);
 
-            //var empSub = from s in db.Suburbs
-            //             where s.SuburbID == user.Employer.SuburbID
-            //             select s.SubName;
+            
 
             ViewBag.userSub = userSub;
             ViewBag.UserID = userId;
@@ -141,6 +139,8 @@ namespace Exposure.Web.Controllers
             
             return View(model);
         }
+
+
 
         //GET: /Cities/Index
         public ActionResult Cities()
@@ -205,7 +205,7 @@ namespace Exposure.Web.Controllers
 
         public ActionResult JobApplications()
         {
-            return RedirectToRoute("Default", new { controller = "Jobapplications", action = "Index" });
+            return RedirectToRoute("Default", new { controller = "JobApplications", action = "Index" });
 
         }
 

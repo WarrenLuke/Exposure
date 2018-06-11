@@ -44,20 +44,24 @@ namespace Exposure.Web.Controllers
             return View();
         }
 
-        public FileContentResult ProfilePic()
+        public FileContentResult ProfilePic(string Id)
         {
             if (User.Identity.IsAuthenticated)
             {
-                var userId = User.Identity.GetUserId();
+                if(Id==null)
+                {
+                    Id = User.Identity.GetUserId();
+                }
+                
 
                 var bdUsers = HttpContext.GetOwinContext().Get<IdentityDb>();
-                var userImage = bdUsers.Users.Where(x => x.Id == userId).FirstOrDefault();
+                var userImage = bdUsers.Users.Where(x => x.Id == Id).FirstOrDefault();
                 
                 
 
                 if (userImage.ProfilePic == null)
                 {
-                    var user = db.Users.Find(userId);
+                    var user = db.Users.Find(Id);
                     string fileName = null;
 
                     if(user.Gender == "Male")
@@ -78,13 +82,7 @@ namespace Exposure.Web.Controllers
                     return File(imageData, "image/jpeg");
 
                 }               
-                
-                
                 return new FileContentResult(userImage.ProfilePic, "image/jpeg");
-                
-                
-               
-                
             }
             else
             {
