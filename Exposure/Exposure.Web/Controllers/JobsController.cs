@@ -22,14 +22,7 @@ namespace Exposure.Web.Controllers
         public ActionResult Index(string id, int? skill, DateTime? startDate, string search, int? page)
         {
 
-            var skillsList = new List<string>();
-            var SkillsQry = (from s in db.Skills
-                             orderby s.SkillDescription
-                             select s.SkillDescription);
-
-            skillsList.AddRange(SkillsQry.Distinct());
-
-            ViewBag.Skills = new SelectList(skillsList, "SkillID", "SkillDescription");
+            ViewBag.Skills = new SelectList(db.Skills, "SkillID", "SkillDescription");
 
             var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised);
 
@@ -55,28 +48,31 @@ namespace Exposure.Web.Controllers
             }
             int pageSize = 3;
             int pageNumber = (page ?? 1);
-            jobs.ToPagedList(pageNumber, pageSize);
+            
             ViewBag.Jobs = jobs;
 
 
-            return View();
+            return View(jobs.ToPagedList(pageNumber, pageSize););
         }
 
-        public ActionResult Search(string sortOrder, int? skill, string search, int? page, string location)
-        {
-            var skillsList = new List<string>();
-            var SkillsQry = (from s in db.Skills
-                             orderby s.SkillDescription
-                             select s.SkillDescription);
+        public ActionResult Search(string currentFilter,string sortOrder, int? skill, string search, int? page, string location)
+        {                      
 
-            skillsList.AddRange(SkillsQry.Distinct());
+            if (search != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                search = currentFilter;
+            }
 
-            var suburbs = db.Suburbs;
+            ViewBag.CurrentFilter = search;              
 
-            ViewBag.skill = new SelectList(skillsList, "SkillID", "SkillDescription");
+            ViewBag.skill = new SelectList(db.Skills, "SkillID", "SkillDescription");
             ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
-            ViewBag.location = new SelectList(suburbs, "SuburbID", "SubName");
+            ViewBag.location = new SelectList(db.Suburbs, "SuburbID", "SubName");
             var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb);
 
             switch (sortOrder)
@@ -119,10 +115,10 @@ namespace Exposure.Web.Controllers
 
             int pageSize = 3;
             int pageNumber = (page ?? 1);
-            jobs.ToPagedList(pageNumber, pageSize);
+            
             ViewBag.Jobs = jobs;
 
-            return View();
+            return View(jobs.ToPagedList(pageNumber, pageSize););
         }
 
         public ActionResult JobApplication(int? id)

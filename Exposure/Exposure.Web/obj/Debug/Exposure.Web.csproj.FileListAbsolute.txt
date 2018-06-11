@@ -827,3 +827,7 @@ C:\Users\s215047370\Documents\Exposure\Exposure.Web\obj\Debug\Exposure.Web.cspro
 C:\Users\s215047370\Documents\Exposure\Exposure.Web\obj\Debug\Exposure.Web.dll
 C:\Users\s215047370\Documents\Exposure\Exposure.Web\obj\Debug\Exposure.Web.pdb
 C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.RemoveDT2.resources
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\bin\PagedList.dll
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\bin\PagedList.Mvc.dll
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\bin\PagedList.xml
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\bin\PagedList.Mvc.xml

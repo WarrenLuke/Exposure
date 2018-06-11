@@ -1,4 +1,6 @@
-﻿
+﻿@model PagedList.IPagedList<Exposure.Entities.Job>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css"/>
 @{
     ViewBag.Title = "Search";
 }
@@ -8,7 +10,7 @@
 {
     <div class="row">
         <div class="col-md-3">
-            <p>Category: </p>@Html.DropDownList("Skills", null, "All", new { @class = "form-control" })
+            <p>Category: </p>@Html.DropDownList("skill", null, "All", new { @class = "form-control" })
         </div>
         <div class="col-md-3">
             <p>Location: </p>@Html.DropDownList("location", null, "All", new { @class="form-control"})
@@ -46,3 +48,8 @@
 
     }
 </table>
+<br/>
+Page @(Model.PageCount <Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder= ViewBag.CurrentSort,
+    currentFilter = ViewBag.CurrentFilter}))
