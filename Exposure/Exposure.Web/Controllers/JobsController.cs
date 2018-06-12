@@ -203,21 +203,18 @@ namespace Exposure.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles =("Admin, Employer"))]
-        public ActionResult Create([Bind(Exclude ="EmployerID,StartDate, EndDate" ,Include = "JobID,Title,DateAdvertised,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2")] Job model)
+        public ActionResult Create([Bind(Exclude ="EmployerID", Include = "JobID,Title,StartDate, EndDate,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2")] Job job)
         {
-            model.EmployerID = User.Identity.GetUserId();
+            job.EmployerID = User.Identity.GetUserId();
 
-            var job = new Job();
-
-            job.StartDate = Convert.ToDateTime(model.StartDate);
-            job.EndDate = Convert.ToDateTime(model.EndDate);
             job.DateAdvertised = DateTime.UtcNow;
 
+            var state = ModelState;
             if (ModelState.IsValid)
             {
                 db.Jobs.Add(job);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToRoute("Default", new { controller = "Jobs", action = "Index" });
             }
 
             

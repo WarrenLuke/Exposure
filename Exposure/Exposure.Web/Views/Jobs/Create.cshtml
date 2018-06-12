@@ -1,28 +1,21 @@
 ﻿@model Exposure.Entities.Job
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Job";
 }
 
-<h2>Create</h2>
-
+<h2>@ViewBag.Title</h2>
+<hr />
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>Job</h4>
-    <hr />
+    <h3>Job Details</h3>
+    
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.EmployerID, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            
-            @Html.ValidationMessageFor(model => model.EmployerID, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
+    
     <div class="form-group">
         @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -120,7 +113,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Profile", "Index")
 </div>
 
 @section Scripts {

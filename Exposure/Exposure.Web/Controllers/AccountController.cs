@@ -209,14 +209,10 @@ namespace Exposure.Web.Controllers
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
-        {
-            var suburbsList = new List<string>();
-            var suburbsQry = (from s in db.Suburbs
-                              orderby s.SubName, s.SuburbID
-                              select s).ToList();             
+        {                      
                   
 
-            ViewBag.Suburbs = new SelectList(suburbsQry, "SuburbID", "SubName");
+            ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
             return View();
         }
 

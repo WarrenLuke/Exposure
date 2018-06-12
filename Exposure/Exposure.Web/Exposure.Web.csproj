@@ -259,10 +259,6 @@
     <Compile Include="DataContexts\IdentityMigrations\201806021450131_dateTime2.Designer.cs">
       <DependentUpon>201806021450131_dateTime2.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataContexts\IdentityMigrations\201806021502303_date.cs" />
-    <Compile Include="DataContexts\IdentityMigrations\201806021502303_date.Designer.cs">
-      <DependentUpon>201806021502303_date.cs</DependentUpon>
-    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\201806021942354_ProfilePic.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201806021942354_ProfilePic.Designer.cs">
       <DependentUpon>201806021942354_ProfilePic.cs</DependentUpon>
@@ -302,6 +298,14 @@
     <Compile Include="DataContexts\IdentityMigrations\201806112025090_AppDateNull.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201806112025090_AppDateNull.Designer.cs">
       <DependentUpon>201806112025090_AppDateNull.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806121356447_Date.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806121356447_Date.Designer.cs">
+      <DependentUpon>201806121356447_Date.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806121418340_JobTimeFix.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806121418340_JobTimeFix.Designer.cs">
+      <DependentUpon>201806121418340_JobTimeFix.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
@@ -539,9 +543,6 @@
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201806021450131_dateTime2.resx">
       <DependentUpon>201806021450131_dateTime2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806021502303_date.resx">
-      <DependentUpon>201806021502303_date.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201806021942354_ProfilePic.resx">
       <DependentUpon>201806021942354_ProfilePic.cs</DependentUpon>
     </EmbeddedResource>
@@ -571,6 +572,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201806112025090_AppDateNull.resx">
       <DependentUpon>201806112025090_AppDateNull.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806121356447_Date.resx">
+      <DependentUpon>201806121356447_Date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806121418340_JobTimeFix.resx">
+      <DependentUpon>201806121418340_JobTimeFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

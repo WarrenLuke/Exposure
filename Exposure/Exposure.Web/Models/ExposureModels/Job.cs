@@ -14,7 +14,7 @@ namespace Exposure.Entities
         [ScaffoldColumn(false)]
         public int JobID { get; set; }
 
-        
+
         [DisplayName("Employer")]
         [ReadOnly(true)]
         public string EmployerID { get; set; }
@@ -26,7 +26,7 @@ namespace Exposure.Entities
         [Required]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         [ReadOnly(true)]
-        
+
         [DisplayName("Date Advertised")]
         public DateTime DateAdvertised { get; set; }
 
@@ -38,28 +38,29 @@ namespace Exposure.Entities
         [StringLength(1024)]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Please enter a start date")]
+
         [DataType(DataType.Date)]
         [DisplayName("Start Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? StartDate { get; set; }
 
-        [Required(ErrorMessage = "Please enter a end date")]
+
         [DataType(DataType.Date)]
         [DisplayName("Est. End Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-
         public DateTime? EndDate { get; set; }
 
         [Required(ErrorMessage = "Please enter a start time")]
-        
         [DisplayName("Start Time")]
-        public int StartTime { get; set; }
+        [DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode =true)]
+        public DateTime StartTime { get; set; }
 
-        [Required(ErrorMessage = "Please enter a end time")]
-        
+        [Required(ErrorMessage = "Please enter a end time")]        
         [DisplayName("End Time")]
-        public int EndTime { get; set; }
+        [DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime EndTime { get; set; }
 
         [Required(ErrorMessage = "Please specify how much you will be paying]")]
         [DisplayName("Rate")]
