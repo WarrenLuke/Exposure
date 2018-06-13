@@ -46,9 +46,12 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
 
                 manager.Create(role);
             }
+            context.Cities.AddOrUpdate(
+                cit => cit.CityName,
+                new City() {CityName = "Port Elizabeth", CityAbbrev = "PE" });
 
             context.Suburbs.AddOrUpdate(
-               sub => sub.SubName,
+               sub => sub.SuburbID,
                new Suburb() { SubName = "Adcockvale", CityID = 1 },
                new Suburb() { SubName = "Algoa Bay", CityID = 1 },
                new Suburb() { SubName = "Algoa Park", CityID = 1 },
@@ -200,7 +203,7 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                 new Skill() { SkillDescription = "Carpentry", Recom_Rate = 40 }
                 );
 
-           if(!context.Users.Any( u => u.UserName=="Admin"))
+            if (!context.Users.Any(u => u.UserName == "Admin"))
             {
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
@@ -211,20 +214,20 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                     AddressLine1 = "University Way",
                     Email = "admin@exposure.co.za",
                     UserName = "admin",
-                    SuburbID = 116,
-                    Gender="Male"
+                    SuburbID = 115,
+                    Gender = "Male"
                 };
 
                 manager.Create(user, "ChangeItAsap!");
                 manager.AddToRole(user.Id, "Admin");
             }
 
-                
 
 
-                
 
-            
+
+
+
 
             //  This method will be called after migrating to the latest version.
 
