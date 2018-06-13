@@ -17,6 +17,10 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
         public ActionResult Index()
         {
+            ViewBag.Users = db.Users.Where(f=>f.Status==null).Count();
+            ViewBag.Jobs = db.Jobs.Where(c => c.Completed == false).Count();
+            ViewBag.SJobs = db.Jobs.Where(c => c.Completed == true).Count();
+
             return View();
         }
 
@@ -55,8 +59,7 @@ namespace Exposure.Web.Controllers
                 
 
                 var bdUsers = HttpContext.GetOwinContext().Get<IdentityDb>();
-                var userImage = bdUsers.Users.Where(x => x.Id == Id).FirstOrDefault();
-                
+                var userImage = bdUsers.Users.Where(x => x.Id == Id).FirstOrDefault();                
                 
 
                 if (userImage.ProfilePic == null)

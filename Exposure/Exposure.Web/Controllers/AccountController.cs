@@ -100,6 +100,42 @@ namespace Exposure.Web.Controllers
             }
         }
 
+        [Authorize]
+        public ActionResult AccountStatus(string id)
+        {
+            ApplicationUser user = db.Users.Find(id);
+            ViewBag.User = user;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AccountStatus([Bind(Include ="Id")]ApplicationUser user)
+        {
+            ApplicationUser u = await UserManager.FindByIdAsync(user.Id);
+
+            if (User.IsInRole("Employer,Worker"))
+            {
+                user.Status = Models.Enums.Status.UserRemove;
+                db.Entry(u).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("LogOff");
+
+            }
+            else 
+            {
+                user.Status = Models.Enums.Status.AdminBlock;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToRoute("User", "Manage");
+            }
+
+
+        }
+
+
         //GET: /Account/EditProfile
         public ActionResult EditProfile(string id)
         {
@@ -162,6 +198,21 @@ namespace Exposure.Web.Controllers
 
         }
 
+        public ActionResult UserDetails(string Id)
+        {
+
+            var user = db.Users.Include(e => e.Employer).Include(w => w.Worker).Include(s => s.Suburb).Include(c => c.Suburb.City).Where(u => u.Id.Equals(Id));
+            var userRole = UserManager.GetRoles(Id);
+            //if(user.Worker.WorkerID==Id)
+            //{
+            //    ViewBag.Worker = db.WorkerSkills.Include(w => w.Worker).Include(ws => ws.Worker.WorkerSkills).Where(w => w.Worker.WorkerID == Id);
+            //}
+            ViewBag.User = user;
+            ViewBag.Role = userRole[0];
+            return View();
+        }
+
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -209,9 +260,7 @@ namespace Exposure.Web.Controllers
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
-        {                      
-                  
-
+        {                                       
             ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
             return View();
         }
@@ -232,7 +281,7 @@ namespace Exposure.Web.Controllers
                 if (Request.Files.Count > 0)
                 {
                     HttpPostedFileBase poImgFile = Request.Files["ProfilePic"];
-
+                    var image = poImgFile;
                     using (var binary = new BinaryReader(poImgFile.InputStream))
                     {
                         imageData = binary.ReadBytes(poImgFile.ContentLength);
@@ -287,7 +336,7 @@ namespace Exposure.Web.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index", id = User.Identity.GetUserId() });
                 }
                     AddErrors(result);
                 }

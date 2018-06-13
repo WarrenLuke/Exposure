@@ -32,35 +32,32 @@
             <div class="col-md-6 text-center">
                 <h4>What would you like to do?</h4>
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-default btn-lg" value="Manage Users" formaction="Users" />
+                    <input type="submit" class="btn btn-default btn-lg" value="Manage Users" formaction=@Url.Action("AllUsers") />
 
                 </div>
-                <br />
+                @*<br />
                 <div class="col-md-offset-2 col-md-10">
                     <a href="Manage/Incidents">
                         <input type="submit" class="btn btn-default btn-lg" value="Manage Incidents" formaction="Incidents" />
                     </a>
+                </div>*@
+                <br />
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default btn-lg" value="Manage Suburbs" formaction=@Url.Action("Index", "Suburbs") />
                 </div>
                 <br />
                 <div class="col-md-offset-2 col-md-10">
-
-                    <input type="submit" class="btn btn-default btn-lg" value="Manage Suburbs" formaction="Suburbs" />
-
-                </div>
-                <br />
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-default btn-lg" value="Manage Cities" formaction="Cities" />
-
+                    <input type="submit" class="btn btn-default btn-lg" value="Manage Cities" formaction=@Url.Action("Index", "Cities") />
                 </div>
                 <br />
                 <div class="col-md-offset-2 col-md-10">
                     <a href="Manage/Jobs">
-                        <input type="submit" class="btn btn-default btn-lg" value="View Jobs" formaction="Jobs" />
+                        <input type="submit" class="btn btn-default btn-lg" value="View Jobs" formaction=@Url.Action("Index", "Jobs") />
                     </a>
                 </div>
                 <br />
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-default btn-lg" value="Manage Compnay information" formaction="Company" />
+                    <input type="submit" class="btn btn-default btn-lg" value="Manage Company Details" formaction=@Url.Action("GeneralBusiness") />
                 </div>
             </div>
         </div>

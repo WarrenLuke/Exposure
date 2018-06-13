@@ -197,6 +197,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployersController.cs" />
+    <Compile Include="Controllers\GeneralBusinessesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncidentsController.cs" />
     <Compile Include="Controllers\JobApplicationsController.cs" />
@@ -307,9 +308,30 @@
     <Compile Include="DataContexts\IdentityMigrations\201806121418340_JobTimeFix.Designer.cs">
       <DependentUpon>201806121418340_JobTimeFix.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806122217068_TimeNulls.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806122217068_TimeNulls.Designer.cs">
+      <DependentUpon>201806122217068_TimeNulls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806122230475_DANull.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806122230475_DANull.Designer.cs">
+      <DependentUpon>201806122230475_DANull.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806122317272_DA.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806122317272_DA.Designer.cs">
+      <DependentUpon>201806122317272_DA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806130024271_UserStatus.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806130024271_UserStatus.Designer.cs">
+      <DependentUpon>201806130024271_UserStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806130129425_GeneralBus.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806130129425_GeneralBus.Designer.cs">
+      <DependentUpon>201806130129425_GeneralBus.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
+    <Compile Include="Models\Enums\Status.cs" />
     <Compile Include="Models\ExposureModels\UserIncident.cs" />
     <Compile Include="Models\ExposureModels\UserReview.cs" />
     <Compile Include="Models\ExposureModels\Worker.cs" />
@@ -485,7 +507,13 @@
     <Content Include="Views\Account\EditProfile.cshtml" />
     <Content Include="Views\Jobs\Update.cshtml" />
     <Content Include="Views\Jobs\Search.cshtml" />
-    <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Account\UserDetails.cshtml" />
+    <Content Include="Views\Manage\AlUsers.cshtml" />
+    <Content Include="Views\GeneralBusinesses\Create.cshtml" />
+    <Content Include="Views\GeneralBusinesses\Delete.cshtml" />
+    <Content Include="Views\GeneralBusinesses\Details.cshtml" />
+    <Content Include="Views\GeneralBusinesses\Edit.cshtml" />
+    <Content Include="Views\GeneralBusinesses\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -578,6 +606,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201806121418340_JobTimeFix.resx">
       <DependentUpon>201806121418340_JobTimeFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806122217068_TimeNulls.resx">
+      <DependentUpon>201806122217068_TimeNulls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806122230475_DANull.resx">
+      <DependentUpon>201806122230475_DANull.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806122317272_DA.resx">
+      <DependentUpon>201806122317272_DA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806130024271_UserStatus.resx">
+      <DependentUpon>201806130024271_UserStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806130129425_GeneralBus.resx">
+      <DependentUpon>201806130129425_GeneralBus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

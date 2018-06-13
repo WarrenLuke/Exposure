@@ -9,7 +9,7 @@
     @Scripts.Render("~/bundles/modernizr")
     <style>
         .footer {
-            position:sticky, fixed;
+            position:relative, sticky;
             left: 0;
             bottom: 0;
             width: 100%;
@@ -29,10 +29,13 @@
         }*/
     </style>
 </head>
-
 <body>
-    <div class="thumbnail">
-        <img src="~/Images/expo.png" class="img-thumbnail" alt="Exposure Logo" style=" max-width: 100%; height: auto;" />
+    <div class="row" >
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <img src="~/Images/expo.png" class="img-thumbnail" alt="Exposure Logo" style=" max-width: 750px; height: 150px;" />
+        </div>
+        <div class="col-md-3"></div>
     </div>
     <div class="navbar navbar-default navbar-fixed-top">
         

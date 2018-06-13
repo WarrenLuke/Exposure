@@ -52,7 +52,7 @@ namespace Exposure.Web.Controllers
             ViewBag.Jobs = jobs;
 
 
-            return View(jobs.ToPagedList(pageNumber, pageSize));
+            return View(jobs);
         }
 
         public ActionResult Search(string currentFilter,string sortOrder, int? skill, string search, int? page, int? location)
@@ -73,7 +73,7 @@ namespace Exposure.Web.Controllers
             ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.location = new SelectList(db.Suburbs, "SuburbID", "SubName");
-            var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb);
+            var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(c=>c.Completed==false);
 
             switch (sortOrder)
             {
@@ -118,7 +118,7 @@ namespace Exposure.Web.Controllers
             
             ViewBag.Jobs = jobs;
 
-            return View();
+            return View(jobs);
         }
 
         public ActionResult JobApplication(int? id)
@@ -126,7 +126,7 @@ namespace Exposure.Web.Controllers
             return RedirectToRoute("Default", new { controller = "JobApplications", action = "Create", id=id });
         }
 
-        //GET: Jobs/Update
+        ////GET: Jobs/Update
         [Authorize(Roles = "Admin, Employer")]
         public ActionResult Update(int? id)
         {
@@ -142,6 +142,11 @@ namespace Exposure.Web.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.Job = db.Jobs.Where(j => j.JobID == id);
+            ViewBag.JobID = id;
+            ViewBag.JobStart = Convert.ToDateTime(job.StartDate);
+            ViewBag.JobEnd = Convert.ToDateTime(job.EndDate);
+
             return View(job);
 
         }
@@ -149,27 +154,28 @@ namespace Exposure.Web.Controllers
         //POST: Jobs/Details
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Update([Bind(Include ="Completed")]Job job)
-        {
-            if (ModelState.IsValid)
+        [Authorize(Roles="Employer")]
+        public ActionResult Update([Bind(Include = "JobID,Completed")]Job job)
+        {           
+            Job a = db.Jobs.Find(job.JobID);
+
+            a.Completed = job.Completed;     
+
+            var state = ModelState;
+            try
             {
-                try
-                {
-                    db.Entry(job).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-                catch
-                {
-                    db.SaveChanges();
-                }
-                
+                db.Entry(a).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(job);
+            catch
+            {
+                ViewBag.Job = db.Jobs.Where(j => j.JobID == job.JobID);
+                ViewBag.JobID = job.JobID;
+                return View(job);
+            }        
+                        
         }
-
-
 
         // GET: Jobs/Details/5
         public ActionResult Details(int? id)
@@ -203,7 +209,7 @@ namespace Exposure.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles =("Admin, Employer"))]
-        public ActionResult Create([Bind(Exclude ="EmployerID", Include = "JobID,Title,StartDate, EndDate,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2")] Job job)
+        public ActionResult Create([Bind(Exclude ="EmployerID, DateAdvertised", Include = "JobID,Title,StartDate, EndDate,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2")] Job job)
         {
             job.EmployerID = User.Identity.GetUserId();
 
@@ -258,21 +264,34 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Title,DateAdvertised,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2,StartDate, EndDate")] Job job)
+        public ActionResult Edit([Bind(Include = "JobID,Title,DateAdvertised,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2,StartDate, EndDate")] Job job)
         {
+            Job j = db.Jobs.Find(job.JobID);
+            j.Title = job.Title;
+            j.DateAdvertised = job.DateAdvertised;            
+            j.Description = job.Description;
+            j.StartTime = job.StartTime;
+            j.EndDate = job.EndDate;
+            j.EndTime = job.EndTime;
+            j.Rate = job.Rate;
+            j.SuburbID = job.SuburbID;
+            j.AddressLine1 = job.AddressLine1;
+            j.AddressLine2 = job.AddressLine2;
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    db.Entry(job).State = EntityState.Modified;
+                    db.Entry(j).State = EntityState.Modified;
                     db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
                 catch
                 {
                     db.SaveChanges();
                 }               
                 
-                return RedirectToAction("Index");
+                
             }
 
             var SkillsLst = new List<string>();

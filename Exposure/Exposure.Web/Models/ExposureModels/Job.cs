@@ -22,13 +22,10 @@ namespace Exposure.Entities
         [Required]
         [StringLength(20)]
         public string Title { get; set; }
-
-        [Required]
+        
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        [ReadOnly(true)]
-
         [DisplayName("Date Advertised")]
-        public DateTime DateAdvertised { get; set; }
+        public DateTime? DateAdvertised { get; set; }
 
         [Required(ErrorMessage = "Each jobs needs to be associated with a skill")]
         [DisplayName("Category")]
@@ -50,23 +47,22 @@ namespace Exposure.Entities
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? EndDate { get; set; }
 
-        [Required(ErrorMessage = "Please enter a start time")]
+        
         [DisplayName("Start Time")]
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode =true)]
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
-        [Required(ErrorMessage = "Please enter a end time")]        
+                
         [DisplayName("End Time")]
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
         [Required(ErrorMessage = "Please specify how much you will be paying]")]
         [DisplayName("Rate")]
         [DataType(DataType.Currency)]
         public double Rate { get; set; }
-
         
         [Required]
         [DisplayName("Location")]
@@ -88,12 +84,7 @@ namespace Exposure.Entities
 
         public virtual Skill Skill { get; set; }
 
-        public virtual Employer Employer { get; set; }
-        
+        public virtual Employer Employer { get; set; }      
        
-
-
-
-
     }
 }

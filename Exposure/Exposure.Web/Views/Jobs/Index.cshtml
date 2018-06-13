@@ -65,7 +65,9 @@
            {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
+                    <a href="@Url.Action("Edit", "Edit", new { id=item.JobID} )">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </a>                    
                 </td>
                  <td>
                     @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
@@ -73,9 +75,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Suburb.SubName)
                 </td>
-                <th>
+                <td>
                     @Html.DisplayFor(modelItem => item.AddressLine1)
-                </th>
+                </td>
                 <th>
                     @Html.DisplayFor(modelItem => item.AddressLine2)
                 </th>
@@ -101,20 +103,23 @@
                     @Html.DisplayFor(modelItem => item.Rate)
                 </td>
                 <td>
-                    @Html.EditorFor(modelItem => item.Completed)
-                </td>
-                <td>
-                    @{ 
-                        var jID = item.JobID;
+                    @if (item.Completed == false)
+                    {
+                        <p>No</p>
                     }
-                    <input type="submit" value="Update" formmethod="post" class="btn btn-default" id= jID  />
-                    <form action="@Url.Action("Update", "Jobs", new { id = item.JobID })"/>
+                    else
+                    {
+                        <p>Yes</p>
+                    }
                 </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.JobID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.JobID }) |
+                <td style="text-align:center">                    
+                    <a href="@Url.Action("Update", "Jobs",new { id = item.JobID })" class="btn btn-default"> Update </a><br/>
+                    @Html.ActionLink("Details", "Details", new { id = item.JobID }) <br/>
                     @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
                 </td>
+                                   
+                    
+                <
             </tr>
             }
         }       
@@ -178,7 +183,7 @@ else if (User.IsInRole("Admin"))
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName + " " + item.Employer.ApplicationUser.LastName)
+                    <a href="@Url.Action("UserDetails", "Account", new {id= item.Employer.EmployerID })">@Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName)  @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.LastName) </a> 
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Skill.SkillDescription)

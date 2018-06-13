@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<Exposure.Entities.Job>
+﻿@model IEnumerable<Exposure.Entities.Job>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css"/>
 @{
@@ -38,17 +38,17 @@
 <br/>
 <div class="col-md-12">
     <table class="table">
-        @foreach (var item in ViewBag.Jobs)
+        @foreach (var item in Model)
         {
             <tr>
                 <td>                
-                    <a href="@Url.Action("Create", "JobApplications", new { id = item.JobID })">@item.Title</a><br />
-                    <strong>Location:</strong> @item.Suburb.SubName <br />
-                    <strong>Rate(ZAR):</strong> @item.Rate <br />
-                    <strong>Start Date:</strong> @item.StartDate<br />
-                    <strong>Employer:</strong> @item.Employer.ApplicationUser.FirstName  @item.Employer.ApplicationUser.LastName<br />
+                    <a href="@Url.Action("Create", "JobApplications", new { id = item.JobID })">@Html.DisplayFor(modelItem => item.Title)</a><br />
+                    <strong>Location:</strong> @Html.DisplayFor(modelItem => item.Suburb.SubName) <br />
+                    <strong>Rate(ZAR):</strong> @Html.DisplayFor(modelItem => item.Rate) <br />
+                    <strong>Start Date:</strong> @Html.DisplayFor(modelItem => item.StartDate)<br />
+                    <strong>Employer:</strong> @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName)  @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.LastName)<br />
                     <strong>Description: </strong> <br/>
-                    @item.Description<br />                                
+                    @Html.DisplayFor(modelItem=>item.Description)<br />                                
                 </td>
                 <td align="right">
                     <strong>Date Advertised:</strong><br/>

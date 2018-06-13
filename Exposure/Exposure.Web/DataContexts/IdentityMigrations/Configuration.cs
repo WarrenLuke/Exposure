@@ -1,6 +1,7 @@
 namespace Exposure.Web.DataContexts.IdentityMigrations
 {
     using Exposure.Entities;
+    using Exposure.Web.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
@@ -198,6 +199,30 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                 new Skill() { SkillDescription = "Welding", Recom_Rate = 35 },
                 new Skill() { SkillDescription = "Carpentry", Recom_Rate = 40 }
                 );
+
+           if(!context.Users.Any( u => u.UserName=="Admin"))
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser
+                {
+                    FirstName = "Exposure",
+                    LastName = "Admin",
+                    AddressLine1 = "University Way",
+                    Email = "admin@exposure.co.za",
+                    UserName = "admin",
+                    SuburbID = 116,
+                    Gender="Male"
+                };
+
+                manager.Create(user, "ChangeItAsap!");
+                manager.AddToRole(user.Id, "Admin");
+            }
+
+                
+
+
+                
 
             
 

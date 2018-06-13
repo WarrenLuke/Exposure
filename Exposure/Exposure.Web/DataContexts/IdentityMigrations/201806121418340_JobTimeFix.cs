@@ -7,8 +7,8 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
     {
         public override void Up()
         {
-            Sql("ALTER TABLE dbo.Jobs DROP CONSTRAINT DF__Jobs__StartTime__4D5F7D71");
-            Sql("ALTER TABLE dbo.Jobs DROP CONSTRAINT DF__Jobs__EndTime__4E53A1AA");
+            Sql("ALTER TABLE dbo.Jobs DROP CONSTRAINT DF__Jobs__StartTime__6477ECF3");
+            Sql("ALTER TABLE dbo.Jobs DROP CONSTRAINT DF__Jobs__EndTime__656C112C");
             AlterColumn("dbo.Jobs", "StartTime", c => c.DateTime(nullable: false));
             AlterColumn("dbo.Jobs", "EndTime", c => c.DateTime(nullable: false));
         }

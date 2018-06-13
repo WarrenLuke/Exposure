@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Exposure.Entities;
+using Exposure.Web.Models.Enums;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -47,6 +48,9 @@ namespace Exposure.Web.Models
 
         [ForeignKey("SuburbID")]
         public virtual Suburb Suburb { get; set; }
+
+        [ScaffoldColumn(false)]
+        public Status? Status { get; set; }
 
         public virtual ICollection<Review> UserReviews { get; set; }
 

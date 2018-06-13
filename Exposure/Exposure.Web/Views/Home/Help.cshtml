@@ -4,7 +4,7 @@
         padding: 0;
         margin-top: 1em;
         border: thin solid transparent;
-        Background-color: #fa6706;
+        
         padding-left: 0.125em;
     }
 
@@ -20,12 +20,12 @@
         padding: 0.5em;
         font-size: 110%;
         display: none;
-        background-color: #FFFEDB;
+        background-color: #f6b991;
     }
 
     dl.faq button:hover,
     dl.faq button:focus {
-        background-color: #eee;
+        background-color: #bbb;
     }
 
     dl.faq button:focus {
@@ -157,65 +157,97 @@ window.addEventListener('load', function (event) {
 
 }, false);
 </script>
+<div class="row">
+    <div class="col-md-8">
+        <div class="alert-success text-center"><p style="font-size:xx-large">Frequently Asked Questions Page</p></div>
+        <br />
+        <dl class="faq">
+            <dt>
+                <button aria-expanded="false" aria-controls="faq1_desc ">
+                    YOUR QUESTIONS ARE ANSWERED BELOW
+                </button>
+            </dt>
+            <dt>
+                <button aria-expanded="false" aria-controls="faq2_desc">
+                    HOW TO REGISTER
+                </button>
+            </dt>
+            <dd>
+                <p id="faq2_desc" class="desc">
+                    All fields on registration are to be entered. A profile picture is not neccessary but we do advice users to add one. Blocked or suspended users
+                    may not register again.
 
-<div class="alert-success">WELCOME TO OUR HELP PAGE</div>
-<br/>
-<dl class="faq">
-    <dt>
-        <button aria-expanded="false" aria-controls="faq1_desc ">
-            YOUR QUESTIONS ARE ANSWERED BELOW
-        </button>
-    </dt>
-    <dt>
-        <button aria-expanded="false" aria-controls="faq2_desc">
-            HOW TO REGISTER
-        </button>
-    </dt>
-    <dd>
-        <p id="faq2_desc" class="desc">
-          REGISTRATION
+                </p>
+            </dd>
 
-        </p>
-    </dd>
-    
-    <dt>
-        <button aria-expanded="false" aria-controls="faq3_desc">
-            HOW TO CREATE A JOB FOR A SPECIFIC TYPE OF WORKER
-        </button>
-    </dt>
-    <dd>
-        <p id="faq3_desc" class="desc">
-            EXPLAINATION FOR CREATING A JOB
+            <dt>
+                <button aria-expanded="false" aria-controls="faq3_desc">
+                    WHAT QUALITIES DO YOU LOOK FOR IN A CANDIDATE?
+                </button>
+            </dt>
+            <dd>
+                <p id="faq3_desc" class="desc">
+                    We look for a range of technical skills and qualifications plus great initiative, communication and teamworking skills, and the ability to inspire others.
 
-        </p>
-    </dd>
-    <dt>
-        <button aria-expanded="false" aria-controls="faq4_desc">
-            HOW TO APPLY FOR A JOB
-        </button>
-    </dt>
-    <dd>
-        <p id="faq4_desc" class="desc">
+                </p>
+            </dd>
+            <dt>
+                <button aria-expanded="false" aria-controls="faq4_desc">
+                    WHO CAN I CONTACT IF I'M HAVING PROBLEMS?
+                </button>
+            </dt>
+            <dd>
+                <p id="faq4_desc" class="desc">
 
-            JOB APPLICATION PROCESS
+                    If you are having technical difficulty, please contact us and let us know what technical issues you are having – we will do our best to help.
+                    Email <a>help@exposure.ac.za</a>
+                    Please note, though - we do not accept job applications at this email address.
+                    <q>
+                      
+                    </q>
+                  
 
-            <q>
-                HOW TO REPORT A WORKER OR EMPLOYER
-            </q>
-            HOW TO...
+                </p>
+            </dd>
+            <dt>
+                <button aria-expanded="false" aria-controls="faq5_desc">
+                    IS IT POSSIBLE TO DEACTIVATE YOUR ACCOUNT?
+                </button>
+            </dt>
+            <dd>
+                <p id="faq5_desc" class="desc">
 
-        </p>
-    </dd>
-    <dt>
-        <button aria-expanded="false" aria-controls="faq5_desc">
-            IS IT POSSIBLE TO DEACTIVATE YOUR ACCOUNT
-        </button>
-    </dt>
-    <dd>
-        <p id="faq5_desc" class="desc">
+                    YES. You may deactivate your account your profile anytime. When wanting to reactivate the account please contact or email your nearest admin.
+                    <br /> Contact: 043 502 4558 <br />
+                    Email: <a>PEadmin@exposure.ac.za</a>
 
-            YES....
-
-        </p>
-    </dd>
-</dl>
+                </p>
+            </dd>
+            <dt>
+                <button aria-expanded="false" aria-controls="faq6_desc">
+                    IS A USER ALLOWED TO APPLY FOR A JOB FOR SOMEONE ELSE USING THEIR OWN ACCOUNT?
+                </button>
+            </dt>
+            <dd>
+                <p id="faq6_desc" class="desc">
+                    NO, This is not allowed as it affects the safety of using this app. Any user that wishes to apply for a job must register and apply using their own account.
+                    This is to make sure that we have identification of each user in the EXPOSURE community.<br />
+                    WARNING: Any user that breaks this rule will be suspended from using the app.
+                </p>
+            </dd>
+            <dt>
+                <button aria-expanded="false" aria-controls="faq7_desc">
+                    WHAT TO DO IF YOUR ACCOUNT HAS BEEN HACKED?
+                </button>
+            </dt>
+            <dd>
+                <p id="faq7_desc" class="desc">
+                    Contact your nearest administrator and ask for your account to be deactivated immediately then follow the procedures given to you by the admin in order to block
+                    the hacked account and get a new one.<br /> Contact: 043 502 4558 <br />
+                    Email: <a>PEadmin@exposure.ac.za</a>
+                </p>
+            </dd>
+        </dl>
+    </div><br/>
+    <div class="col-md-4"><img src="~/images/FAQ.jfif" alt="FAQ" width="300" height="300"></div>
+</div>

@@ -70,7 +70,6 @@ namespace Exposure.Web.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-
                         
             var model = new IndexViewModel
             {                                 
@@ -93,12 +92,10 @@ namespace Exposure.Web.Controllers
                     WorkAddressLine2 = UserManager.FindById(userId).Employer.WorkAddress2,
                     WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
                 };
-
                 var empSub = db.Employers.Include(m => m.Suburb).Where(m => m.SuburbID == model.Location);
                 ViewBag.empSub = empSub;
             }
             ApplicationUser user = UserManager.FindById(userId);
-
                         
             user = new ApplicationUser
             {
@@ -109,9 +106,7 @@ namespace Exposure.Web.Controllers
                 AddressLine2 = user.AddressLine2,
                 Email = user.Email,
                 SuburbID = user.SuburbID,
-                PhoneNumber = user.PhoneNumber
-               
-
+                PhoneNumber = user.PhoneNumber              
             };
            
             if(User.IsInRole("Worker"))
@@ -128,9 +123,7 @@ namespace Exposure.Web.Controllers
 
             var uSub = user.SuburbID;
 
-            var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID);
-
-            
+            var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID);            
 
             ViewBag.userSub = userSub;
             ViewBag.UserID = userId;
@@ -140,7 +133,29 @@ namespace Exposure.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles="Admin")]
+        public ActionResult AllUsers()
+        {
+            var users = db.Users.Include(w => w.Worker).Include(e => e.Employer).Where(j => j.Id != User.Identity.GetUserId());
+            ViewBag.Users = users;
 
+            return View();
+        }
+
+        [Authorize(Roles ="Admin")]
+        public ActionResult GeneralBusiness()
+        {
+            var gb = db.GeneralBusinesses.Count();
+
+            if(gb==0)
+            {
+                return RedirectToRoute("Default", new { controller = "GeneralBusinesses", action = "Create" });
+            }
+            else
+            {
+                return RedirectToRoute("Default", new { controller = "GeneralBusinesses", action = "Edit", id = 1 });
+            }
+        }
 
         //GET: /Cities/Index
         public ActionResult Cities()
@@ -165,8 +180,7 @@ namespace Exposure.Web.Controllers
         {
             return RedirectToRoute("Default", new { controller = "Jobs", action = "Index" });
         }
-
-        
+                
 
         public ActionResult ManageJobs()
         {

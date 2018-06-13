@@ -984,3 +984,9 @@ H:\New folder\Exposure\Exposure.Web\obj\Debug\Exposure.Web.dll
 H:\New folder\Exposure\Exposure.Web\obj\Debug\Exposure.Web.pdb
 H:\New folder\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.Date.resources
 H:\New folder\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.JobTimeFix.resources
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.JobTimeFix.resources
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.TimeNulls.resources
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.DANull.resources
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.DA.resources
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.UserStatus.resources
+C:\Users\Warren Jonas\Desktop\New folder\Exposure\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.GeneralBus.resources
