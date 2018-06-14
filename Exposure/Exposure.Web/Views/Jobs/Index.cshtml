@@ -3,7 +3,15 @@
 @{
     ViewBag.Title = "Jobs";
 }
-
+@if (TempData["JobSuccess"] != null)
+ {
+        <div class="alert alert-success alert-dismissable" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            @TempData["JobSuccess"]
+        </div>
+ }
 <h2>Jobs</h2>
 @if (User.IsInRole("Employer"))
 {
@@ -11,224 +19,224 @@
         @Html.ActionLink("Create New", "Create")
     </p>
     <div style="overflow-x:auto">
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Skill.SkillDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Suburb.SubName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AddressLine1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AddressLine2)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.DateAdvertised)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Completed)
-            </th>
-            <th></th>
-        </tr>
-        @if(Model == null)
-        {
-            <tr>No jobs to display</tr>
-        }
-        else
-        {
-           foreach (var item in Model)
-           {
+        <table class="table">
             <tr>
-                <td>
-                    <a href="@Url.Action("Edit", "Edit", new { id=item.JobID} )">
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </a>                    
-                </td>
-                 <td>
-                    @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Suburb.SubName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AddressLine1)
-                </td>
                 <th>
-                    @Html.DisplayFor(modelItem => item.AddressLine2)
+                    @Html.DisplayNameFor(model => model.Title)
                 </th>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateAdvertised)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rate)
-                </td>
-                <td>
-                    @if (item.Completed == false)
-                    {
-                        <p>No</p>
-                    }
-                    else
-                    {
-                        <p>Yes</p>
-                    }
-                </td>
-                <td style="text-align:center">                    
-                    <a href="@Url.Action("Update", "Jobs",new { id = item.JobID })" class="btn btn-default"> Update </a><br/>
-                    @Html.ActionLink("Details", "Details", new { id = item.JobID }) <br/>
-                    @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
-                </td>
-                                   
-                    
-                <
+                <th>
+                    @Html.DisplayNameFor(model => model.Skill.SkillDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Suburb.SubName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddressLine1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddressLine2)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.DateAdvertised)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Completed)
+                </th>
+                <th></th>
             </tr>
+            @if (Model == null)
+            {
+                <tr>No jobs to display</tr>
             }
-        }       
-    </table>
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("Edit", "Edit", new { id=item.JobID} )">
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Suburb.SubName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AddressLine1)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.AddressLine2)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateAdvertised)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rate)
+                        </td>
+                        <td>
+                            @if (item.Completed == false)
+                            {
+                                <p>No</p>
+                            }
+                            else
+                            {
+                                <p>Yes</p>
+                            }
+                        </td>
+                        <td style="text-align:center">
+                            <a href="@Url.Action("Update", "Jobs",new { id = item.JobID })" class="btn btn-default"> Update </a><br />
+                            @Html.ActionLink("Details", "Details", new { id = item.JobID }) <br />
+                            @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
+                        </td>
+
+
+                        <
+                    </tr>
+                }
+            }
+        </table>
     </div>
 }
 else if (User.IsInRole("Admin"))
 {
-    <div style="overflow-x:auto">        
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Employer.ApplicationUser.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Skill.SkillDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Suburb.SubName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AddressLine1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AddressLine2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateAdvertised)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Completed)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
+    <div style="overflow-x:auto">
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    <a href="@Url.Action("UserDetails", "Account", new {id= item.Employer.EmployerID })">@Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName)  @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.LastName) </a> 
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Suburb.SubName)
-                </td>
                 <th>
-                    @Html.DisplayFor(modelItem => item.AddressLine1)
+                    @Html.DisplayNameFor(model => model.Employer.ApplicationUser.FirstName)
                 </th>
                 <th>
-                    @Html.DisplayFor(modelItem => item.AddressLine2)
+                    @Html.DisplayNameFor(model => model.Skill.SkillDescription)
                 </th>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateAdvertised)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Completed)
-                </td>
-                <td>                    
-                    @Html.ActionLink("Details", "Details", new { id = item.JobID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Suburb.SubName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddressLine1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AddressLine2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateAdvertised)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Completed)
+                </th>
+                <th></th>
             </tr>
-        }
 
-    </table>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("UserDetails", "Account", new {id= item.Employer.EmployerID })">@Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName)  @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.LastName) </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Suburb.SubName)
+                    </td>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.AddressLine1)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.AddressLine2)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateAdvertised)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Completed)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.JobID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
+                    </td>
+                </tr>
+            }
+
+        </table>
     </div>
 }
 

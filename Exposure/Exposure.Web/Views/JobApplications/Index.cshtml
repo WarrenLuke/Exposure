@@ -3,7 +3,15 @@
 @{
     ViewBag.Title = "Index";
 }
-
+@if (TempData["ApplicationSuccess"] != null)
+{
+    <div class="alert alert-success alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["ApplicationSuccess"]
+    </div>
+}
 <h2>Job Applications</h2>
 <div class="col-md-2">
     <p>Category: </p>@Html.DropDownList("skill", null, "All", new { @class = "form-control" })

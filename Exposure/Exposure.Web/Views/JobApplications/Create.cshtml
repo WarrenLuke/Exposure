@@ -5,15 +5,23 @@
 }
 
 <h2>Job Application form</h2>
-
+@if (TempData["ApplicationSuccess"] != null)
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["ApplicationSuccess"]
+    </div>
+}
 <div class="form-group form-actions">
     <h3>Employer Details</h3>
     <div class="row">
-        
+
         <div class="col-md-2 text-center">
             <h4>Profile Picture</h4>
-            <hr/>
-            @foreach(var job in ViewBag.Job)
+            <hr />
+            @foreach (var job in ViewBag.Job)
             {
                 <img src="@Url.Action("ProfilePic","Home", new {id= job.Employer.ApplicationUser.Id } )" style="width:160px; height:160px; background:
                         #ff6a00;
@@ -21,14 +29,14 @@
                         -moz-border-radius:30px;
                         border-radius:90px;
                         padding:2px;
-                        box-shadow:0px 0px 20px #888"/>
+                        box-shadow:0px 0px 20px #888" />
             }
-            
+
         </div>
-        
+
         <div class="col-md-4">
             <h4>Personal Information</h4>
-            <hr/>
+            <hr />
             @foreach (var job in ViewBag.Job)
             {
                 <div class="row">
@@ -61,7 +69,7 @@
                 </div>
             }
         </div>
-        
+
         <div class="col-md-4">
             <h4>Job Details</h4>
             @using (Html.BeginForm())
@@ -69,7 +77,7 @@
                 @Html.AntiForgeryToken()
 
                 <div class="form-horizontal">
-                    
+
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @foreach (var job in ViewBag.Job)
@@ -78,7 +86,7 @@
                             <div class="col-md-3"><strong>Job:</strong></div>
                             <div class="col-md-5">@job.Title   </div>
                             @Html.Hidden("JobID")
-                            
+
                         </div>
 
                         <div class="row">
@@ -111,7 +119,7 @@
 
 
                         <div class="form-actions">
-                            <div class="col-md-offset-9 col-md-6">                               
+                            <div class="col-md-offset-9 col-md-6">
                                 <input type="submit" value="Apply" class="btn btn-default" />
                             </div>
                         </div>
@@ -122,8 +130,8 @@
     </div>
 </div>
 
-        
-   
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-        }
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

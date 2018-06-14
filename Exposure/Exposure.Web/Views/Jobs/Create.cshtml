@@ -6,7 +6,15 @@
 
 <h2>@ViewBag.Title</h2>
 <hr />
-
+@if (TempData["JobSuccess"] != null)
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["JobSuccess"]
+    </div>
+}
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -68,7 +76,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10" id="demo">
-                        @Html.EditorFor(model => model.StartDate,new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false" } })
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false" } })
                         @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger " })
                     </div>
                 </div>
@@ -141,36 +149,36 @@
     @Scripts.Render("~/Scripts/jquery.datetimepicker.js")
     @Scripts.Render("~/Scripts/jquery.min.js")
     <script type="text/javascript">
-        //$(function () {
-        //    $(".date-picker").datepicker({
-        //        changeMonth: true,
-        //        changeYear: true,
-        //        yearRange: "-100:+0",
-        //        dateFormat: 'dd-MM-yy',
-        //        parseDate: "dd-MM-yy"
+                //$(function () {
+                //    $(".date-picker").datepicker({
+                //        changeMonth: true,
+                //        changeYear: true,
+                //        yearRange: "-100:+0",
+                //        dateFormat: 'dd-MM-yy',
+                //        parseDate: "dd-MM-yy"
 
-        //    });
+                //    });
 
-        //    function toDate(selector) {
-        //        var from = $(selector).val.split("-")
-        //        return new Date(from[2], from[1] - 1, from[0])
-        //    }
+                //    function toDate(selector) {
+                //        var from = $(selector).val.split("-")
+                //        return new Date(from[2], from[1] - 1, from[0])
+                //    }
 
-        //    jQuery.validator.methods.date = function (value, element) {
-        //        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-        //        if (isChrome) {
-        //            var d = new Date();
-        //            return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
-        //        }
-        //        else {
-        //            return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
-        //        }
-        //    };
-        //});
+                //    jQuery.validator.methods.date = function (value, element) {
+                //        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+                //        if (isChrome) {
+                //            var d = new Date();
+                //            return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
+                //        }
+                //        else {
+                //            return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
+                //        }
+                //    };
+                //});
 
-        //$('#StartDate').datepicker({
-        //    minDate: "-0D"
-        //});
+                //$('#StartDate').datepicker({
+                //    minDate: "-0D"
+                //});
     </script>
     <style type="text/css">
         @Styles.Render("~/Content/themes/base/jquery-ui.css")

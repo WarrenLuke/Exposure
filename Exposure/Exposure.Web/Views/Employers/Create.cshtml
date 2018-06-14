@@ -5,12 +5,20 @@
 }
 
 <h2>Create</h2>
+@if (TempData["WorkDetails"] != null)
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["WorkDetails"]
+    </div>
+}
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Employer</h4>
         <hr />

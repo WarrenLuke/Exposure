@@ -84,15 +84,19 @@ namespace Exposure.Web.Controllers
             jobApplication.Response = Reply.Pending;
             var state = ModelState;
             
-            db.JobApplications.Add(jobApplication);
-            db.SaveChanges();
-            
-            return RedirectToRoute("Defualt", new { controler = "JobApplications", action = "Index" });
+            if(ModelState.IsValid)
+            {
+                db.JobApplications.Add(jobApplication);
+                db.SaveChanges();
+                TempData["ApplicationSuccess"] = "Your application has been submitted";
+                return RedirectToRoute("Defualt", new { controler = "JobApplications", action = "Index" });
+            }           
             
 
             ViewBag.JobID = jobApplication.JobID;
             ViewBag.Employer = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID.Equals(jobApplication.JobID));
             ViewBag.WorkerID = User.Identity.GetUserId();
+            TempData["ApplicationSuccess"] = "Your application was not submitted. Please review the all details on this form";
             return View(jobApplication);
         }
 

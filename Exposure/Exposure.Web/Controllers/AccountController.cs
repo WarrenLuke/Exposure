@@ -191,11 +191,13 @@ namespace Exposure.Web.Controllers
                 {
                     db.Entry(u).State = EntityState.Modified;
                     db.SaveChanges();
+                    TempData["PicUpdate"] = "Profile Picture Changed Successfully";
                     return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
                 }
                 catch
                 {
                     db.SaveChanges();
+                    TempData["PicUpdate"] = "Profile Picture Changed Successfully";
                     return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
                 }                  
                  
@@ -230,12 +232,14 @@ namespace Exposure.Web.Controllers
                 {
                     db.Entry(u).State = EntityState.Modified;
                     db.SaveChanges();
+                    TempData["PicUpdate"] = "Profile Picture Removed Successfully!";
                     return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
 
                 }
                 catch
                 {
                     db.SaveChanges();
+                    TempData["PicUpdate"] = "Profile Picture Removed Successfully";
                     return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
                 }
                 
@@ -292,8 +296,8 @@ namespace Exposure.Web.Controllers
                 {
                     db.SaveChanges();
                 }
-                
-                
+
+                TempData["EditProfile"] = "Personal Details Successfully changed";
                 return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
            }
             
@@ -301,7 +305,7 @@ namespace Exposure.Web.Controllers
             ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName", user.SuburbID);
             
             ViewBag.user = user;
-
+            TempData["EditProfile"] = "Failed updating Details. Please Try Again";
             return View(model);
 
         }
@@ -505,7 +509,7 @@ namespace Exposure.Web.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
-            return code == null ? View("Error") : View();
+            return View();
         }
 
         //

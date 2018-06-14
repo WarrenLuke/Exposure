@@ -63,6 +63,7 @@ namespace Exposure.Web.Controllers
             {
                 db.WorkerSkills.Add(workerSkill);
                 db.SaveChanges();
+                TempData["Skill"] = "Skill Added Successfully";
                 return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
             }
 

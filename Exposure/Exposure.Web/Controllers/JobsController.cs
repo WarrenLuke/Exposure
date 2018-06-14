@@ -222,6 +222,7 @@ namespace Exposure.Web.Controllers
             {
                 db.Jobs.Add(job);
                 db.SaveChanges();
+                TempData["JobSuccess"] = "Job Successfully created";
                 return RedirectToRoute("Default", new { controller = "Jobs", action = "Index", id=User.Identity.GetUserId() });
             }
 
@@ -229,6 +230,7 @@ namespace Exposure.Web.Controllers
             ViewBag.EmployerName = User.Identity.Name;
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", job.SkillID);
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", job.SuburbID);
+            TempData["JobSuccess"] = "Job could not be created. Please try again.";
             return View(job);
         }
 

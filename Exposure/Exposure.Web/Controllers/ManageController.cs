@@ -106,8 +106,14 @@ namespace Exposure.Web.Controllers
                 AddressLine2 = user.AddressLine2,
                 Email = user.Email,
                 SuburbID = user.SuburbID,
-                PhoneNumber = user.PhoneNumber              
+                PhoneNumber = user.PhoneNumber,
+                ProfilePic = user.ProfilePic
             };
+
+            if(user.ProfilePic==null)
+            {
+                TempData["Pic"] = "Please add a picture to help other users identity you";
+            }
            
             if(User.IsInRole("Worker"))
             {
@@ -119,6 +125,12 @@ namespace Exposure.Web.Controllers
 
                 var skills = db.WorkerSkills.Include(m => m.Skill).Include(m => m.Worker).OrderBy(m => m.Skill.SkillDescription).Where(m => m.WorkerID == userId);
                 ViewBag.Skills = skills;
+                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value != Reply.Pending).Count();
+            }
+
+            if(User.IsInRole("Employer"))
+            {
+                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value == Reply.Pending).Count();
             }
 
             var uSub = user.SuburbID;
@@ -129,6 +141,8 @@ namespace Exposure.Web.Controllers
             ViewBag.UserID = userId;
 
             ViewData["user"] = user;
+
+            
             
             return View(model);
         }
@@ -222,8 +236,6 @@ namespace Exposure.Web.Controllers
             return RedirectToRoute("Default", new { controller = "JobApplications", action = "Index" });
 
         }
-
-
       
 
         //
@@ -248,9 +260,7 @@ namespace Exposure.Web.Controllers
                 message = ManageMessageId.Error;
             }
             return RedirectToAction("ManageLogins", new { Message = message });
-        }
-
-       
+        }      
 
 
         //
@@ -368,18 +378,17 @@ namespace Exposure.Web.Controllers
         }
 
         //
-        // GET: /Manage/ChangePassword
+        // GET: /Manage/ChangePassword       
         public ActionResult ChangePassword()
         {
             return View();
         }
 
 
-
         //
         // POST: /Manage/ChangePassword
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]        
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)

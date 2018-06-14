@@ -61,11 +61,13 @@ namespace Exposure.Web.Controllers
             {
                 db.Employers.Add(employer);
                 db.SaveChanges();
+                TempData["WorkDetails"] = "Work details successfully updated";
                 return RedirectToRoute("Default", new {controller = "Manage", action="Index" });
             }
 
             
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", employer.SuburbID);
+            TempData["WorkDetails"] = "Work details could not be updated. Please enter valid details";
             return View(employer);
         }
 

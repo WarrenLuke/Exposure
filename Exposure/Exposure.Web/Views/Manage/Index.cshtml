@@ -36,11 +36,11 @@
 
                 </div>
                 @*<br />
-                <div class="col-md-offset-2 col-md-10">
-                    <a href="Manage/Incidents">
-                        <input type="submit" class="btn btn-default btn-lg" value="Manage Incidents" formaction="Incidents" />
-                    </a>
-                </div>*@
+                    <div class="col-md-offset-2 col-md-10">
+                        <a href="Manage/Incidents">
+                            <input type="submit" class="btn btn-default btn-lg" value="Manage Incidents" formaction="Incidents" />
+                        </a>
+                    </div>*@
                 <br />
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" class="btn btn-default btn-lg" value="Manage Suburbs" formaction=@Url.Action("Index", "Suburbs") />
@@ -64,10 +64,59 @@
     }
     else if (User.IsInRole("Employer"))
     {
-        
+
         var user = (ApplicationUser)ViewData["user"];
 
+        if (ViewBag.StatusMessage != null)
+        {
+            <div class="alert alert-info alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @ViewBag.StatusMessage
+            </div>
+        }
 
+        @if (TempData["WorkDetails"] != null)
+        {
+            <div class="alert alert-success alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @TempData["WorkDetails"]
+            </div>
+        }
+
+
+        if (TempData["Pic"] != null)
+        {
+            <div class="alert alert-warning alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Attention!</strong>@TempData["Pic"].
+            </div>
+        }
+
+        if (TempData["PicUpdate"] != null)
+        {
+            <div class="alert alert-success alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @TempData["PicUpdate"].
+            </div>
+        }
+
+        if (TempData["ProfileUpdate"] != null)
+        {
+            <div class="alert alert-success alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @TempData["ProfileUpdate"]
+            </div>
+        }
 
         <div class="form-group form-actions">
             <div class="row">
@@ -82,17 +131,21 @@
                         padding:2px;
                         box-shadow:0px 0px 20px #888" />
                     </div>
-                    <br/>
-                    @Html.ActionLink("Change Password", "ChangePassword")<br/>
+                    <br />
+                    @Html.ActionLink("Change Password", "ChangePassword")<br />
                     <a href="@Url.Action("UpdatePicture","Account", new { id = User.Identity.GetUserId()})">Update Profile Picture</a>
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     <div class="col-md-2"></div>
                     <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
                         <br />
-                        <input type="submit" class="btn btn-default"  value="Manage Jobs" formaction=@Url.Action("Index", "Jobs") }) />
+                        <input type="submit" class="btn btn-default" value="Manage Jobs" formaction=@Url.Action("Index", "Jobs") }) />
                         @*<input type="submit" class="btn btn-default"  value="Report Incident" formaction=@Url.Action("ReportIncident") />*@
-                        <input type="submit" class="btn btn-default"  value="Job Applicatons" formaction=@Url.Action("Index", "JobApplications") />
+                        <button type="submit" class="btn btn-default" formaction=@Url.Action("Index", "JobApplications")>
+                            Job Applications <span class="badge" style="color:#000000">
+                                @ViewBag.JobApp
+                            </span>
+                        </button>
                     </div>
                     <div class="col-md-2"></div>
                 </div>
@@ -113,26 +166,26 @@
                         <dd>     @user.Gender    </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.Suburb):</dt>
-                        <dd>     
+                        <dd>
                             @foreach (var item in ViewBag.userSub)
                             {
                                 @item.Suburb.SubName
-                            }    
+                            }
                         </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.AddressLine1):</dt>
                         <dd>     @user.AddressLine1  </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.AddressLine2):</dt>
-                        <dd>     
-                            @if(user.AddressLine2==null)
+                        <dd>
+                            @if (user.AddressLine2 == null)
                             {
                                 <p>None</p>
                             }
                             else
                             {
-                                @user.AddressLine2  
-                            }  
+                                @user.AddressLine2
+                            }
                         </dd>
                         <dt>@Html.DisplayNameFor(model => model.Email)</dt>
                         <dd>     @user.Email       </dd>
@@ -204,7 +257,7 @@
                                 {
                                     foreach (var item in ViewBag.empSub)
                                     {
-                                       @item.Suburb.SubName
+                                        @item.Suburb.SubName
                                     }
                                 }
                             </dd>
@@ -222,8 +275,8 @@
                         </dl>
                     </div>
                     <input type="submit" class="btn btn-default" value="Update Work Details" formaction=@Url.Action("UpdateWorkDetails") />
-                    
-                    
+
+
                 </div>
 
             </div>
@@ -233,6 +286,46 @@
     else if (User.IsInRole("Worker"))
     {
         var user = (ApplicationUser)ViewData["user"];
+
+        if (ViewBag.StatusMessage != null)
+        {
+            <div class="alert alert-info alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @ViewBag.StatusMessage
+            </div>
+        }
+
+        if (TempData["Pic"] != null)
+        {
+            <div class="alert alert-warning alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Attention</strong>@TempData["Pic"].
+            </div>
+        }
+
+        if (TempData["PicUpdate"] != null)
+        {
+            <div class="alert alert-success alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @TempData["PicUpdate"].
+            </div>
+        }
+
+        if (TempData["EditProfile"] != null)
+        {
+            <div class="alert alert-success alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @TempData["EditProfile"]
+            </div>
+        }
 
         <div class="form-group form-actions">
             <div class="row">
@@ -249,14 +342,18 @@
                         box-shadow:0px 0px 20px #888" />
 
                     </div>
-                    <br/>
+                    <br />
                     @Html.ActionLink("Change Password", "ChangePassword")   <br />
-                    <br/>
+                    <br />
                     <div class="col-md-2"></div>
                     <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
                         <input type="submit" class="btn btn-default" value="Job History" formaction=@Url.Action("ManageJobs") />
                         @*<input type="submit" class="btn btn-default" value="Report Incident" formaction=@Url.Action("ReportIncident") />*@
-                        <input type="submit" class="btn btn-default" value="Job Applicatons" formaction=@Url.Action("JobApplications") />
+                        <button type="submit" class="btn btn-default" formaction=@Url.Action("Index", "JobApplications")>
+                            Job Applications <span class="badge" style="color:#000000">
+                                @ViewBag.JobApp
+                            </span>
+                        </button>
                     </div>
                     <div class="col-md-2"></div>
                 </div>
@@ -277,7 +374,7 @@
                         <dd>     @user.Gender    </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.Suburb):</dt>
-                        <dd>     
+                        <dd>
                             @foreach (var item in ViewBag.userSub)
                             {
                                 @item.Suburb.SubName
@@ -289,14 +386,14 @@
                         <dd>     @user.AddressLine1  </dd>
 
                         <dt>@Html.DisplayNameFor(model => model.AddressLine2):</dt>
-                        <dd>  
-                            @if(user.AddressLine2==null)
+                        <dd>
+                            @if (user.AddressLine2 == null)
                             {
                                 <p>None</p>
                             }
                             else
                             {
-                                @user.AddressLine2  
+                                @user.AddressLine2
                             }
                         </dd>
 
@@ -319,6 +416,15 @@
                 </div>
 
                 <div class="col-md-4">
+                    @if (TempData["Skill"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissable" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            @TempData["Skill"]
+                        </div>
+                    }
                     <h3>SKILLS</h3>
                     <div class="row col-md-12" style="height: 250px; overflow:auto">
                         <table class="table ">
@@ -340,117 +446,117 @@
                                         @Html.ActionLink("Edit", "EditSkill", new { id = User.Identity.GetUserId(), skill = ws.Skill.SkillID })
                                     </td>
                                 </tr>
-                             }
+                            }
                         </table>
                     </div>
                     <input type="submit" class=" btn btn-default" value="Add Skill" formaction=@Url.Action("AddSkill") />
                 </div>
-             </div>
+            </div>
         </div>
 
 
+    }
+
+
+}
+
+
+@*<p class="text-success">@ViewBag.StatusMessage</p>
+    <div>
+        <h4>Change your account settings</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>First Name:</dt>
+            <dd>
+                @(Model.FirstName ?? "None")
+            </dd>
+            <dt>Last Name:</dt>
+            <dd>
+                @Model.LastName
+            </dd>
+            <dt>Address Line 1:</dt>
+            <dd>
+                @Model.AddressLine1
+            </dd>
+            <dt>Address Line 2:</dt>
+            <dd>
+                @Model.AddressLine2
+
+            </dd>
+            <dt></dt>
+            <dt>Password:</dt>
+            <dd>
+                [
+                @if (Model.HasPassword)
+                {
+                    @Html.ActionLink("Change your password", "ChangePassword")
                 }
-
-
+                else
+                {
+                    @Html.ActionLink("Create", "SetPassword")
                 }
+                ]
+            </dd>
+            @*<dt>External Logins:</dt>
+                <dd>
+                    @Model.Logins.Count [
+                    @Html.ActionLink("Manage", "ManageLogins") ]
+                </dd>*@
+@*
+    Phone Numbers can used as a second factor of verification in a two-factor authentication system.
 
+     See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+        for details on setting up this ASP.NET application to support two-factor authentication using SMS.
 
-                @*<p class="text-success">@ViewBag.StatusMessage</p>
-                    <div>
-                        <h4>Change your account settings</h4>
-                        <hr />
-                        <dl class="dl-horizontal">
-                            <dt>First Name:</dt>
-                            <dd>
-                                @(Model.FirstName ?? "None")
-                            </dd>
-                            <dt>Last Name:</dt>
-                            <dd>
-                                @Model.LastName
-                            </dd>
-                            <dt>Address Line 1:</dt>
-                            <dd>
-                                @Model.AddressLine1
-                            </dd>
-                            <dt>Address Line 2:</dt>
-                            <dd>
-                                @Model.AddressLine2
+     Uncomment the following block after you have set up two-factor authentication
+*@
 
-                            </dd>
-                            <dt></dt>
-                            <dt>Password:</dt>
-                            <dd>
-                                [
-                                @if (Model.HasPassword)
-                                {
-                                    @Html.ActionLink("Change your password", "ChangePassword")
-                                }
-                                else
-                                {
-                                    @Html.ActionLink("Create", "SetPassword")
-                                }
-                                ]
-                            </dd>
-                            @*<dt>External Logins:</dt>
-                                <dd>
-                                    @Model.Logins.Count [
-                                    @Html.ActionLink("Manage", "ManageLogins") ]
-                                </dd>*@
-                @*
-                    Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+@*<dt>Phone Number:</dt>
+    <dd>
+        @(Model.PhoneNumber ?? "None")
+        @if (Model.PhoneNumber != null)
+        {
+            <br />
+            <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+            using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+            }
+        }
 
-                     See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                        for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+        else
+        {
+            <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")</text>
+        }
+    </dd>*@
 
-                     Uncomment the following block after you have set up two-factor authentication
-                *@
-
-                @*<dt>Phone Number:</dt>
-                    <dd>
-                        @(Model.PhoneNumber ?? "None")
-                        @if (Model.PhoneNumber != null)
-                        {
-                            <br />
-                            <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                            using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
-                            }
-                        }
-
-                        else
-                        {
-                            <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")</text>
-                        }
-                    </dd>*@
-
-                @*<dt>Two-Factor Authentication:</dt>
-                    <dd>
-                        <p>
-                            There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                            for details on setting up this ASP.NET application to support two-factor authentication.
-                        </p>*@
-                @*@if (Model.TwoFactor)
-                    {
-                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <text>Enabled
-                            <input type="submit" value="Disable" class="btn btn-link" />
-                            </text>
-                        }
-                    }
-                    else
-                    {
-                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <text>Disabled
-                            <input type="submit" value="Enable" class="btn btn-link" />
-                            </text>
-                        }
-                    }*@
-                @*</dd>*@
-                @*</dl>
-                    </div>*@
+@*<dt>Two-Factor Authentication:</dt>
+    <dd>
+        <p>
+            There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+            for details on setting up this ASP.NET application to support two-factor authentication.
+        </p>*@
+@*@if (Model.TwoFactor)
+    {
+        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <text>Enabled
+            <input type="submit" value="Disable" class="btn btn-link" />
+            </text>
+        }
+    }
+    else
+    {
+        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <text>Disabled
+            <input type="submit" value="Enable" class="btn btn-link" />
+            </text>
+        }
+    }*@
+@*</dd>*@
+@*</dl>
+    </div>*@
