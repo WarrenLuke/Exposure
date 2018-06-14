@@ -87,4 +87,12 @@ namespace Exposure.Entities
         public virtual Employer Employer { get; set; }      
        
     }
+
+    //public class CustomDateAttribute:RangeAttribute
+    //{
+    //    public CustomDateAttribute()
+    //        : base(typeof(DateTime), DateTime.UtcNow.ToShortDateString())
+                  
+    //    { }
+    //}
 }

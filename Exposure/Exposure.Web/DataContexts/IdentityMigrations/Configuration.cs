@@ -195,7 +195,7 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
 
             context.Skills.AddOrUpdate(
                 sk => sk.SkillDescription,
-                new Skill() { SkillDescription = "Painting", Recom_Rate = 25 },
+                new Skill() { SkillDescription = "Painting", Recom_Rate = 10 },
                 new Skill() { SkillDescription = "Gardening", Recom_Rate = 15 },
                 new Skill() { SkillDescription = "Plumbing", Recom_Rate = 25 },
                 new Skill() { SkillDescription = "Tiling", Recom_Rate = 30 },
@@ -203,24 +203,24 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                 new Skill() { SkillDescription = "Carpentry", Recom_Rate = 40 }
                 );
 
-            if (!context.Users.Any(u => u.UserName == "Admin"))
-            {
-                var store = new UserStore<ApplicationUser>(context);
-                var manager = new UserManager<ApplicationUser>(store);
-                var user = new ApplicationUser
-                {
-                    FirstName = "Exposure",
-                    LastName = "Admin",
-                    AddressLine1 = "University Way",
-                    Email = "admin@exposure.co.za",
-                    UserName = "admin",
-                    SuburbID = 115,
-                    Gender = "Male"
-                };
+            //if (!context.Users.Any(u => u.UserName == "Admin"))
+            //{
+            //    var store = new UserStore<ApplicationUser>(context);
+            //    var manager = new UserManager<ApplicationUser>(store);
+            //    var user = new ApplicationUser
+            //    {
+            //        FirstName = "Exposure",
+            //        LastName = "Admin",
+            //        AddressLine1 = "University Way",
+            //        Email = "admin@exposure.com",
+            //        UserName = "admin",
+            //        SuburbID = 1114,
+            //        Gender = "Male"
+            //    };
 
-                manager.Create(user, "ChangeItAsap!");
-                manager.AddToRole(user.Id, "Admin");
-            }
+            //    manager.Create(user, "ChangeItAsap!");
+            //    manager.AddToRole(user.Id, "Admin");
+            //}
 
 
 

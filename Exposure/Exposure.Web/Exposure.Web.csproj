@@ -328,6 +328,18 @@
     <Compile Include="DataContexts\IdentityMigrations\201806130129425_GeneralBus.Designer.cs">
       <DependentUpon>201806130129425_GeneralBus.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806131617078_RecomRateCurrency.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806131617078_RecomRateCurrency.Designer.cs">
+      <DependentUpon>201806131617078_RecomRateCurrency.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806131629279_asdwds.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806131629279_asdwds.Designer.cs">
+      <DependentUpon>201806131629279_asdwds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201806131644071_SkillRecom.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201806131644071_SkillRecom.Designer.cs">
+      <DependentUpon>201806131644071_SkillRecom.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -508,12 +520,14 @@
     <Content Include="Views\Jobs\Update.cshtml" />
     <Content Include="Views\Jobs\Search.cshtml" />
     <Content Include="Views\Account\UserDetails.cshtml" />
-    <Content Include="Views\Manage\AlUsers.cshtml" />
+    <Content Include="Views\Manage\AllUsers.cshtml" />
     <Content Include="Views\GeneralBusinesses\Create.cshtml" />
     <Content Include="Views\GeneralBusinesses\Delete.cshtml" />
     <Content Include="Views\GeneralBusinesses\Details.cshtml" />
     <Content Include="Views\GeneralBusinesses\Edit.cshtml" />
     <Content Include="Views\GeneralBusinesses\Index.cshtml" />
+    <Content Include="Views\Account\UpdatePicture.cshtml" />
+    <Content Include="Views\Account\RemovePicture.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -621,6 +635,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201806130129425_GeneralBus.resx">
       <DependentUpon>201806130129425_GeneralBus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806131617078_RecomRateCurrency.resx">
+      <DependentUpon>201806131617078_RecomRateCurrency.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806131629279_asdwds.resx">
+      <DependentUpon>201806131629279_asdwds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201806131644071_SkillRecom.resx">
+      <DependentUpon>201806131644071_SkillRecom.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

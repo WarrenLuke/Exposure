@@ -42,10 +42,11 @@
         {
             <tr>
                 <td>                
-                    <a href="@Url.Action("Create", "JobApplications", new { id = item.JobID })">@Html.DisplayFor(modelItem => item.Title)</a><br />
+                    <a href="@Url.Action("Create", "JobApplications", new { id = item.JobID })" data-toggle="tooltip" data-placement="right" title="Click Here To Apply">@Html.DisplayFor(modelItem => item.Title)</a><br />
                     <strong>Location:</strong> @Html.DisplayFor(modelItem => item.Suburb.SubName) <br />
                     <strong>Rate(ZAR):</strong> @Html.DisplayFor(modelItem => item.Rate) <br />
                     <strong>Start Date:</strong> @Html.DisplayFor(modelItem => item.StartDate)<br />
+                    <strong>Start Time:</strong> @Html.DisplayFor(modeilItem => item.StartTime)<br/>
                     <strong>Employer:</strong> @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName)  @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.LastName)<br />
                     <strong>Description: </strong> <br/>
                     @Html.DisplayFor(modelItem=>item.Description)<br />                                
@@ -62,6 +63,11 @@
 </div>
 
 <br/>
+<script>
+    $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 @*Page @(Model.PageCount <Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder= ViewBag.CurrentSort,

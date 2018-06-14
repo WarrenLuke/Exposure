@@ -64,8 +64,7 @@
     }
     else if (User.IsInRole("Employer"))
     {
-
-        var emp = (Employer)ViewData["employer"];
+        
         var user = (ApplicationUser)ViewData["user"];
 
 
@@ -84,13 +83,14 @@
                         box-shadow:0px 0px 20px #888" />
                     </div>
                     <br/>
-                    @Html.ActionLink("Change Password", "ChangePassword")
+                    @Html.ActionLink("Change Password", "ChangePassword")<br/>
+                    <a href="@Url.Action("UpdatePicture","Account", new { id = User.Identity.GetUserId()})">Update Profile Picture</a>
                     <br/>
                     <br/>
                     <div class="col-md-2"></div>
                     <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
                         <br />
-                        <input type="submit" class="btn btn-default"  value="Manage Jobs" formaction=@Url.Action("ManageJobs") />
+                        <input type="submit" class="btn btn-default"  value="Manage Jobs" formaction=@Url.Action("Index", "Jobs") }) />
                         @*<input type="submit" class="btn btn-default"  value="Report Incident" formaction=@Url.Action("ReportIncident") />*@
                         <input type="submit" class="btn btn-default"  value="Job Applicatons" formaction=@Url.Action("Index", "JobApplications") />
                     </div>

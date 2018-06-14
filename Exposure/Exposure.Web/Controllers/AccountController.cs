@@ -95,7 +95,8 @@ namespace Exposure.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    TempData["Notice"] = "Log In Successfull. Directing to profile ...";
+                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -141,7 +142,107 @@ namespace Exposure.Web.Controllers
 
 
         }
+        //GET: /Account/UpdatePicture
+        public ActionResult UpdatePicture(string id)
+        {
+            if(id==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
+            ApplicationUser user = UserManager.FindById(id);
+
+            if(user==null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(user);
+
+        }
+
+        //POST: /Account/UpdatePicture
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UpdatePicture([Bind(Exclude ="ProfilePic")]ApplicationUser user)
+        {
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUser u = await UserManager.FindByIdAsync(userId);
+
+            byte[] imageData = null;
+
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase poImgFile = Request.Files["ProfilePic"];
+                var image = poImgFile;
+                using (var binary = new BinaryReader(poImgFile.InputStream))
+                {
+                    imageData = binary.ReadBytes(poImgFile.ContentLength);
+                }
+            }
+
+            u.ProfilePic = imageData;
+            var result = await UserManager.UpdateAsync(u);
+
+            if(result.Succeeded)
+            {
+                try
+                {
+                    db.Entry(u).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+                }
+                catch
+                {
+                    db.SaveChanges();
+                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+                }                  
+                 
+            }
+            return View(user);
+        }
+
+        public ActionResult RemovePicture()
+        {
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUser user = UserManager.FindById(userId);
+
+            return View();
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemovePicture(ApplicationUser user)
+        {
+            var userId = User.Identity.GetUserId();
+            ApplicationUser u = await UserManager.FindByIdAsync(userId);
+
+            u.ProfilePic = null;
+
+            var result = await UserManager.UpdateAsync(u);
+
+            if(result.Succeeded)
+            {
+                try
+                {
+                    db.Entry(u).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+
+                }
+                catch
+                {
+                    db.SaveChanges();
+                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
+                }
+                
+            }
+
+            return RedirectToRoute("Default",new {controler="Account", action="UpdatePicture", id= user.Id } );
+        }
 
         //GET: /Account/EditProfile
         public ActionResult EditProfile(string id)
@@ -283,18 +384,7 @@ namespace Exposure.Web.Controllers
             {
                 ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
 
-                byte[] imageData = null;
-
-                if (Request.Files.Count > 0)
-                {
-                    HttpPostedFileBase poImgFile = Request.Files["ProfilePic"];
-                    var image = poImgFile;
-                    using (var binary = new BinaryReader(poImgFile.InputStream))
-                    {
-                        imageData = binary.ReadBytes(poImgFile.ContentLength);
-                    }
-
-                }
+                
 
                 var user = new ApplicationUser
                 {
@@ -309,7 +399,7 @@ namespace Exposure.Web.Controllers
                     SuburbID = model.SuburbID
                 };
 
-                user.ProfilePic = imageData;
+                
 
                 var role = model.Role;
                 var result = await UserManager.CreateAsync(user, model.Password);

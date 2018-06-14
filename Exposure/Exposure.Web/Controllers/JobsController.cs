@@ -55,6 +55,7 @@ namespace Exposure.Web.Controllers
             return View(jobs);
         }
 
+        [AllowAnonymous]
         public ActionResult Search(string currentFilter,string sortOrder, int? skill, string search, int? page, int? location)
         {                      
 
@@ -196,7 +197,8 @@ namespace Exposure.Web.Controllers
         [Authorize(Roles =("Admin, Employer"))]
         public ActionResult Create()
         {
-            
+            var skills = db.Skills.ToList();
+            ViewBag.Skills = skills;
             ViewBag.EmployerName = User.Identity.Name;
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription");
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName");
@@ -220,7 +222,7 @@ namespace Exposure.Web.Controllers
             {
                 db.Jobs.Add(job);
                 db.SaveChanges();
-                return RedirectToRoute("Default", new { controller = "Jobs", action = "Index" });
+                return RedirectToRoute("Default", new { controller = "Jobs", action = "Index", id=User.Identity.GetUserId() });
             }
 
             
@@ -232,16 +234,10 @@ namespace Exposure.Web.Controllers
 
         // GET: Jobs/Edit/5
         public ActionResult Edit(int? id)
-        {
-            var SkillsLst = new List<string>();
+        {           
+                    
 
-            var SkillsQry = from d in db.Skills
-                            orderby d.SkillDescription
-                            select d.SkillDescription;
-
-            SkillsLst.AddRange(SkillsQry.Distinct());
-
-            ViewBag.jobSkills = new SelectList(SkillsLst, "SkillID", "SkillDescription");
+            ViewBag.jobSkills = new SelectList(db.Skills, "SkillID", "SkillDescription");
 
             if(id == null)
             {
@@ -284,24 +280,16 @@ namespace Exposure.Web.Controllers
                 {
                     db.Entry(j).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new {id=User.Identity.GetUserId() });
                 }
                 catch
                 {
                     db.SaveChanges();
-                }               
-                
-                
-            }
-
-            var SkillsLst = new List<string>();
-
-            var SkillsQry = from d in db.Skills
-                            orderby d.SkillDescription
-                            select d.SkillDescription;
-
-            SkillsLst.AddRange(SkillsQry.Distinct());
-            ViewBag.jobSkills = new SelectList(SkillsLst, "SkillID", "SkillDescription");
+                    return RedirectToAction("Index", new { id = User.Identity.GetUserId() });
+                }
+            }          
+                        
+            ViewBag.jobSkills = new SelectList(db.Skills, "SkillID", "SkillDescription");
             
             return View(job);
         }
