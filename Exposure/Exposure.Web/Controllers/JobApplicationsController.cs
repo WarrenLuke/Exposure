@@ -83,6 +83,13 @@ namespace Exposure.Web.Controllers
             jobApplication.WorkerID = User.Identity.GetUserId();
             jobApplication.Response = Reply.Pending;
             var state = ModelState;
+            var apps = db.JobApplications.Where(w => w.WorkerID == User.Identity.GetUserId()).Where(j => j.JobID == jobApplication.JobID);            
+            if(apps != null)
+            {
+                TempData["ApplicationTrue"] = "You have already applied for this Job. Please select a different one.";
+                return RedirectToAction("Create", jobApplication.JobID);
+            }
+
             
             if(ModelState.IsValid)
             {
