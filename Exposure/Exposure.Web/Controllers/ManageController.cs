@@ -125,12 +125,12 @@ namespace Exposure.Web.Controllers
 
                 var skills = db.WorkerSkills.Include(m => m.Skill).Include(m => m.Worker).OrderBy(m => m.Skill.SkillDescription).Where(m => m.WorkerID == userId);
                 ViewBag.Skills = skills;
-                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value != Reply.Pending).Count();
+                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value != Reply.Pending).Where(w=>w.WorkerID==userId).Count();
             }
 
             if(User.IsInRole("Employer"))
             {
-                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value == Reply.Pending).Count();
+                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value == Reply.Pending).Where(e=>e.Job.EmployerID== userId).Count();
             }
 
             var uSub = user.SuburbID;

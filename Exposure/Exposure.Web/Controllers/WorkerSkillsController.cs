@@ -56,8 +56,17 @@ namespace Exposure.Web.Controllers
         public ActionResult Create([Bind(Exclude ="WorkerID" ,Include = "SkillID,YearsOfExperience")] WorkerSkill workerSkill)
         {
             string user = User.Identity.GetUserId();
+            
 
             workerSkill.WorkerID = user;
+            var result =db.WorkerSkills.Find(user, workerSkill.SkillID);
+            if (result != null)
+            {
+                TempData["exist"] = "You already added this skill. Please select a differnt one.";
+                ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", workerSkill.SkillID);
+                ViewBag.WorkerID = User.Identity.GetUserId();
+                return View(workerSkill);
+            }
 
             if (ModelState.IsValid)
             {

@@ -1,0 +1,197 @@
+﻿@model Exposure.Entities.Job
+
+@{
+    ViewBag.Title = "Create Job";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@if (TempData["JobSuccess"] != null)
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["JobSuccess"]
+    </div>
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h3>Job Details</h3>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SkillID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SkillID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SkillID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextArea("Description", new { @class = "form-control", rows = 5, columns = 70 })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SuburbID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SuburbID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SuburbID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AddressLine1, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AddressLine1, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AddressLine2, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AddressLine2, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10" id="demo">
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false" } })
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger " })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false", id = "StartDate" } })
+                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10 bfh-timepicker">
+                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control" } }) <a href="#" data-toggle="tooltip" title="This is the rate per day in Rands that you are willing to pay the worker"> What is this?<span class="glyphicon glyphicon-question-sign"></span></a>
+                        @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+            <br /><br />
+            <div class=" col-md-offset-1 col-md-4 content">
+                <h3>Recommended Rate for Different Skills</h3>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6"><strong>Skill</strong> </div><div class="col-md-6"><strong>Hourly Rate(R)</strong></div>
+                </div>
+                @foreach (var skill in ViewBag.Skills)
+                {
+                    <div class="row" style="text-align:left">
+                        <div class="col-md-6">@skill.SkillDescription</div><div class="col-md-6">@skill.Recom_Rate</div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Profile", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery-3.1.1.min.js")
+    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js")
+    @Scripts.Render("~/Scripts/jquery.datetimepicker.js")
+    @Scripts.Render("~/Scripts/jquery.min.js")
+    <script type="text/javascript">
+                //$(function () {
+                //    $(".date-picker").datepicker({
+                //        changeMonth: true,
+                //        changeYear: true,
+                //        yearRange: "-100:+0",
+                //        dateFormat: 'dd-MM-yy',
+                //        parseDate: "dd-MM-yy"
+
+                //    });
+
+                //    function toDate(selector) {
+                //        var from = $(selector).val.split("-")
+                //        return new Date(from[2], from[1] - 1, from[0])
+                //    }
+
+                //    jQuery.validator.methods.date = function (value, element) {
+                //        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+                //        if (isChrome) {
+                //            var d = new Date();
+                //            return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
+                //        }
+                //        else {
+                //            return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
+                //        }
+                //    };
+                //});
+
+                //$('#StartDate').datepicker({
+                //    minDate: "-0D"
+                //});
+    </script>
+    <style type="text/css">
+        @Styles.Render("~/Content/themes/base/jquery-ui.css")
+        @Styles.Render("~/Content/themes/base/datepicker.css")
+        @Styles.Render("~/Content/themes/base/core.css")
+        @Styles.Render("~/Content/themes/base/theme.css")
+        @Styles.Render("~/Content/themes/base/jquery.datetimepicker.min.css")
+        #minicart {
+            display: none;
+        }
+
+        #ShowCart:hover + #minicart {
+            display: block;
+        }
+    </style>
+}

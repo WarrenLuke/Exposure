@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "All Users";
+}
+
+<h2>All Users</h2>
+<table>
+    <tr>
+        <th>Profile Picture</th>
+        <th>Full Name</th>
+        <th>Gender</th>
+        <th>Address</th>
+        <th>Email</th>
+        <th>Phone No.</th>
+    </tr>
+
+    @foreach (var item in ViewBag.Users)
+    {
+    <tr>
+        <td><img src="@Url.Action("ProfilePic","Home", new {id= item.Id } )" style="width:160px; height:160px; background:
+                        #ff6a00;
+                        margin:auto;
+                        -moz-border-radius:30px;
+                        border-radius:90px;
+                        padding:2px;
+                        box-shadow:0px 0px 20px #888" /></td>
+        <td>@item.FirstName @item.LastName</td>
+        <td>@item.Gender</td>
+        <td>
+            @item.AddressLine1<br/>
+            @if (item.AddressLine2 != null)
+            {
+                @item.AddressLine2; <br/>
+            }
+            @item.Suburb.SuburbID.SubName<br/>
+            @item.Suburb.City.CityName
+        </td>
+        <td>@item.Email</td>
+        <td>@item.PhoneNumber</td>
+    </tr>
+
+    }
+
+</table>
+

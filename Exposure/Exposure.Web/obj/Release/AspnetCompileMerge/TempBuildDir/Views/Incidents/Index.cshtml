@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Exposure.Entities.Incident>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.JobApplications.Motivation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reporter)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Offender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Progress)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.JobApplications.Motivation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Reporter)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Offender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Progress)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IncidentID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IncidentID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IncidentID })
+        </td>
+    </tr>
+}
+
+</table>

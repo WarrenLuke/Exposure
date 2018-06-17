@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "Profile";
+}
+
+<h2>User Profile</h2>
+
+@foreach (var user in ViewBag.User)
+{   
+      <div class="row">
+            <div class="col-md-3 text-center">
+                <h4>Profile Picture</h4>
+                <hr />              
+                     <img src="@Url.Action("ProfilePic","Home", new {id= user.Id } )" style="width:160px; height:160px; background:
+                            #ff6a00;
+                            margin:auto;
+                            -moz-border-radius:30px;
+                            border-radius:90px;
+                            padding:2px;
+                            box-shadow:0px 0px 20px #888" />
+                
+            </div>
+
+            <div class="col-md-5">
+                <h4>Personal Information</h4>
+                <hr />               
+                    <div class="row">
+                        <div class="col-md-6"><strong>Full Name:</strong> </div>  <div class="col-md-6">@user.FirstName @user.LastName</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6"><strong>Gender:</strong> </div> <div class="col-md-6"> @user.Gender</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6"><strong>Employer Address:</strong></div>
+                        <div class="col-md-6">
+                            @user.AddressLine1<br />
+                            @if (user.AddressLine2 != null)
+                            {
+                                @user.AddressLine2; <br />
+                            }
+                            @user.Suburb.SubName<br />
+                            @user.Suburb.City.CityName
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6"><strong>Employer Email:</strong></div> <div class="col-md-6">@user.Email</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6"><strong>Employer Contact No.:</strong></div> <div class="col-md-6">@user.PhoneNumber</div>
+                    </div>
+                
+            </div>
+               @if (ViewBag.Role == "Employer")
+               {
+                   
+                <div class="col-md-4">
+                    <h4>Work Details</h4>
+                   <hr/>
+                    <div class="row">
+                        <div class="col-md-5"><strong>Company Name</strong></div>
+                        <div class="col-md-6">
+                            @if (@user.Employer.WorkName == null)
+                            {
+                               <p>None</p>
+                            }
+                            else
+                            {
+                                @user.Employer.WorkName
+                            }                         
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5"><strong>Contact No.:</strong></div>
+                        <div class="col-md-6">
+                            @if (user.Employer.WorkNumber == null)
+                            {
+                               <p>None</p>
+                            }
+                            else
+                            {
+                                @user.Employer.WorkNumber
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5"><strong>Location:</strong></div>
+                        <div class="col-md-6">
+                            @if (user.Employer.WorkName == null)
+                            {
+                                <p>None</p>
+                            }
+                            else
+                            {
+                                @user.Employer.WorkAddress1<br/>
+                                @user.Employer.WorkAddress2<br/>
+                                @user.Employer.Suburb.SubName<br/>
+                                @user.Employer.Suburb.City.CityName
+                            }                    
+                        </div>
+                    </div>
+                </div>
+               }
+               else
+               {
+                   <div class="col-md-4">
+                       <h3>Skills</h3>
+                        <div class="row col-md-12" style="height: 250px; overflow:auto">
+                            <table class="table ">
+                                <tr>
+                                    <th>Skill</th>
+                                    <th>Years of Experience</th>
+                                    <th></th>
+                                </tr>
+                                @foreach (var ws in ViewBag.Skills)
+                                {
+                                    <tr>
+                                        <td>
+                                            @ws.Skill.SkillDescription
+                                        </td>
+                                        <td>
+                                            @ws.YearsOfExperience
+                                        </td>                                    
+                                    </tr>
+                                 }
+                            </table>
+                       </div>
+                   </div>
+               }
+        </div>
+
+ }
+    
+
+
+
+
+
+

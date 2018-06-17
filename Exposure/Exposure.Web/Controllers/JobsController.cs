@@ -23,33 +23,50 @@ namespace Exposure.Web.Controllers
         {
 
             ViewBag.Skills = new SelectList(db.Skills, "SkillID", "SkillDescription");
+            var jobs = db.Jobs.Include(j => j.Employer);
+            var jobsHistory = db.JobApplications.Include(j => j.Job);
 
-            var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised);
+            if (User.IsInRole("Admin"))
+            {
+                jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised);
+            }
+            else if(User.IsInRole("Worker"))
+            {
+                var userId = User.Identity.GetUserId();
+                jobsHistory = db.JobApplications.Include(j => j.Job.Employer).Include(j => j.Job.Skill).Include(j => j.Job.Suburb).Include(j=>j.Job).OrderBy(j => j.Job.DateAdvertised).Where(j =>j.WorkerID==userId).Where(j=>j.Job.Completed==true);
+            } 
+            else if(User.IsInRole("Employer"))
+            {
+                var userId = User.Identity.GetUserId();
+                jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised).Where(j => j.Employer.EmployerID == userId);
+
+            }
 
 
             if (!String.IsNullOrEmpty(id))
             {
-                jobs = jobs.Where(j => j.EmployerID.Equals(id)).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.EmployerID.Equals(id)).OrderBy(j => j.DateAdvertised);
             }
 
             if (skill != null)
             {
-                jobs = jobs.Where(j => j.SkillID == skill).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.SkillID == skill).OrderBy(j => j.DateAdvertised);
             }
 
             if (startDate != null)
             {
-                jobs = jobs.Where(j => j.StartDate >= startDate).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.StartDate >= startDate).OrderBy(j => j.DateAdvertised);
             }
 
             if (!String.IsNullOrEmpty(search))
             {
-                jobs = jobs.Where(j => j.Title.Contains(search)).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.Title.Contains(search)).OrderBy(j => j.DateAdvertised);
             }
             int pageSize = 3;
             int pageNumber = (page ?? 1);
             
             ViewBag.Jobs = jobs;
+            ViewBag.JobHistory = jobsHistory;
 
 
             return View(jobs);
@@ -147,7 +164,7 @@ namespace Exposure.Web.Controllers
             ViewBag.JobID = id;
             ViewBag.JobStart = Convert.ToDateTime(job.StartDate);
             ViewBag.JobEnd = Convert.ToDateTime(job.EndDate);
-
+            ViewBag.SuburbID = new SelectList(db.Suburbs,"SuburbID", "SubName", job.SuburbID);
             return View(job);
 
         }
@@ -173,6 +190,7 @@ namespace Exposure.Web.Controllers
             {
                 ViewBag.Job = db.Jobs.Where(j => j.JobID == job.JobID);
                 ViewBag.JobID = job.JobID;
+                ViewBag.SuburbID = new SelectList(db.Suburbs, job.SuburbID);
                 return View(job);
             }        
                         
@@ -250,8 +268,9 @@ namespace Exposure.Web.Controllers
             {
                 return HttpNotFound();
             }
-            
 
+            ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", job.SuburbID);
+            ViewBag.JobID = id;
 
             return View(job);
             
@@ -262,11 +281,10 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "JobID,Title,DateAdvertised,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2,StartDate, EndDate")] Job job)
+        public ActionResult Edit([Bind(Exclude ="DateAdvertised, Title",Include = "JobID,Title,DateAdvertised,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2,StartDate, EndDate")] Job job)
         {
             Job j = db.Jobs.Find(job.JobID);
-            j.Title = job.Title;
-            j.DateAdvertised = job.DateAdvertised;            
+                                
             j.Description = job.Description;
             j.StartTime = job.StartTime;
             j.EndDate = job.EndDate;
@@ -276,8 +294,7 @@ namespace Exposure.Web.Controllers
             j.AddressLine1 = job.AddressLine1;
             j.AddressLine2 = job.AddressLine2;
 
-            if (ModelState.IsValid)
-            {
+           
                 try
                 {
                     db.Entry(j).State = EntityState.Modified;
@@ -289,10 +306,10 @@ namespace Exposure.Web.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index", new { id = User.Identity.GetUserId() });
                 }
-            }          
+                    
                         
             ViewBag.jobSkills = new SelectList(db.Skills, "SkillID", "SkillDescription");
-            
+            ViewBag.JobID = j.JobID;
             return View(job);
         }
 

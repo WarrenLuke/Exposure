@@ -62,13 +62,43 @@ namespace Exposure.Web.Controllers
 
         // GET: JobApplications/Create
         [Authorize(Roles =("Worker"))]
-        public ActionResult Create(int id)
+        public ActionResult Create(int id, int skill)
         {
-            ViewBag.Job = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID.Equals(id));
+            var userId = User.Identity.GetUserId();
+            Worker worker = db.Workers.Find(userId);
+
+            var skills = db.WorkerSkills.Include(a => a.Worker).Include(q => q.Skill).Where(w=>w.Worker.WorkerID == userId);
+            var job = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID.Equals(id));
+            ViewBag.Job = job;
             ViewBag.JobID = id;
-            ViewBag.WorkerID = User.Identity.GetUserId(); 
-            
-            
+
+            var check = skills.Count();
+
+            var result =false;
+            if (check > 0 )
+            {
+
+                foreach (var s in skills)
+                {
+                    if (skill == s.SkillID)
+                    {
+                        result = true;
+                    }
+                    
+                }
+            }
+            else if(check==0)
+            {
+                result = true;
+            }
+                   
+                
+            if(result==false)
+            {
+                TempData["Skill"] = "You dont have the necessary skill to apply for this job";
+            }
+
+
             return View();
         }
 
@@ -83,28 +113,37 @@ namespace Exposure.Web.Controllers
             jobApplication.WorkerID = User.Identity.GetUserId();
             jobApplication.Response = Reply.Pending;
             var state = ModelState;
-            var apps = db.JobApplications.Where(w => w.WorkerID == User.Identity.GetUserId()).Where(j => j.JobID == jobApplication.JobID);            
-            if(apps != null)
+            var apps = db.JobApplications.Where(w => w.WorkerID == User.Identity.GetUserId()).Where(j => j.JobID == jobApplication.JobID);
+            var check = apps.Count();
+            if(check > 0)
             {
                 TempData["ApplicationTrue"] = "You have already applied for this Job. Please select a different one.";
                 return RedirectToAction("Create", jobApplication.JobID);
             }
 
-            
-            if(ModelState.IsValid)
+            try
             {
                 db.JobApplications.Add(jobApplication);
+                db.SaveChanges();
+                TempData["ApplicationSuccess"] = "Your application has been submitted";
+                return RedirectToRoute("Default", new { controler = "JobApplications", action = "Index" });
+            }
+            catch
+            {
                 db.SaveChanges();
                 TempData["ApplicationSuccess"] = "Your application has been submitted";
                 return RedirectToRoute("Defualt", new { controler = "JobApplications", action = "Index" });
             }           
             
+                ViewBag.JobID = jobApplication.JobID;
+                ViewBag.Employer = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID.Equals(jobApplication.JobID));
+                ViewBag.WorkerID = User.Identity.GetUserId();
+                TempData["ApplicationSuccess"] = "Your application was not submitted. Please review the all details on this form";
+                return View(jobApplication);
+            
 
-            ViewBag.JobID = jobApplication.JobID;
-            ViewBag.Employer = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID.Equals(jobApplication.JobID));
-            ViewBag.WorkerID = User.Identity.GetUserId();
-            TempData["ApplicationSuccess"] = "Your application was not submitted. Please review the all details on this form";
-            return View(jobApplication);
+            
+
         }
 
         // GET: JobApplications/Edit/5
@@ -119,6 +158,7 @@ namespace Exposure.Web.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.JobAppID = db.JobApplications.Where(i => i.JobApplicationID == id);
             ViewBag.JobID = new SelectList(db.Jobs, "JobID", "EmployerID", jobApplication.JobID);
             ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID", jobApplication.WorkerID);
             return View(jobApplication);
@@ -131,14 +171,34 @@ namespace Exposure.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "JobApplicationID,JobID,WorkerID,Motivation,Response")] JobApplication jobApplication)
         {
-            if (ModelState.IsValid)
+            JobApplication ja = db.JobApplications.Find(jobApplication.JobApplicationID);
+
+            if (User.IsInRole("Worker"))
             {
-                db.Entry(jobApplication).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ja.Motivation = jobApplication.Motivation;
+            } else if (User.IsInRole("Employer"))
+            {
+                ja.Response = jobApplication.Response;
             }
-            ViewBag.JobID = new SelectList(db.Jobs, "JobID", "EmployerID", jobApplication.JobID);
-            ViewBag.WorkerID = new SelectList(db.Workers, "WorkerID", "WorkerID", jobApplication.WorkerID);
+            
+           
+           
+                try
+                {
+                    db.Entry(ja).State = EntityState.Modified;
+                    db.SaveChanges();                    
+                    return RedirectToAction("Index");
+                }catch
+                {
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                
+            
+            ViewBag.JobAppID = db.JobApplications.Where(i => i.JobApplicationID == ja.JobApplicationID);
+
+            ViewBag.JobID = jobApplication.JobID;
+            ViewBag.WorkerID = jobApplication.WorkerID;
             return View(jobApplication);
         }
 
@@ -154,29 +214,33 @@ namespace Exposure.Web.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.JobApplicationID = id;
             return View(jobApplication);
         }
 
         // POST: JobApplications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id, JobApplication jobApplication)
+        public ActionResult DeleteConfirmed(int id)
         {
-            jobApplication = db.JobApplications.Find(id);
+            JobApplication ja = db.JobApplications.Find(id);
 
-            jobApplication.Flagged = true;
+            ja.Flagged = true;
             //db.JobApplications.Remove(jobApplication);
             if(ModelState.IsValid)
             {
                 try
                 {
-                    db.Entry(jobApplication).State = EntityState.Modified;
+                    db.Entry(ja).State = EntityState.Modified;
                     db.SaveChanges();
-                }catch
+                    return RedirectToAction("Index");
+                }
+                catch
                 {
                     db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
-                
+
             }
             
             return RedirectToAction("Index");
