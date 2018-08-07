@@ -29,7 +29,7 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        @TempData["Skill"]. <a href="@Url.Action("Create", "WorkerSkills")">Click here</a> here to add it to your profile.
+        @TempData["Skill"]. <a href="@Url.Action("Create", "WorkerSkills", new {returnUrl = Url.Action(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString()) })">Click here</a> here to add it to your profile.
     </div>
 }
 <div class="form-group form-actions">
@@ -126,10 +126,8 @@
                                 @Html.ValidationMessageFor(model => model.Motivation, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                    </div>  
-                    
+                    </div>                     
                            
-
                     <div class="form-actions">
                         <div class="col-md-offset-9 col-md-6">
                             <input type="submit" value="Apply" class="btn btn-default" @(TempData["Skill"]!= null ? "disabled='disabled'" : "") />

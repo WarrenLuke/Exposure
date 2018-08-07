@@ -9,6 +9,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Exposure.Web.Controllers;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity;
 
 namespace Exposure.Web.Controllers
 {
@@ -17,10 +19,11 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
         public ActionResult Index()
         {
+                    
             ViewBag.Users = db.Users.Where(f=>f.Status==null).Count();
             ViewBag.Jobs = db.Jobs.Where(c => c.Completed == false).Count();
-            ViewBag.SJobs = db.Jobs.Where(c => c.Completed == true).Count();
-
+            ViewBag.SJobs = db.Jobs.Where(c => c.Completed == true).Where(c => c.EndDate >= DbFunctions.AddDays(DateTime.UtcNow, -30)).Count();
+            
             return View();
         }
 

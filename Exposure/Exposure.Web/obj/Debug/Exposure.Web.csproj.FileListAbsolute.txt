@@ -1481,3 +1481,9 @@ F:\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMig
 E:\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.Mbali.resources
 F:\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.csproj.CopyComplete
 E:\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.csprojResolveAssemblyReference.cache
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.RecomRateCurrency.resources
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.asdwds.resources
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.SkillRecom.resources
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.Mbali.resources
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.UserReviewIncident.resources
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.JobAppReplied.resources

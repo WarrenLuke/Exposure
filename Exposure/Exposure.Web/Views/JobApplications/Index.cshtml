@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Exposure.Entities.JobApplication>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Job Applications";
 }
 @if (TempData["ApplicationSuccess"] != null)
 {
@@ -15,7 +15,11 @@
 <h2>Job Applications</h2>
 <div class="col-md-2">
     <p>Category: </p>@Html.DropDownList("skill", null, "All", new { @class = "form-control" })
+    <br />
+
 </div>
+
+
 <table class="table">
     @if (User.IsInRole("Admin"))
     {
@@ -149,5 +153,8 @@
         }
     }
     </table>
+<div class="text-left">
+    <a href="@Url.Action("Index", "Manage")">Back to profile</a>
+</div>
 
     

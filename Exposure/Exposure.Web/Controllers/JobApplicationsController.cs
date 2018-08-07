@@ -109,17 +109,18 @@ namespace Exposure.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Exclude="WorkerID, ApplicationDate, Response",Include = "JobApplicationID,JobID,Motivation, Flagged")] JobApplication jobApplication)
         {
+            var id = User.Identity.GetUserId();
             jobApplication.ApplicationDate = DateTime.UtcNow;
-            jobApplication.WorkerID = User.Identity.GetUserId();
+            jobApplication.WorkerID = id;
             jobApplication.Response = Reply.Pending;
             var state = ModelState;
             var apps = db.JobApplications.Where(w => w.WorkerID == User.Identity.GetUserId()).Where(j => j.JobID == jobApplication.JobID);
-            var check = apps.Count();
-            if(check > 0)
-            {
-                TempData["ApplicationTrue"] = "You have already applied for this Job. Please select a different one.";
-                return RedirectToAction("Create", jobApplication.JobID);
-            }
+            //var check 
+            //if(check > 0)
+            //{
+            //    TempData["ApplicationTrue"] = "You have already applied for this Job. Please select a different one.";
+            //    return RedirectToAction("Create", jobApplication.JobID);
+            //}
 
             try
             {
@@ -128,21 +129,20 @@ namespace Exposure.Web.Controllers
                 TempData["ApplicationSuccess"] = "Your application has been submitted";
                 return RedirectToRoute("Default", new { controler = "JobApplications", action = "Index" });
             }
-            catch
-            {
-                db.SaveChanges();
-                TempData["ApplicationSuccess"] = "Your application has been submitted";
-                return RedirectToRoute("Defualt", new { controler = "JobApplications", action = "Index" });
-            }           
+            catch { }
+            //catch
+            //{
+            //    db.SaveChanges();
+            //    TempData["ApplicationSuccess"] = "Your application has been submitted";
+            //    return RedirectToRoute("Defualt", new { controler = "JobApplications", action = "Index" });
+            //}           
             
                 ViewBag.JobID = jobApplication.JobID;
                 ViewBag.Employer = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID.Equals(jobApplication.JobID));
                 ViewBag.WorkerID = User.Identity.GetUserId();
                 TempData["ApplicationSuccess"] = "Your application was not submitted. Please review the all details on this form";
-                return View(jobApplication);
-            
-
-            
+                return View(jobApplication);          
+                       
 
         }
 
@@ -157,6 +157,13 @@ namespace Exposure.Web.Controllers
             if (jobApplication == null)
             {
                 return HttpNotFound();
+            }
+            if(User.IsInRole("Employer"))
+            {
+                if(jobApplication.Replied==true)
+                {
+                    TempData["Replied"] = "You have already replied to this application.";
+                }
             }
             ViewBag.JobAppID = db.JobApplications.Where(i => i.JobApplicationID == id);
             ViewBag.JobID = new SelectList(db.Jobs, "JobID", "EmployerID", jobApplication.JobID);
@@ -179,26 +186,24 @@ namespace Exposure.Web.Controllers
             } else if (User.IsInRole("Employer"))
             {
                 ja.Response = jobApplication.Response;
-            }
-            
-           
-           
+                ja.Replied = true;
+            }           
+                      
                 try
                 {
                     db.Entry(ja).State = EntityState.Modified;
                     db.SaveChanges();                    
                     return RedirectToAction("Index");
-                }catch
-                {
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+
                 }
-                
+                catch { }                  
+                             
             
             ViewBag.JobAppID = db.JobApplications.Where(i => i.JobApplicationID == ja.JobApplicationID);
 
             ViewBag.JobID = jobApplication.JobID;
             ViewBag.WorkerID = jobApplication.WorkerID;
+
             return View(jobApplication);
         }
 

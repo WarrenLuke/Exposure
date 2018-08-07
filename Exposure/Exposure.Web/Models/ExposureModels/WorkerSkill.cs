@@ -20,6 +20,7 @@ namespace Exposure.Entities
         public int SkillID { get; set; }
 
         [DisplayName("Years Of Experience")]
+        [Range(1, 80, ErrorMessage = "Must have a minimum experience of one year")]
         public int YearsOfExperience { get; set; }
 
         public virtual Worker Worker { get; set; }

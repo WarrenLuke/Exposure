@@ -52,13 +52,11 @@ namespace Exposure.Web.Models
         [ScaffoldColumn(false)]
         public Status? Status { get; set; }
 
-        public virtual ICollection<Review> UserReviews { get; set; }
+        public virtual ICollection<Review> EmployerReviews { get; set; }
+        public virtual ICollection<Review> WorkerReviews { get; set; }
 
-        public virtual ICollection<Incident> UserIncidents { get; set; }
-
-        public virtual ICollection<Review> Reviews { get; set; }
-        
-        public virtual ICollection<Incident> Incidents { get; set; }
+        public virtual ICollection<Incident> EmployerIncidents { get; set; }
+        public virtual ICollection<Incident> WorkerIncidents { get; set; }
 
 
         public virtual Employer Employer { get; set; }

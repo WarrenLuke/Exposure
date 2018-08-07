@@ -62,21 +62,19 @@
             </div>
         </div>
     }
-    else if (User.IsInRole("Employer"))
+    else
     {
-
         var user = (ApplicationUser)ViewData["user"];
 
-        @*if (ViewBag.StatusMessage != null)
+        if (TempData["Pic"] != null)
         {
-            <div class="alert alert-info alert-dismissable" role="alert">
+            <div class="alert alert-warning alert-dismissable" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                @ViewBag.StatusMessage
+                <strong>Attention! </strong>&nbsp; @TempData["Pic"].
             </div>
-        }*@
-
+        }
         if (TempData["WorkDetails"] != null)
         {
             <div class="alert alert-success alert-dismissable" role="alert">
@@ -87,14 +85,13 @@
             </div>
         }
 
-
-        if (TempData["Pic"] != null)
+        if (TempData["WorkDetails"] != null)
         {
-            <div class="alert alert-warning alert-dismissable" role="alert">
+            <div class="alert alert-success alert-dismissable" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <strong>Attention!</strong>&nbsp; @TempData["Pic"].
+                @TempData["WorkDetails"]
             </div>
         }
 
@@ -133,14 +130,14 @@
                     </div>
                     <br />
                     @Html.ActionLink("Change Password", "ChangePassword")<br />
-                    <a href="@Url.Action("UpdatePicture","Account", new { id = User.Identity.GetUserId()})">Update Profile Picture</a>
+                    <a href="@Url.Action("UpdatePicture", "Account", new { id = User.Identity.GetUserId() })">Update Profile Picture</a>
                     <br />
                     <br />
                     <div class="col-md-2"></div>
                     <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
                         <br />
-                        <input type="submit" class="btn btn-default" value="Manage Jobs" formaction=@Url.Action("Index", "Jobs", new {id=User.Identity.GetUserId() }) }) />
-                        @*<input type="submit" class="btn btn-default"  value="Report Incident" formaction=@Url.Action("ReportIncident") />*@
+                        <input type="submit" class="btn btn-default" value="Manage Jobs" formaction=@Url.Action("Index", "Jobs", new { id = User.Identity.GetUserId() }) }) />
+                        <input type="submit" class="btn btn-default"  value="Report Incident" formaction=@Url.Action("Create", "Incidents") />
                         <button type="submit" class="btn btn-default" formaction=@Url.Action("Index", "JobApplications")>
                             Job Applications <span class="badge" style="color:#000000">
                                 @ViewBag.JobApp
@@ -153,7 +150,7 @@
 
                 <div class="col-md-4">
                     <h3>PERSONAL DETAILS</h3>
-                    
+
                     <dl>
                         <dt>@Html.DisplayNameFor(model => model.FirstName):</dt>
                         <dd>
@@ -206,261 +203,132 @@
                         </dd>
                     </dl>
                     <input type="submit" class="btn btn-default" value="Update Personal Details" formaction=@Url.Action("EditProfile") /><br />
-                </div>
+                </div>                
 
-                <div class="col-md-4">
-                    <h3>WORK DETAILS</h3>
-                    <div class="col-md-12">
-                        <dl>
-                            <dt>@Html.DisplayNameFor(model => model.WorkName) </dt>
-                            <dd>
-                                @if (Model.WorkName == null)
-                                {
-                                    <p>None</p>
-                                }
-                                else
-                                {
-                                    @Html.DisplayFor(model => model.WorkName)
-                                }
-                            </dd>
-
-                            <dt>@Html.DisplayNameFor(model => model.WorkAddressLine1)</dt>
-                            <dd>
-                                @if (Model.WorkAddressLine1 == null)
-                                {
-                                    <p>None</p>
-                                }
-                                else
-                                {
-                                    @Html.DisplayFor(model => model.WorkAddressLine1)
-                                }
-                            </dd>
-                            <dt>
-                                @Html.DisplayNameFor(model => model.WorkAddressLine2)
-                            </dt>
-                            <dd>
-                                @if (Model.WorkAddressLine2 == null)
-                                {
-                                    <p>None</p>
-                                }
-                                else
-                                {
-                                    @Html.DisplayFor(model => model.WorkAddressLine2)
-                                }
-                            </dd>
-                            <dt>@Html.DisplayNameFor(model => model.Location) </dt>
-                            <dd>
-                                @if (Model.Location == null)
-                                {
-                                    <p>None</p>
-                                }
-                                else
-                                {
-                                    foreach (var item in ViewBag.empSub)
-                                    {
-                                        @item.Suburb.SubName
-                                    }
-                                }
-                            </dd>
-                            <dt>@Html.DisplayNameFor(model => model.WorkNumber)</dt>
-                            <dd>
-                                @if (Model.WorkNumber == null)
-                                {
-                                    <p>None</p>
-                                }
-                                else
-                                {
-                                    @Html.DisplayFor(model => model.WorkNumber)
-                                }
-                            </dd>
-                        </dl>
-                    </div>
-                    <input type="submit" class="btn btn-default" value="Update Work Details" formaction=@Url.Action("UpdateWorkDetails") />
-
-
-                </div>
-
-            </div>
-        </div>
-
-    }
-    else if (User.IsInRole("Worker"))
-    {
-        var user = (ApplicationUser)ViewData["user"];
-
-        @*if (ViewBag.StatusMessage != null)
-        {
-            <div class="alert alert-info alert-dismissable" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                @ViewBag.StatusMessage
-            </div>
-        }*@
-
-        if (TempData["Pic"] != null)
-        {
-            <div class="alert alert-warning alert-dismissable" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <strong>Attention</strong>@TempData["Pic"].
-            </div>
-        }
-
-        if (TempData["PicUpdate"] != null)
-        {
-            <div class="alert alert-success alert-dismissable" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                @TempData["PicUpdate"].
-            </div>
-        }
-
-        if (TempData["EditProfile"] != null)
-        {
-            <div class="alert alert-success alert-dismissable" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                @TempData["EditProfile"]
-            </div>
-        }
-
-        <div class="form-group form-actions">
-            <div class="row">
-                <div class="col-md-4 text-center">
-                    <div class="col-md-12">
-                        <h3>PROFILE PICTURE</h3>
-                        <img src="@Url.Action("ProfilePic", "Home")" style="width:160px; height:160px; background:
-                        #ff6a00;
-                        margin:auto;
-                        -moz-border-radius:60px;
-                        border-radius:90px;
-                        padding:2px;
-                        box-shadow:0px 0px 20px #888" />
-                    </div>
-                    <br />
-                    @Html.ActionLink("Change Password", "ChangePassword")   <br />
-                    <a href="@Url.Action("UpdatePicture","Account", new { id = User.Identity.GetUserId()})">Update Profile Picture</a>
-
-
-                    <br />
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8 btn-group-vertical text-center btn-group-lg" role="group">
-                        <input type="submit" class="btn btn-default" value="Job History" formaction=@Url.Action("ManageJobs") />
-                        @*<input type="submit" class="btn btn-default" value="Report Incident" formaction=@Url.Action("ReportIncident") />*@
-                        <button type="submit" class="btn btn-default" formaction=@Url.Action("Index", "JobApplications")>
-                            Job Applications <span class="badge" style="color:#000000">
-                                @ViewBag.JobApp
-                            </span>
-                        </button>
-                    </div>
-                    <div class="col-md-2"></div>
-                </div>
-
-
-                <div class="col-md-4">
-                    <h3>PERSONAL DETAILS</h3>
+            @if (User.IsInRole("Employer"))
+            {
+            <div class="col-md-4">
+                <h3>WORK DETAILS</h3>
+                <div class="col-md-12">
                     <dl>
-                        <dt>@Html.DisplayNameFor(model => model.FirstName):</dt>
+                        <dt>@Html.DisplayNameFor(model => model.WorkName) </dt>
                         <dd>
-                            @user.FirstName
-                        </dd>
-
-                        <dt>@Html.DisplayNameFor(Model => Model.LastName):</dt>
-                        <dd>     @user.LastName   </dd>
-
-                        <dt>@Html.DisplayNameFor(Model => Model.Gender):</dt>
-                        <dd>     @user.Gender    </dd>
-
-                        <dt>@Html.DisplayNameFor(model => model.Suburb):</dt>
-                        <dd>
-                            @foreach (var item in ViewBag.userSub)
-                            {
-                                @item.Suburb.SubName
-                            }
-
-                        </dd>
-
-                        <dt>@Html.DisplayNameFor(model => model.AddressLine1):</dt>
-                        <dd>     @user.AddressLine1  </dd>
-
-                        <dt>@Html.DisplayNameFor(model => model.AddressLine2):</dt>
-                        <dd>
-                            @if (user.AddressLine2 == null)
+                            @if (Model.WorkName == null)
                             {
                                 <p>None</p>
                             }
                             else
                             {
-                                @user.AddressLine2
+                                @Html.DisplayFor(model => model.WorkName)
                             }
                         </dd>
 
-                        <dt>@Html.DisplayNameFor(model => model.Email)</dt>
-                        <dd>     @user.Email       </dd>
-
-                        <dt>@Html.DisplayNameFor(model => model.PhoneNumber):</dt>
+                        <dt>@Html.DisplayNameFor(model => model.WorkAddressLine1)</dt>
                         <dd>
-                            @if (@Html.DisplayFor(model => model.PhoneNumber) == null)
+                            @if (Model.WorkAddressLine1 == null)
                             {
-                                @Html.ActionLink("Add Phone Number", "AddPhoneNumber")
+                                <p>None</p>
                             }
                             else
                             {
-                                @Html.DisplayFor(model => model.PhoneNumber)
+                                @Html.DisplayFor(model => model.WorkAddressLine1)
+                            }
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.WorkAddressLine2)
+                        </dt>
+                        <dd>
+                            @if (Model.WorkAddressLine2 == null)
+                            {
+                                <p>None</p>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.WorkAddressLine2)
+                            }
+                        </dd>
+                        <dt>@Html.DisplayNameFor(model => model.Location) </dt>
+                        <dd>
+                            @if (Model.Location == null)
+                            {
+                                <p>None</p>
+                            }
+                            else
+                            {
+                                foreach (var item in ViewBag.empSub)
+                                {
+                                    @item.Suburb.SubName
+                                }
+                            }
+                        </dd>
+                        <dt>@Html.DisplayNameFor(model => model.WorkNumber)</dt>
+                        <dd>
+                            @if (Model.WorkNumber == null)
+                            {
+                                <p>None</p>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.WorkNumber)
                             }
                         </dd>
                     </dl>
-                    <input type="submit" class="btn btn-default" value="Update Profile" formaction=@Url.Action("EditProfile") /><br />
                 </div>
+                <input type="submit" class="btn btn-default" value="Update Work Details" formaction=@Url.Action("UpdateWorkDetails") />
 
-                <div class="col-md-4">
-                    @if (TempData["Skill"] != null)
-                    {
-                        <div class="alert alert-success alert-dismissable" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            @TempData["Skill"]
-                        </div>
-                    }
-                    <h3>SKILLS</h3>
-                    <div class="row col-md-12" style="height: 250px; overflow:auto">
-                        <table class="table ">
-                            <tr>
-                                <th>Skill</th>
-                                <th>Years of Experience</th>
-                                <th></th>
-                            </tr>
-                            @foreach (var ws in ViewBag.Skills)
-                            {
-                                <tr>
-                                    <td>
-                                        @ws.Skill.SkillDescription
-                                    </td>
-                                    <td>
-                                        @ws.YearsOfExperience
-                                    </td>
-                                    <td>
-                                        @Html.ActionLink("Edit", "EditSkill", new { id = User.Identity.GetUserId(), skill = ws.Skill.SkillID })
-                                    </td>
-                                </tr>
-                            }
-                        </table>
-                    </div>
-                    <input type="submit" class=" btn btn-default" value="Add Skill" formaction=@Url.Action("AddSkill") />
-                </div>
+
             </div>
-        </div>
+            }
+            else
+            {
+            <div class="col-md-4">
+                @if (TempData["Skill"] != null)
+                {
+                    <div class="alert alert-success alert-dismissable" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        @TempData["Skill"]
+                    </div>
+                }
+                <h3>SKILLS</h3>
+                <div class="row col-md-12" style="height: 250px; overflow:auto">
+                    <table class="table ">
+                        <tr>
+                            <th>Skill</th>
+                            <th>Years of Experience</th>
+                            <th></th>
+                        </tr>
+                        @foreach (var ws in ViewBag.Skills)
+                        {
+                            <tr>
+                                <td>
+                                    @ws.Skill.SkillDescription
+                                </td>
+                                <td>
+                                    @ws.YearsOfExperience
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "EditSkill", new { id = User.Identity.GetUserId(), skill = ws.Skill.SkillID })
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <input type="submit" class=" btn btn-default" value="Add Skill" formaction=@Url.Action("AddSkill") />
+            </div>             
 
 
+            }
+    
+            </div>
+
+     </div>
     }
-
-
 }
+
+
+
 
 
 @*<p class="text-success">@ViewBag.StatusMessage</p>

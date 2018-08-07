@@ -33,6 +33,10 @@ namespace Exposure.Entities
         [DefaultValue(false)]
         public bool Flagged { get; set; }
 
+
+        [DefaultValue(false)]
+        public bool Replied { get; set; }
+
         public virtual Job Job { get; set; }
 
         public virtual Worker Worker { get; set; }

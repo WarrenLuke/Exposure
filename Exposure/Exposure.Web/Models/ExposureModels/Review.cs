@@ -12,6 +12,11 @@ namespace Exposure.Entities
 {
     public class Review
     {
+        public Review()
+        {
+            ReportDate = DateTime.UtcNow;
+        }
+
         [ScaffoldColumn(false)]
         [Key]
         public int ReviewID { get; set; }
@@ -24,20 +29,20 @@ namespace Exposure.Entities
         [StringLength(1024)]
         public string Comment { get; set; }
 
-              
-        public string UserId { get; set; }
+        [ForeignKey("Employers")]
+        public string Employer { get; set; }
 
-        [Required]
+        [ForeignKey("Workers")]
+        public string Worker { get; set; }
+        
         [ScaffoldColumn(false)]
         public DateTime ReportDate { get; set; }
 
-        public int JobApplicationID { get; set; }
+        public int JobApplicationID { get; set; }        
+        
+        public virtual Employer Employers { get; set; }
 
-        public virtual ICollection<UserReview> UserReviews { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual ApplicationUser ApplicationUser { get; set; }
-
+        public virtual Worker Workers { get; set; }
 
         [ForeignKey("JobApplicationID")]
         public virtual JobApplication JobApplication { get; set; }
@@ -45,4 +50,6 @@ namespace Exposure.Entities
 
 
     }
+
+    
 }

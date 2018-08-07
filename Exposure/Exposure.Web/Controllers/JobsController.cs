@@ -24,22 +24,27 @@ namespace Exposure.Web.Controllers
 
             ViewBag.Skills = new SelectList(db.Skills, "SkillID", "SkillDescription");
             var jobs = db.Jobs.Include(j => j.Employer);
-            var jobsHistory = db.JobApplications.Include(j => j.Job);
+            //var draw = Request.Form.GetValues("draw").FirstOrDefault();
+            //var start = Request.Form.GetValues("start").FirstOrDefault();
+            //var length = Request.Form.GetValues("length").FirstOrDefault();
+
+            //int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            //int skip = start != null ? Convert.ToInt32(start) : 0;
+            //int recordsTotal = 0;
 
             if (User.IsInRole("Admin"))
             {
                 jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised);
-            }
-            else if(User.IsInRole("Worker"))
-            {
-                var userId = User.Identity.GetUserId();
-                jobsHistory = db.JobApplications.Include(j => j.Job.Employer).Include(j => j.Job.Skill).Include(j => j.Job.Suburb).Include(j=>j.Job).OrderBy(j => j.Job.DateAdvertised).Where(j =>j.WorkerID==userId).Where(j=>j.Job.Completed==true);
-            } 
+            }            
             else if(User.IsInRole("Employer"))
             {
                 var userId = User.Identity.GetUserId();
                 jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised).Where(j => j.Employer.EmployerID == userId);
 
+            }
+            else if (User.IsInRole("Worker"))
+            {
+                var jobHistory = db.JobApplications.Include(j => j.Job.Employer).Include(j => j.Job).Include(j => j.WorkerID.Equals(id));
             }
 
 
@@ -61,15 +66,14 @@ namespace Exposure.Web.Controllers
             if (!String.IsNullOrEmpty(search))
             {
                 jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.Title.Contains(search)).OrderBy(j => j.DateAdvertised);
-            }
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
+            }            
             
-            ViewBag.Jobs = jobs;
-            ViewBag.JobHistory = jobsHistory;
-
-
-            return View(jobs);
+                ViewBag.Jobs = jobs;
+                return View(jobs);
+                //var data = jobs.Skip(skip).Take(pageSize).ToList();
+                //return Json(new { recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+                      
+            
         }
 
         [AllowAnonymous]
@@ -130,13 +134,49 @@ namespace Exposure.Web.Controllers
             {
                 jobs = jobs.Where(j => j.Title.Contains(search));                                        
             }
-
+            
             //int pageSize = 3;
             //int pageNumber = (page ?? 1);
+            var rows = jobs.Count();
+            if(rows==0)
+            {
+                TempData["Empty"] = "No jobs available. Please edit your search criteria or check back later";
+                
+            }
             
             ViewBag.Jobs = jobs;
 
             return View(jobs);
+        }
+
+        public ActionResult History(string SortOrder, string id, int? skill, DateTime? startDate, string search)
+        {
+            var userId = User.Identity.GetUserId();
+            var jobsHistory = db.JobApplications.Include(j => j.Job.Employer).Include(j => j.Job.Skill).Include(j => j.Job.Suburb).Where(j => j.Job.Employer.EmployerID.Equals(id)).OrderBy(j => j.Job.DateAdvertised).Include(w=>w.WorkerID.Equals(userId));
+
+            if (!String.IsNullOrEmpty(id))
+            {
+                jobsHistory = jobsHistory.Where(j => j.Job.Employer.EmployerID.Equals(id));
+            }
+
+            if (skill != null)
+            {
+                jobsHistory = jobsHistory.Where(j => j.Job.SkillID == skill);
+            }
+
+            if (startDate != null)
+            {
+                jobsHistory = jobsHistory.Where(j => j.Job.StartDate >= startDate);
+            }
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                jobsHistory = jobsHistory.Where(j => j.Job.Title.Contains(search));
+            }
+
+            ViewBag.jobHistory = jobsHistory;
+            return View(jobsHistory);
+
         }
 
         public ActionResult JobApplication(int? id)

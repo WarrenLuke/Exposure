@@ -41,9 +41,10 @@ namespace Exposure.Web.Controllers
 
         // GET: WorkerSkills/Create
         [Authorize(Roles = "Admin, Worker")]
-        public ActionResult Create()
+        public ActionResult Create(string returnUrl)
         {
-            ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription");
+            ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription");            
+            ViewBag.ReturnUrl = returnUrl;
             
             return View();
         }
@@ -53,10 +54,10 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]        
-        public ActionResult Create([Bind(Exclude ="WorkerID" ,Include = "SkillID,YearsOfExperience")] WorkerSkill workerSkill)
+        public ActionResult Create([Bind(Exclude ="WorkerID" ,Include = "SkillID,YearsOfExperience")] WorkerSkill workerSkill, string returnUrl)
         {
             string user = User.Identity.GetUserId();
-            
+             
 
             workerSkill.WorkerID = user;
             var result =db.WorkerSkills.Find(user, workerSkill.SkillID);
@@ -73,14 +74,22 @@ namespace Exposure.Web.Controllers
                 db.WorkerSkills.Add(workerSkill);
                 db.SaveChanges();
                 TempData["Skill"] = "Skill Added Successfully";
+
                 return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
             }
 
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", workerSkill.SkillID);
             ViewBag.WorkerID = User.Identity.GetUserId();
 
-            return View(workerSkill);
-            
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return View(workerSkill);
+            }
+
         }
 
         // GET: WorkerSkills/Edit/5
@@ -95,7 +104,8 @@ namespace Exposure.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", workerSkill.SkillID);
+            ViewBag.SkillID = skill;
+            ViewBag.SkillName = workerSkill.Skill.SkillDescription;
             
             return View(workerSkill);
         }
@@ -121,29 +131,33 @@ namespace Exposure.Web.Controllers
         }
 
         // GET: WorkerSkills/Delete/5
-        public ActionResult Delete(string id)
+        public ActionResult Delete(string id, int? skillID)
         {
+            id = User.Identity.GetUserId();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            WorkerSkill workerSkill = db.WorkerSkills.Find(id);
+            WorkerSkill workerSkill = db.WorkerSkills.Find(id, skillID);
             if (workerSkill == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", workerSkill.SkillID);
+
             return View(workerSkill);
         }
 
         // POST: WorkerSkills/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(string id, int? skillID )
         {
-            WorkerSkill workerSkill = db.WorkerSkills.Find(id);
+            id = User.Identity.GetUserId();
+            WorkerSkill workerSkill = db.WorkerSkills.Find(id, skillID);
             db.WorkerSkills.Remove(workerSkill);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToRoute("Default", new {controller ="Manage", action="Index"});
         }
 
         protected override void Dispose(bool disposing)

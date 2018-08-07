@@ -130,19 +130,17 @@ namespace Exposure.Web.Controllers
 
             if(User.IsInRole("Employer"))
             {
-                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value == Reply.Pending).Where(e=>e.Job.EmployerID== userId).Count();
+                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value == Reply.Pending).Where(j=>j.Flagged==false).Where(e=>e.Job.EmployerID== userId).Count();
             }
 
             var uSub = user.SuburbID;
 
-            var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID);            
+            var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID).Where(u=>u.Id.Equals(userId));            
 
             ViewBag.userSub = userSub;
             ViewBag.UserID = userId;
 
-            ViewData["user"] = user;
-
-            
+            ViewData["user"] = user;            
             
             return View(model);
         }
