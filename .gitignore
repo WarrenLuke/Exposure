@@ -1,2 +1,4 @@
 *.mdf
 *.ldf
+storage.ide-shm
+storage.ide-wal

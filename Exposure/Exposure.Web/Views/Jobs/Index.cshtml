@@ -78,9 +78,16 @@
                 {
                     <tr>
                         <td>
-                            <a href="@Url.Action("Edit", "Jobs", new { id=item.JobID} )">
+                            @if (item.Completed == false)
+                            {
+                                <a href="@Url.Action("Edit", "Jobs", new { id=item.JobID} )">
+                                 @Html.DisplayFor(modelItem => item.Title)
+                                 </a>
+                            }
+                            else
+                            {
                                 @Html.DisplayFor(modelItem => item.Title)
-                            </a>
+                            }
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
@@ -126,7 +133,10 @@
                             }
                         </td>
                         <td style="text-align:center">
-                            <a href="@Url.Action("Update", "Jobs",new { id = item.JobID })" class="btn btn-default"> Update </a><br />
+                            @if(item.Completed==false)
+                            {
+                                <a href="@Url.Action("Update", "Jobs",new { id = item.JobID })" class="btn btn-default"> Update </a><br />
+                            }
                             @Html.ActionLink("Details", "Details", new { id = item.JobID }) <br />
                             @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
                         </td>

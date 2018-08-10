@@ -37,9 +37,15 @@ namespace Exposure.Web.Controllers
 
             if(skill!=null)
             {
-                jobApplications = jobApplications.Where(s => s.Job.Skill.SkillID.Equals(skill)).Include(j => j.Job).Include(w => w.Worker).Include(e => e.Job.Employer).Include(s => s.Job.Skill).Where(f => f.Flagged.Equals(false)); ;
+                jobApplications = jobApplications.Where(s => s.Job.Skill.SkillID == skill).Include(j => j.Job).Include(w => w.Worker).Include(e => e.Job.Employer).Include(s => s.Job.Skill).Where(f => f.Flagged.Equals(false)); ;
             }
-            
+
+            var rows = jobApplications.Count();
+            if(rows ==0)
+            {
+                TempData["Empty"] = "No applications available for this type.";
+            }
+            ViewBag.Rejected = Reply.Rejected;
             ViewBag.Applications = jobApplications;
             ViewBag.skill = new SelectList(db.Skills, "SkillID", "SkillDescription");
             return View();
@@ -71,8 +77,19 @@ namespace Exposure.Web.Controllers
             var job = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID.Equals(id));
             ViewBag.Job = job;
             ViewBag.JobID = id;
-
+            var Appcheck = 0;
             var check = skills.Count();
+            var apps = db.JobApplications.Where(w => w.WorkerID == userId).Where(j => j.JobID == id).Count();
+            if(apps > 0)
+            {
+                 Appcheck =1 ;
+            }            
+
+            if (Appcheck > 0)
+            {
+                TempData["ApplicationTrue"] = "You have already applied for this Job. Please ";
+                return View();
+            }
 
             var result =false;
             if (check > 0 )
@@ -114,13 +131,7 @@ namespace Exposure.Web.Controllers
             jobApplication.WorkerID = id;
             jobApplication.Response = Reply.Pending;
             var state = ModelState;
-            var apps = db.JobApplications.Where(w => w.WorkerID == User.Identity.GetUserId()).Where(j => j.JobID == jobApplication.JobID);
-            //var check 
-            //if(check > 0)
-            //{
-            //    TempData["ApplicationTrue"] = "You have already applied for this Job. Please select a different one.";
-            //    return RedirectToAction("Create", jobApplication.JobID);
-            //}
+            
 
             try
             {

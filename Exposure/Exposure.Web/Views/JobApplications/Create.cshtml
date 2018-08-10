@@ -15,20 +15,14 @@
 }
 @if (TempData["ApplicationTrue"] != null)
 {
-    <div class="alert alert-danger alert-dismissable" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        @TempData["ApplicationTrue"]. <a href="@Url.Action("Search", "Jobs")">Click here</a> to select a different job.
+    <div class="alert alert-danger alert-dismissable" role="alert">        
+        @TempData["ApplicationTrue"] <a href="@Url.Action("Search", "Jobs")">Click here</a> to select a different job.
     </div>
 }
+
 @if (TempData["Skill"] != null)
-{
-    
-    <div class="alert alert-danger alert-dismissable" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+{    
+    <div class="alert alert-danger alert-dismissable" role="alert">        
         @TempData["Skill"]. <a href="@Url.Action("Create", "WorkerSkills", new {returnUrl = Url.Action(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString()) })">Click here</a> here to add it to your profile.
     </div>
 }
@@ -130,7 +124,7 @@
                            
                     <div class="form-actions">
                         <div class="col-md-offset-9 col-md-6">
-                            <input type="submit" value="Apply" class="btn btn-default" @(TempData["Skill"]!= null ? "disabled='disabled'" : "") />
+                            <input type="submit" value="Apply" class="btn btn-default" @(TempData["Skill"]!= null ? "disabled='disabled'" : "")  @(TempData["ApplicationTrue"]!=null? "disabled='disabled'":"")/>
                         </div>
                     </div>
                 }

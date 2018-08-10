@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<Exposure.Entities.JobApplication>
 
+
 @{
     ViewBag.Title = "Job Applications";
 }
@@ -13,11 +14,22 @@
     </div>
 }
 <h2>Job Applications</h2>
-<div class="col-md-2">
-    <p>Category: </p>@Html.DropDownList("skill", null, "All", new { @class = "form-control" })
-    <br />
+@using (Html.BeginForm("Index", "JobApplications", FormMethod.Get))
+{
+    <div>
+    <div class="col-md-2">
+        <p>Category: </p>@Html.DropDownList("skill", null, "All", new { @class = "form-control" })
+        <br />
 
+    </div>
+    <div class="col-md-4">
+        <br />
+        <input type="submit" class="btn btn-default" value="Filter" />
+    </div>
 </div>
+}
+
+
 
 
 <table class="table">
@@ -72,40 +84,50 @@
             <th>Rate (R)</th>
             <th>Response</th>
         </tr>
-
-        foreach (var application in ViewBag.Applications)
+        if (TempData["Empty"] != null)
         {
-            <tr>
-                <td>
-                    @application.Job.Title
-                </td>
-                <td>
-                    @application.Job.Skill.SkillDescription
-                </td>
-                <td>
-                    <a href="@Url.Action("Profile", "Account", new {id= application.Job.Employer.EmployerID })">
-                        @application.Job.Employer.ApplicationUser.FirstName &nbsp; @application.Job.Employer.ApplicationUser.LastName
-                    </a>
-                </td>
-                <td>
-                    @application.Job.StartDate
-                </td>
-                <td>
-                    @application.Job.Description
-                </td>
-                <td>
-                    @application.Job.Rate
-                </td>
-                <td>
-                    @application.Response
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = application.JobApplicationID })|
-                    @Html.ActionLink("Retract", "Delete", new { id = application.JobApplicationID })
-                </td>
-            </tr>
-
+            <tr><td> @TempData["Empty"]</td></tr>
         }
+        else
+        {
+            foreach (var application in ViewBag.Applications)
+            {
+                <tr>
+                    <td>
+                        @application.Job.Title
+                    </td>
+                    <td>
+                        @application.Job.Skill.SkillDescription
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Profile", "Account", new {id= application.Job.Employer.EmployerID })">
+                            @application.Job.Employer.ApplicationUser.FirstName &nbsp; @application.Job.Employer.ApplicationUser.LastName
+                        </a>
+                    </td>
+                    <td>
+                        @application.Job.StartDate
+                    </td>
+                    <td>
+                        @application.Job.Description
+                    </td>
+                    <td>
+                        @application.Job.Rate
+                    </td>
+                    <td>
+                        @application.Response
+                    </td>
+                    @if(application.Response!=ViewBag.Rejected)
+                    {
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = application.JobApplicationID })|
+                            @Html.ActionLink("Retract", "Delete", new { id = application.JobApplicationID })
+                        </td>
+                    }                
+                </tr>
+
+            }
+        }
+        
 
     }
     else if (User.IsInRole("Employer"))
@@ -146,9 +168,13 @@
                 <td>
                     @application.Response
                 </td>
-                <td>
-                    <a href="@Url.Action("Edit","JobApplications",new { id = application.JobApplicationID })">Respond</a>
-                </td>
+                @if(application.Response!=ViewBag.Rejected)
+                {
+                    <td>
+                        <a href="@Url.Action("Edit","JobApplications",new { id = application.JobApplicationID })">Respond</a>
+                    </td>
+                }
+                
             </tr>
         }
     }

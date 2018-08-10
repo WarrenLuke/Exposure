@@ -28,7 +28,10 @@ namespace Exposure.Entities
         [DefaultValue("Pending")]
         public Reply? Response  { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? ApplicationDate { get; set; }
+
 
         [DefaultValue(false)]
         public bool Flagged { get; set; }

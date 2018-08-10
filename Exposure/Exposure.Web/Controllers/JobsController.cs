@@ -200,6 +200,19 @@ namespace Exposure.Web.Controllers
                 return HttpNotFound();
             }
 
+            var AppCheck = db.JobApplications.Where(j => j.JobID == (id)).Where(j => j.Response == Reply.Hired);
+            var rows = AppCheck.Count();
+
+            if(rows==0)
+            {
+                TempData["Application"] = "No application has been accepted/submitted for this job yet.";
+            }
+
+            if(job.Completed==true)
+            {
+                TempData["Completed"] = "Job already completed";
+            }
+            
             ViewBag.Job = db.Jobs.Where(j => j.JobID == id);
             ViewBag.JobID = id;
             ViewBag.JobStart = Convert.ToDateTime(job.StartDate);
