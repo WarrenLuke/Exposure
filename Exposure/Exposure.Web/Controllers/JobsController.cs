@@ -66,13 +66,29 @@ namespace Exposure.Web.Controllers
             if (!String.IsNullOrEmpty(search))
             {
                 jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.Title.Contains(search)).OrderBy(j => j.DateAdvertised);
-            }            
-            
-                ViewBag.Jobs = jobs;
-                return View(jobs);
-                //var data = jobs.Skip(skip).Take(pageSize).ToList();
-                //return Json(new { recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
-                      
+            }
+
+            //var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser);
+            var workers = db.JobApplications.Include(j => j.Job).Include(j => j.Worker).Include(j => j.Worker.ApplicationUser).Include(w => w.Worker).Where(w => w.Response == Reply.Hired);
+
+            //if (User.IsInRole("Worker"))
+            //{
+            //    ViewBag.Worker = User.Identity.GetUserId();
+
+            //}
+            //else if (User.IsInRole("Employer"))
+            //{
+            //    ViewBag.Employer = User.Identity.GetUserId();
+            //}
+
+
+            //ViewBag.JobID = job;
+            //ViewBag.JList = jobs;
+            ViewBag.WList = workers;
+            //ViewBag.Jobs = jobs;
+
+            return View(jobs);
+                                 
             
         }
 

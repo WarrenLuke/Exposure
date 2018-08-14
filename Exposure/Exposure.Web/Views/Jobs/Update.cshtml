@@ -115,14 +115,7 @@
                 <div class="col-md-10">
                     @if (TempData["Application"] != null)
                     {
-                         <div class="checkbox">
-                            @Html.EditorFor(model => model.Completed)
-                            @Html.ValidationMessageFor(model => model.Completed, "", new { @class = "text-danger" })
-                         </div>
-                    }
-                    else
-                    {
-                        if (item.Completed == false)
+                         if (item.Completed == false)
                          {
                              <p>No</p>
                          }
@@ -130,6 +123,13 @@
                          {
                              <p>Yes</p>
                          }
+                    }
+                    else
+                    {
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.Completed)
+                            @Html.ValidationMessageFor(model => model.Completed, "", new { @class = "text-danger" })
+                         </div>                        
                     }
                 </div>
             </div>

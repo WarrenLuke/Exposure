@@ -18,7 +18,7 @@ namespace Exposure.Entities
         }
 
         [ScaffoldColumn(false)]
-        [Key]
+        [Key, Column(Order = 0)]
         public int ReviewID { get; set; }
                
         [Required]      
@@ -27,25 +27,23 @@ namespace Exposure.Entities
 
         [Required(ErrorMessage ="Please comment on the rating")]
         [StringLength(1024)]
-        public string Comment { get; set; }
+        public string Comment { get; set; }        
 
-        [ForeignKey("Employers")]
-        public string Employer { get; set; }
-
-        [ForeignKey("Workers")]
-        public string Worker { get; set; }
+        [ForeignKey("ApplicationUser")]
+        [Required]
+        public string Reviewee { get; set; }
         
         [ScaffoldColumn(false)]
         public DateTime ReportDate { get; set; }
 
-        public int JobApplicationID { get; set; }        
-        
-        public virtual Employer Employers { get; set; }
+        public int JobID { get; set; }
 
-        public virtual Worker Workers { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
-        [ForeignKey("JobApplicationID")]
-        public virtual JobApplication JobApplication { get; set; }
+        public virtual ICollection<UserReviews> UserReviews { get; set; }
+
+        [ForeignKey("JobID")]
+        public virtual Job Job { get; set; }
 
 
 

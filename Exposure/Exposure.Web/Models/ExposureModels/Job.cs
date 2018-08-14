@@ -84,8 +84,12 @@ namespace Exposure.Entities
 
         public virtual Skill Skill { get; set; }
 
-        public virtual Employer Employer { get; set; }      
-       
+        public virtual Employer Employer { get; set; }
+
+        public virtual ICollection<Incident> Incidents { get; set; }
+
+        public virtual ICollection<Review> Reviews { get; set; }
+
     }
 
     //public class CustomDateAttribute:RangeAttribute

@@ -56,7 +56,7 @@
                 </button>
                 @TempData["Replied"]. <a href="@Url.Action("Index", "JobApplications")">Click here</a> to return to job list.
             </div>
-            var RO = "ReadOnly";
+            
         }
         <h4>Job Application Response</h4>
         <hr />
@@ -64,13 +64,13 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.JobApplicationID, "JobAppID")
             <div class="form-group">
-                @Html.LabelFor(model => model.JobID, "JobID", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.JobID, "Job", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DisplayFor(model => model.Job.Title)
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.WorkerID, "WorkerID", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.WorkerID, "Worker", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DisplayFor(model => model.Worker.ApplicationUser.FirstName) &nbsp; @Html.DisplayFor(model => model.Worker.ApplicationUser.LastName)
                 </div>

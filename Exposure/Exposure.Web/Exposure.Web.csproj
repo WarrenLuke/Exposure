@@ -352,10 +352,23 @@
     <Compile Include="DataContexts\IdentityMigrations\201808071408090_JobAppReplied.Designer.cs">
       <DependentUpon>201808071408090_JobAppReplied.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201808101411497_JobRelationships.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201808101411497_JobRelationships.Designer.cs">
+      <DependentUpon>201808101411497_JobRelationships.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201808141104566_Reviewer.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201808141104566_Reviewer.Designer.cs">
+      <DependentUpon>201808141104566_Reviewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201808142059163_RevRequired.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201808142059163_RevRequired.Designer.cs">
+      <DependentUpon>201808142059163_RevRequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
     <Compile Include="Models\Enums\Status.cs" />
+    <Compile Include="Models\ExposureModels\UserReviews.cs" />
     <Compile Include="Models\ExposureModels\Worker.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -905,6 +918,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201808071408090_JobAppReplied.resx">
       <DependentUpon>201808071408090_JobAppReplied.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201808101411497_JobRelationships.resx">
+      <DependentUpon>201808101411497_JobRelationships.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201808141104566_Reviewer.resx">
+      <DependentUpon>201808141104566_Reviewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201808142059163_RevRequired.resx">
+      <DependentUpon>201808142059163_RevRequired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

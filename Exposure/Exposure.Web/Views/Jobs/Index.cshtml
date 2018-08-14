@@ -133,14 +133,26 @@
                             }
                         </td>
                         <td style="text-align:center">
+                            
                             @if(item.Completed==false)
                             {
                                 <a href="@Url.Action("Update", "Jobs",new { id = item.JobID })" class="btn btn-default"> Update </a><br />
                             }
-                            @Html.ActionLink("Details", "Details", new { id = item.JobID }) <br />
+                            else if(item.Completed==true)
+                            {
+                                foreach(var w in ViewBag.WList)
+                                {
+                                    if(w.JobID==item.JobID)
+                                    {
+                                        <a href="@Url.Action("Create","Reviews", new {job= item.JobID, worker = w.WorkerID, employer= item.EmployerID })">Review worker</a>
+                                    }
+                                }                                
+                            }
+                            <hr/>
+                            @Html.ActionLink("Details", "Details", new { id = item.JobID }) 
+                            <hr/>
                             @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
                         </td>
-
                     </tr>
                 }
             }

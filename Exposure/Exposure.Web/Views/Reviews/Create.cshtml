@@ -14,7 +14,39 @@
     <div class="form-horizontal">
         <h4>Review</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })    
+        
+            <div class="form-group">
+                @Html.LabelFor(model => model.JobID, "Job", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @foreach(var j in ViewBag.JList)
+                    {
+                        @j.Title   
+                    }
+                    @if (User.IsInRole("Employer"))
+                    {
+
+                        foreach (var work in ViewBag.WList)
+                        {
+                            ViewBag.WID = work.WorkerID;
+                        }
+                            @Html.HiddenFor(model=>model.Reviewee ,new { Value = ViewBag.WID })
+
+                    }
+                    else if (User.IsInRole("Worker"))
+                    {
+                        foreach (var emp in ViewBag.JList)
+                        {
+                          ViewBag.EID = emp.EmployerID;
+                        }
+                          @Html.Hidden("Reviewee", new { id = "EID" })
+
+                    }
+                    
+                    @Html.HiddenFor(model => model.JobID, new { id = "JobID" } )
+                </div>
+            </div>
+        
         <div class="form-group">
             @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -26,18 +58,12 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Comment, new {  @class = "form-control" , rows=5, columns=70 })
                 @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.JobApplicationID, "JobApplicationID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("JobApplicationID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.JobApplicationID, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        
+        
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

@@ -23,7 +23,7 @@
 
 @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
-
+    @Html.AntiForgeryToken()
     if (User.IsInRole("Admin"))
     {
         <div class="form-group form-actions container">
@@ -143,7 +143,8 @@
                                 @ViewBag.JobApp
                             </span>
                         </button>
-                    </div>
+                       
+                     </div>
                     <div class="col-md-2"></div>
                 </div>
 
@@ -320,9 +321,25 @@
 
 
             }
-    
+            
             </div>
-
+            <br/>
+            <div class="row">
+                        <table class="table dt-table">
+                            <tr> <th>Recent Reviews</th></tr>
+                            @foreach(var rev in ViewBag.Reviews)
+                            {
+                                <tr>
+                                    @*<td>@rev.UserReviews.ApplicationUser.FirstName &nbsp; @rev.UserReviews.ApplicationUser.LastName</td>*@
+                                    <td>@rev.Rating</td>
+                                </tr>
+                                <tr>
+                                    <td>@rev.Comment</td>
+                                </tr>
+                            }
+                    
+                        </table>
+                    </div>
      </div>
     }
 }

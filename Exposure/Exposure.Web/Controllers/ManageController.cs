@@ -72,8 +72,7 @@ namespace Exposure.Web.Controllers
             var userId = User.Identity.GetUserId();
                         
             var model = new IndexViewModel
-            {                                 
-                
+            {                                     
                 Email = UserManager.FindById(userId).Email,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -92,7 +91,7 @@ namespace Exposure.Web.Controllers
                     WorkAddressLine2 = UserManager.FindById(userId).Employer.WorkAddress2,
                     WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
                 };
-                var empSub = db.Employers.Include(m => m.Suburb).Where(m => m.SuburbID == model.Location);
+                var empSub = db.Employers.Include(m => m.Suburb).Where(m => m.SuburbID == model.Location);               
                 ViewBag.empSub = empSub;
             }
             ApplicationUser user = UserManager.FindById(userId);
@@ -124,7 +123,7 @@ namespace Exposure.Web.Controllers
                              select s).ToList();
 
                 var skills = db.WorkerSkills.Include(m => m.Skill).Include(m => m.Worker).OrderBy(m => m.Skill.SkillDescription).Where(m => m.WorkerID == userId);
-                ViewBag.Skills = skills;
+                ViewBag.Skills = skills;                
                 ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value != Reply.Pending).Where(w=>w.WorkerID==userId).Count();
             }
 
@@ -134,12 +133,12 @@ namespace Exposure.Web.Controllers
             }
 
             var uSub = user.SuburbID;
+            var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID).Where(u=>u.Id.Equals(userId));
+            var reviews = db.Reviews.Where(u => u.Reviewee == userId).Include(u => u.UserReviews).Include(u => u.ApplicationUser);
 
-            var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID).Where(u=>u.Id.Equals(userId));            
-
+            ViewBag.Reviews = reviews;
             ViewBag.userSub = userSub;
             ViewBag.UserID = userId;
-
             ViewData["user"] = user;            
             
             return View(model);

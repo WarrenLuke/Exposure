@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
+using Microsoft.AspNet.Identity;
 
 namespace Exposure.Web.Controllers
 {
@@ -19,7 +20,7 @@ namespace Exposure.Web.Controllers
         // GET: Reviews
         public ActionResult Index()
         {
-            var reviews = db.Reviews.Include(r => r.JobApplication);
+            var reviews = db.Reviews.Include(r => r.Job);
             return View(reviews.ToList());
         }
 
@@ -39,10 +40,32 @@ namespace Exposure.Web.Controllers
         }
 
         // GET: Reviews/Create
-        public ActionResult Create()
+        [Authorize(Roles = "Worker, Employer")]
+        public ActionResult Create(int job, string employer)
         {
-            ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation");
-            return View();
+            var userID = User.Identity.GetUserId();
+            if(employer != null)
+            {
+                var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser).Where(e => e.EmployerID == employer);
+                ViewBag.JList = jobs;
+            }
+            else
+            {
+                var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser).Where(e => e.EmployerID==userID);
+                ViewBag.JList = jobs;
+
+            }
+            var workers = db.JobApplications.Include(j => j.Job).Include(j => j.Worker).Include(j => j.Worker.ApplicationUser).Include(w=>w.Worker).Where(j=>j.JobID==job).Where(w=>w.Response== Reply.Hired);
+
+                        
+            ViewBag.JobID = job;
+            
+            ViewBag.WList = workers;
+
+            Review model = new Review();
+            model.JobID = job;
+
+            return View(model);
         }
 
         // POST: Reviews/Create
@@ -50,16 +73,35 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ReviewID,Rating,Comment,ReportDate,JobApplicationID")] Review review)
+        public ActionResult Create([Bind(Exclude ="ReportDate, ", Include = "ReviewID,Rating,Comment, JobID, Reviewee")] Review review,int? job, string employer)
         {
+            
+            review.ReportDate = DateTime.UtcNow;
+            //review.Reviewee = Reviewee;
+                        
             if (ModelState.IsValid)
             {
-                db.Reviews.Add(review);
+                db.Reviews.Add(review);                
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["ReviewSuccess"] = "Review successfully submitted";
+                return RedirectToRoute("Default", new { controller = "Jobs", action = "Index" });
             }
 
-            ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", review.JobApplicationID);
+            var userID = User.Identity.GetUserId();
+            if (employer != null)
+            {
+                var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser).Where(e => e.EmployerID == employer);
+                ViewBag.JList = jobs;
+            }
+            else
+            {
+                var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser).Where(e => e.EmployerID == userID);
+                ViewBag.JList = jobs;
+
+            }
+            var workers = db.JobApplications.Include(j => j.Job).Include(j => j.Worker).Include(j => j.Worker.ApplicationUser).Include(w => w.Worker).Where(j => j.JobID == job).Where(w => w.Response == Reply.Hired);
+
+            ViewBag.WList = workers;
             return View(review);
         }
 
@@ -75,7 +117,7 @@ namespace Exposure.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", review.JobApplicationID);
+            ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", review.JobID);
             return View(review);
         }
 
@@ -92,7 +134,7 @@ namespace Exposure.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", review.JobApplicationID);
+            ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", review.JobID);
             return View(review);
         }
 

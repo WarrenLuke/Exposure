@@ -41,13 +41,18 @@ namespace Exposure.Web.Controllers
             }
 
             var rows = jobApplications.Count();
-            if(rows ==0)
+
+            if (rows ==0)
             {
                 TempData["Empty"] = "No applications available for this type.";
             }
+
             ViewBag.Rejected = Reply.Rejected;
+            ViewBag.Hired = Reply.Hired;
+            ViewBag.Completed = true;
             ViewBag.Applications = jobApplications;
             ViewBag.skill = new SelectList(db.Skills, "SkillID", "SkillDescription");
+
             return View();
         }
 
@@ -191,13 +196,24 @@ namespace Exposure.Web.Controllers
         {
             JobApplication ja = db.JobApplications.Find(jobApplication.JobApplicationID);
 
+            var appList = db.JobApplications.Where(j => j.JobID == jobApplication.JobID).Where(j=>j.JobApplicationID != jobApplication.JobApplicationID);
+
+            
+
             if (User.IsInRole("Worker"))
             {
                 ja.Motivation = jobApplication.Motivation;
-            } else if (User.IsInRole("Employer"))
+            }
+            else if (User.IsInRole("Employer"))
             {
                 ja.Response = jobApplication.Response;
                 ja.Replied = true;
+
+                //foreach (var item in appList)
+                //{
+                //    item.Response = Reply.Rejected;
+                //    item.Replied = true;
+                //}
             }           
                       
                 try

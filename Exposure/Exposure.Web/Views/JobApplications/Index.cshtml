@@ -116,7 +116,7 @@
                     <td>
                         @application.Response
                     </td>
-                    @if(application.Response!=ViewBag.Rejected)
+                    @if(application.Response!=ViewBag.Rejected || application.Response!=ViewBag.Hired)
                     {
                         <td>
                             @Html.ActionLink("Edit", "Edit", new { id = application.JobApplicationID })|
@@ -168,13 +168,18 @@
                 <td>
                     @application.Response
                 </td>
-                @if(application.Response!=ViewBag.Rejected)
+                 <td>
+                @if(application.Response!=ViewBag.Rejected || application.Response != ViewBag.Hired)
                 {
-                    <td>
-                        <a href="@Url.Action("Edit","JobApplications",new { id = application.JobApplicationID })">Respond</a>
-                    </td>
+                   
+                    <a href="@Url.Action("Edit","JobApplications",new { id = application.JobApplicationID })">Respond</a>
+                   
                 }
-                
+                @if(application.Job.Completed == true && application.Response == ViewBag.Hired)
+                {
+                    <a href="@Url.Action("Create", "Reviews", new { job = application.Job.JobID })">Review Worker</a>
+                }
+                </td>
             </tr>
         }
     }

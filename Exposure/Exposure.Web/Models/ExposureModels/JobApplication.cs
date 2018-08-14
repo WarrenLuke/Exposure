@@ -44,9 +44,7 @@ namespace Exposure.Entities
 
         public virtual Worker Worker { get; set; }
 
-        public virtual ICollection<Incident> Incidents { get; set; }
-
-        public virtual ICollection<Review>  Reviews { get; set; }
+        
 
 
 
