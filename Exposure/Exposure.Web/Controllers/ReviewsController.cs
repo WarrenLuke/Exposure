@@ -78,10 +78,14 @@ namespace Exposure.Web.Controllers
             
             review.ReportDate = DateTime.UtcNow;
             //review.Reviewee = Reviewee;
-                        
+            UserReviews rv = new UserReviews();
+            rv.ReviewID = review.ReviewID;
+            rv.UserID = User.Identity.GetUserId();
+
             if (ModelState.IsValid)
             {
-                db.Reviews.Add(review);                
+                db.Reviews.Add(review);                             
+                db.UserReviews.Add(rv);
                 db.SaveChanges();
                 TempData["ReviewSuccess"] = "Review successfully submitted";
                 return RedirectToRoute("Default", new { controller = "Jobs", action = "Index" });
@@ -105,6 +109,7 @@ namespace Exposure.Web.Controllers
             return View(review);
         }
 
+        
         // GET: Reviews/Edit/5
         public ActionResult Edit(int? id)
         {

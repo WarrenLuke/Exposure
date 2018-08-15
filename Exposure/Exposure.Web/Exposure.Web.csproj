@@ -364,6 +364,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201808142059163_RevRequired.Designer.cs">
       <DependentUpon>201808142059163_RevRequired.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201808150858309_revKey.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201808150858309_revKey.Designer.cs">
+      <DependentUpon>201808150858309_revKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -927,6 +931,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201808142059163_RevRequired.resx">
       <DependentUpon>201808142059163_RevRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201808150858309_revKey.resx">
+      <DependentUpon>201808150858309_revKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

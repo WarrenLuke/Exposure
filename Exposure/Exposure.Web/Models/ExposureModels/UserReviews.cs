@@ -10,11 +10,14 @@ namespace Exposure.Entities
 {
     public class UserReviews
     {
-        [Key, Column(Order =0)]
+        [Key]
+        public int URID { get; set; }
+
+        [Column(Order =1)]
         [ForeignKey("ApplicationUser")]
         public string UserID { get; set; }
 
-        [Key, Column(Order =1)]
+        [Column(Order =2)]
         [ForeignKey("Review")]
         public int ReviewID { get; set; }
 

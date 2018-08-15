@@ -134,7 +134,7 @@ namespace Exposure.Web.Controllers
 
             var uSub = user.SuburbID;
             var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID).Where(u=>u.Id.Equals(userId));
-            var reviews = db.Reviews.Where(u => u.Reviewee == userId).Include(u => u.UserReviews).Include(u => u.ApplicationUser);
+            var reviews = db.UserReviews.Where(u => u.Review.Reviewee == userId).Include(u => u.Review).Include(u => u.ApplicationUser);
 
             ViewBag.Reviews = reviews;
             ViewBag.userSub = userSub;

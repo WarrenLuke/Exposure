@@ -325,16 +325,17 @@
             </div>
             <br/>
             <div class="row">
+                <h3>Recent Reviews</h3>
                         <table class="table dt-table">
-                            <tr> <th>Recent Reviews</th></tr>
+                            
                             @foreach(var rev in ViewBag.Reviews)
                             {
                                 <tr>
-                                    @*<td>@rev.UserReviews.ApplicationUser.FirstName &nbsp; @rev.UserReviews.ApplicationUser.LastName</td>*@
-                                    <td>@rev.Rating</td>
+                                    <td>@rev.ApplicationUser.FirstName &nbsp; @rev.ApplicationUser.LastName</td>
+                                    <td>@rev.Review.Rating</td>
                                 </tr>
                                 <tr>
-                                    <td>@rev.Comment</td>
+                                    <td>@rev.Review.Comment</td>
                                 </tr>
                             }
                     
