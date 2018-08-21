@@ -56,7 +56,8 @@ namespace Exposure.Web.Models
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<UserReviews> UserReviews { get; set; }
 
-        public virtual ICollection<Incident> Incidents { get; set; }       
+        public virtual ICollection<Incident> Incidents { get; set; }    
+        public virtual ICollection<UserIncidents> UserIncidents { get; set; }
 
         public virtual Employer Employer { get; set; }
 

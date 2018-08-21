@@ -46,7 +46,7 @@ namespace Exposure.Web.DataContexts
 
         public System.Data.Entity.DbSet<Exposure.Entities.Incident> Incidents { get; set; }
 
-       
+        public System.Data.Entity.DbSet<Exposure.Entities.UserIncidents> UserIncidents { get; set; }
 
         public System.Data.Entity.DbSet<Exposure.Entities.Worker> Workers { get; set; }
 

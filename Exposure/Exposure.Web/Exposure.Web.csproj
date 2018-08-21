@@ -376,10 +376,15 @@
     <Compile Include="DataContexts\IdentityMigrations\201808211442412_UserRegDateNull.Designer.cs">
       <DependentUpon>201808211442412_UserRegDateNull.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201808211955330_UserIncidents.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201808211955330_UserIncidents.Designer.cs">
+      <DependentUpon>201808211955330_UserIncidents.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
     <Compile Include="Models\Enums\Status.cs" />
+    <Compile Include="Models\ExposureModels\UserIncidents.cs" />
     <Compile Include="Models\ExposureModels\UserReviews.cs" />
     <Compile Include="Models\ExposureModels\Worker.cs" />
     <Compile Include="Global.asax.cs">
@@ -948,6 +953,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201808211442412_UserRegDateNull.resx">
       <DependentUpon>201808211442412_UserRegDateNull.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201808211955330_UserIncidents.resx">
+      <DependentUpon>201808211955330_UserIncidents.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

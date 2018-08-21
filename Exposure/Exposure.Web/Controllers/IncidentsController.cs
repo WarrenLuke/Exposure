@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
+using Microsoft.AspNet.Identity;
 
 namespace Exposure.Web.Controllers
 {
@@ -17,10 +18,9 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Incidents
-        public ActionResult Index()
+        public ActionResult Index(string Id)
         {
-            var incidents = db.Incidents.Include(i => i.JobApplications);
-            return View(incidents.ToList());
+            return View();
         }
 
         // GET: Incidents/Details/5
@@ -39,10 +39,23 @@ namespace Exposure.Web.Controllers
         }
 
         // GET: Incidents/Create
-        public ActionResult Create()
+        [Authorize(Roles = "Worker, Employer")]
+        public ActionResult Create(int job)
         {
-            ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation");
-            return View();
+            var userID = User.Identity.GetUserId();
+
+            
+
+            var jobs = db.Jobs.Include(s => s.Suburb).Where(j => j.JobID == job);
+            var jobApps = db.JobApplications.Include(w => w.Worker).Where(w => w.Response == Reply.Hired).Where(j=>j.JobID == job);
+
+            Incident model = new Incident();
+            model.JobID = job;
+
+            ViewBag.Job = job;
+            ViewBag.Apps = jobApps;
+            
+            return View(model);
         }
 
         // POST: Incidents/Create
@@ -50,16 +63,23 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IncidentID,JobApplicationID,Description,Reporter,Offender,Progress")] Incident incident)
+        public ActionResult Create([Bind(Exclude="ReportDate",Include = "IncidentID,JobID,Description,OffenderID,Progress")] Incident incident)
         {
+            incident.ReportDate = DateTime.UtcNow;
+            UserIncidents ui = new UserIncidents();
+            ui.UserID = User.Identity.GetUserId();
+            ui.IncidentID = incident.IncidentID;
+
             if (ModelState.IsValid)
             {
                 db.Incidents.Add(incident);
+                db.UserIncidents.Add(ui);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["IncidentReport"] = "Incident reported successfully. Please allow a couple of days for admin to look into it.";
+                return RedirectToRoute("Default", new { controller = "Jobs", action="Index" });
             }
 
-            ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);
+            //ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);
             return View(incident);
         }
 
@@ -75,7 +95,7 @@ namespace Exposure.Web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);
+            //ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);
             return View(incident);
         }
 
@@ -92,7 +112,7 @@ namespace Exposure.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);
+            //ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);
             return View(incident);
         }
 
