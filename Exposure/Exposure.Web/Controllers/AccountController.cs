@@ -314,14 +314,17 @@ namespace Exposure.Web.Controllers
         public ActionResult UserDetails(string Id)
         {
 
-            var user = db.Users.Include(e => e.Employer).Include(w => w.Worker).Include(s => s.Suburb).Include(c => c.Suburb.City).Where(u => u.Id.Equals(Id));
-            var userRole = UserManager.GetRoles(Id);
-            //if(user.Worker.WorkerID==Id)
-            //{
-            //    ViewBag.Worker = db.WorkerSkills.Include(w => w.Worker).Include(ws => ws.Worker.WorkerSkills).Where(w => w.Worker.WorkerID == Id);
-            //}
-            ViewBag.User = user;
-            ViewBag.Role = userRole[0];
+            var userDetails = db.Users.Include(e => e.Employer).Include(w => w.Worker).Include(s => s.Suburb).Where(u => u.Id == Id);
+            var reviews = db.UserReviews.Where(u => u.Review.Reviewee == Id).Include(u => u.Review).Include(u => u.ApplicationUser);
+            var userRole = UserManager.GetRoles(Id).Single();
+
+            if (userRole == "Worker")
+            {
+                ViewBag.Skills = db.WorkerSkills.Include(w => w.Worker).Include(ws => ws.Worker.WorkerSkills).Where(w => w.WorkerID == Id);
+            }
+            ViewBag.User = userDetails;
+            ViewBag.Role = userRole;
+            ViewBag.Reviews = reviews;
             return View();
         }
 
@@ -389,7 +392,7 @@ namespace Exposure.Web.Controllers
             {
                 ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
 
-                
+
 
                 var user = new ApplicationUser
                 {
@@ -401,7 +404,8 @@ namespace Exposure.Web.Controllers
                     AddressLine1 = model.AddressLine1,
                     AddressLine2 = model.AddressLine2,
                     PhoneNumber = model.PhoneNumber,
-                    SuburbID = model.SuburbID
+                    SuburbID = model.SuburbID,
+                    RegDate = DateTime.UtcNow                    
                 };
 
                 
@@ -413,7 +417,6 @@ namespace Exposure.Web.Controllers
                 {
                         //Binding user to selected role by using the UserManager class
                         UserManager.AddToRole(user.Id, role);
-
 
                         //If statement used to determine which table user should be added to
                         if (role == "Employer")
@@ -428,7 +431,6 @@ namespace Exposure.Web.Controllers
                             db.Workers.Add(worker);
                             db.SaveChanges();
                         }
-
 
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 

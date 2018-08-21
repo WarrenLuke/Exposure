@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -55,13 +56,14 @@ namespace Exposure.Web.Models
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<UserReviews> UserReviews { get; set; }
 
-        public virtual ICollection<Incident> Incidents { get; set; }
-        
-
+        public virtual ICollection<Incident> Incidents { get; set; }       
 
         public virtual Employer Employer { get; set; }
 
         public virtual Worker Worker { get; set; }
+
+        
+        public DateTime? RegDate { get; set; }
 
 
 

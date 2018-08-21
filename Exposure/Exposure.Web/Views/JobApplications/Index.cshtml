@@ -100,7 +100,7 @@
                         @application.Job.Skill.SkillDescription
                     </td>
                     <td>
-                        <a href="@Url.Action("Profile", "Account", new {id= application.Job.Employer.EmployerID })">
+                        <a href="@Url.Action("UserDetails", "Account", new {id= application.Job.Employer.EmployerID })">
                             @application.Job.Employer.ApplicationUser.FirstName &nbsp; @application.Job.Employer.ApplicationUser.LastName
                         </a>
                     </td>
@@ -152,7 +152,7 @@
                     @application.Job.Skill.SkillDescription
                 </td>
                 <td>
-                    <a href="@Url.Action("Profile", "Account", new { id= application.Worker.WorkerID})">
+                    <a href="@Url.Action("UserDetails", "Account", new { id= application.Worker.WorkerID})">
                         @application.Worker.ApplicationUser.FirstName&nbsp; @application.Worker.ApplicationUser.LastName
                     </a>
                 </td>
@@ -172,7 +172,7 @@
                 @if(application.Response!=ViewBag.Rejected || application.Response != ViewBag.Hired)
                 {
                    
-                    <a href="@Url.Action("Edit","JobApplications",new { id = application.JobApplicationID })">Respond</a>
+                    <a href="@Url.Action("Edit","JobApplications",new { id = application.JobApplicationID })">Respond</a> <br/>
                    
                 }
                 @if(application.Job.Completed == true && application.Response == ViewBag.Hired)

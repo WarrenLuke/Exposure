@@ -326,27 +326,24 @@
             <br/>
             <div class="row">
                 <h3>Recent Reviews</h3>
-                        <table class="table dt-table">
-                            
-                            @foreach(var rev in ViewBag.Reviews)
-                            {
-                                <tr>
-                                    <td>@rev.ApplicationUser.FirstName &nbsp; @rev.ApplicationUser.LastName</td>
-                                    <td>@rev.Review.Rating</td>
-                                </tr>
-                                <tr>
-                                    <td>@rev.Review.Comment</td>
-                                </tr>
-                            }
+                       <table class="table">
+                          @foreach(var rev in ViewBag.Reviews)
+                          {
+                                <tr><td width="80" align="center"><img src="@Url.Action("ProfilePic","Home", new {id= rev.UserID } )" style="width:70px; height:70px; background:
+                                        #ff6a00;
+                                        margin:auto;
+                                        -moz-border-radius:30px;
+                                        border-radius:90px;
+                                        padding:2px;
+                                        box-shadow:0px 0px 20px #888" /> </td><th width="120px">User Name <br/> Rating <br/>Comment </th><td>@rev.ApplicationUser.FirstName&nbsp;@rev.ApplicationUser.LastName <br/> @rev.Review.Rating <br />@rev.Review.Comment</td></tr>
                     
-                        </table>
+                          }
+              
+                      </table>
                     </div>
      </div>
     }
 }
-
-
-
 
 
 @*<p class="text-success">@ViewBag.StatusMessage</p>

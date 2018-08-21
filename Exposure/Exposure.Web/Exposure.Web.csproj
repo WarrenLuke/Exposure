@@ -368,6 +368,14 @@
     <Compile Include="DataContexts\IdentityMigrations\201808150858309_revKey.Designer.cs">
       <DependentUpon>201808150858309_revKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201808211423465_UserRegDate.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201808211423465_UserRegDate.Designer.cs">
+      <DependentUpon>201808211423465_UserRegDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201808211442412_UserRegDateNull.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201808211442412_UserRegDateNull.Designer.cs">
+      <DependentUpon>201808211442412_UserRegDateNull.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -934,6 +942,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201808150858309_revKey.resx">
       <DependentUpon>201808150858309_revKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201808211423465_UserRegDate.resx">
+      <DependentUpon>201808211423465_UserRegDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201808211442412_UserRegDateNull.resx">
+      <DependentUpon>201808211442412_UserRegDateNull.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

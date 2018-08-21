@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6"><strong>Employer Address:</strong></div>
+                        <div class="col-md-6"><strong>Address:</strong></div>
                         <div class="col-md-6">
                             @user.AddressLine1<br />
                             @if (user.AddressLine2 != null)
@@ -46,15 +46,15 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6"><strong>Employer Email:</strong></div> <div class="col-md-6">@user.Email</div>
+                        <div class="col-md-6"><strong>Email:</strong></div> <div class="col-md-6">@user.Email</div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6"><strong>Employer Contact No.:</strong></div> <div class="col-md-6">@user.PhoneNumber</div>
+                        <div class="col-md-6"><strong>Contact No.:</strong></div> <div class="col-md-6">@user.PhoneNumber</div>
                     </div>
                 
             </div>
-               @if (ViewBag.Role == "Employer")
+               @if(ViewBag.Role == "Employer")
                {
                    
                 <div class="col-md-4">
@@ -130,6 +130,21 @@
                        </div>
                    </div>
                }
+          <h3>Reviews</h3>
+          <table class="table">
+              @foreach(var rev in ViewBag.Reviews)
+              {
+                    <tr><td width="80" align="center"><img src="@Url.Action("ProfilePic","Home", new {id= rev.UserID } )" style="width:70px; height:70px; background:
+                            #ff6a00;
+                            margin:auto;
+                            -moz-border-radius:30px;
+                            border-radius:90px;
+                            padding:2px;
+                            box-shadow:0px 0px 20px #888" /> </td><th width="120px">User Name <br/> Rating <br/>Comment </th><td>@rev.ApplicationUser.FirstName&nbsp;@rev.ApplicationUser.LastName <br/> @rev.Review.Rating <br />@rev.Review.Comment</td></tr>
+                    
+              }
+              
+          </table>
         </div>
 
  }
