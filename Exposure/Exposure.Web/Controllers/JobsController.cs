@@ -107,7 +107,7 @@ namespace Exposure.Web.Controllers
 
             ViewBag.CurrentFilter = search;              
 
-            ViewBag.skill = new SelectList(db.Skills, "SkillID", "SkillDescription");
+            ViewBag.skill = new SelectList(db.Skills.OrderBy(x=>x.SkillDescription), "SkillID", "SkillDescription");
             ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.location = new SelectList(db.Suburbs, "SuburbID", "SubName");
@@ -284,11 +284,11 @@ namespace Exposure.Web.Controllers
         [Authorize(Roles =("Admin, Employer"))]
         public ActionResult Create()
         {
-            var skills = db.Skills.ToList();
+            var skills = db.Skills.ToList().OrderBy(s=>s.SkillDescription);
             ViewBag.Skills = skills;
             ViewBag.EmployerName = User.Identity.Name;
-            ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription");
-            ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName");
+            ViewBag.SkillID = new SelectList(db.Skills.OrderBy(x=>x.SkillDescription), "SkillID", "SkillDescription");
+            ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(s=>s.SubName), "SuburbID", "SubName");
             return View();
         }
 
@@ -315,8 +315,8 @@ namespace Exposure.Web.Controllers
 
             
             ViewBag.EmployerName = User.Identity.Name;
-            ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription", job.SkillID);
-            ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", job.SuburbID);
+            ViewBag.SkillID = new SelectList(db.Skills.OrderBy(x=>x.SkillDescription), "SkillID", "SkillDescription", job.SkillID);
+            ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(s=>s.SubName), "SuburbID", "SubName", job.SuburbID);
             TempData["JobSuccess"] = "Job could not be created. Please try again.";
             return View(job);
         }

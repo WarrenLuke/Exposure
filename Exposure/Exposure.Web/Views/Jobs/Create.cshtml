@@ -36,7 +36,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.SkillID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("SkillID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("SkillID", null, htmlAttributes: new { @class = "form-control", @id="Skill" })
                         @Html.ValidationMessageFor(model => model.SkillID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10" id="demo">
-                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false" } })
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control date date-picker", onkeydown = "return false", onpaste = "return false", id="StartDate" } })
                         @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger " })
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control" } }) <a href="#" data-toggle="tooltip" title="This is the rate per day in Rands that you are willing to pay the worker"> What is this?<span class="glyphicon glyphicon-question-sign"></span></a>
+                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control" } }) 
                         @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -149,36 +149,39 @@
     @Scripts.Render("~/Scripts/jquery.datetimepicker.js")
     @Scripts.Render("~/Scripts/jquery.min.js")
     <script type="text/javascript">
-                //$(function () {
-                //    $(".date-picker").datepicker({
-                //        changeMonth: true,
-                //        changeYear: true,
-                //        yearRange: "-100:+0",
-                //        dateFormat: 'dd-MM-yy',
-                //        parseDate: "dd-MM-yy"
+                $(function () {
+                    $(".date-picker").datepicker({
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: "-100:+0",
+                        dateFormat: 'dd-MM-yy',
+                        parseDate: "dd-MM-yy"
 
-                //    });
+                    });
 
-                //    function toDate(selector) {
-                //        var from = $(selector).val.split("-")
-                //        return new Date(from[2], from[1] - 1, from[0])
-                //    }
+                    function toDate(selector) {
+                        var from = $(selector).val.split("-")
+                        return new Date(from[2], from[1] - 1, from[0])
+                    }
 
-                //    jQuery.validator.methods.date = function (value, element) {
-                //        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-                //        if (isChrome) {
-                //            var d = new Date();
-                //            return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
-                //        }
-                //        else {
-                //            return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
-                //        }
-                //    };
-                //});
+                    jQuery.validator.methods.date = function (value, element) {
+                        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+                        if (isChrome) {
+                            var d = new Date();
+                            return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
+                        }
+                        else {
+                            return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
+                        }
+                    };
+                });
 
-                //$('#StartDate').datepicker({
-                //    minDate: "-0D"
-                //});
+                $('#StartDate').datepicker({
+                    minDate: "-0D"
+                });
+    </script>
+    <script>
+
     </script>
     <style type="text/css">
         @Styles.Render("~/Content/themes/base/jquery-ui.css")

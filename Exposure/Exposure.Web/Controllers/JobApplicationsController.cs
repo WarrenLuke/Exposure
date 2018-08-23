@@ -51,7 +51,7 @@ namespace Exposure.Web.Controllers
             ViewBag.Hired = Reply.Hired;
             ViewBag.Completed = true;
             ViewBag.Applications = jobApplications;
-            ViewBag.skill = new SelectList(db.Skills, "SkillID", "SkillDescription");
+            ViewBag.skill = new SelectList(db.Skills.OrderBy(x=>x.SkillDescription), "SkillID", "SkillDescription");
 
             return View();
         }
@@ -251,31 +251,34 @@ namespace Exposure.Web.Controllers
         }
 
         // POST: JobApplications/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public JsonResult DeleteConfirmed(int id)
         {
             JobApplication ja = db.JobApplications.Find(id);
 
             ja.Flagged = true;
             //db.JobApplications.Remove(jobApplication);
+            bool result = false;
             if(ModelState.IsValid)
             {
                 try
                 {
                     db.Entry(ja).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    result = true;
+                    return Json(result);
                 }
                 catch
                 {
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    result = true;
+                    return Json(result);
                 }
 
             }
-            
-            return RedirectToAction("Index");
+
+            return Json(result);
         }
 
         protected override void Dispose(bool disposing)
