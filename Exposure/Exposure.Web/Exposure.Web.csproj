@@ -380,6 +380,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201808211955330_UserIncidents.Designer.cs">
       <DependentUpon>201808211955330_UserIncidents.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201808260952341_JobExpiration.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201808260952341_JobExpiration.Designer.cs">
+      <DependentUpon>201808260952341_JobExpiration.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -956,6 +960,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201808211955330_UserIncidents.resx">
       <DependentUpon>201808211955330_UserIncidents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201808260952341_JobExpiration.resx">
+      <DependentUpon>201808260952341_JobExpiration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

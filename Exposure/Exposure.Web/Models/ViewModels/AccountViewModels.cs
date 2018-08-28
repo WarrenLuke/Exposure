@@ -100,9 +100,11 @@ namespace Exposure.Web.Models
         [DisplayName("Suburb")]
         public int SuburbID { get; set; }
 
-        [Required]
-        [Phone]
+        [Required]        
         [DisplayName("Phone Number")]
+        [DataType(DataType.PhoneNumber)]
+        [StringLength(maximumLength:10, ErrorMessage ="Phone number needs to be 10 digits", MinimumLength =10)]
+        //[RegularExpression(@"^\([0-9]{10}\)$", ErrorMessage = "Invalid phone number entered")]
         public string PhoneNumber { get; set; }
 
         [Required]

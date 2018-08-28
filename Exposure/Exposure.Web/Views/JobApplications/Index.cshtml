@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<Exposure.Entities.JobApplication>
 @using Exposure.Entities
 
-
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 @Html.AntiForgeryToken()
@@ -95,7 +94,7 @@
                     <div class="modal-footer">
                         <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
                         <a href="#" class="btn btn-success" onclick="DeleteApplication()">Confirm</a>
-                        @*<input type="reset" value="Submit" class="btn btn-success" id="btnSubmit"/>*@
+                        
                     </div>
                 </div>
             </div>
@@ -146,9 +145,8 @@
                     @if(application.Response == Reply.Pending)
                     {
                         <td>
-                            <a href="@Url.Action("Edit","Edit", new { id=application.JobApplicationID })" class="btn btn-info" data-toggle="tooltip" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                            @*@Html.ActionLink("Edit", "Edit", new { id = application.JobApplicationID })|*@
-                            @*@Html.ActionLink("Retract", "Delete", new { id = application.JobApplicationID })*@
+                            <a href="@Url.Action("Edit","JobApplications", new { id=application.JobApplicationID })" class="btn btn-info" data-toggle="tooltip" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                            
                             <a href="#" class="btn btn-danger" onclick="ConfirmDelete(@application.JobApplicationID)" data-toggle="tooltip" title="Retract"><i class="glyphicon glyphicon-trash"></i></a>
                         </td>
                     }                
@@ -219,47 +217,33 @@
 </div>
 @section scripts{
     
-    <script>
-    $(document).ready(function () {
-        $("#myLoaderDiv").show();
+    <script>       
 
-        var myFormData = $("#myForm").serialize();
+        function ConfirmDelete(ApplicationID) {
+            $("#hiddenApplicationID").val(ApplicationID);
+            $("#myModal").modal('show');
+        }
 
-        $.ajax({
-            type: "POST",
-            url: "/JobApplications/Index",
-            data: myFormData,
-            success: function () {
-                $("#loaderDiv").hide();
-                $("#myModal").modal("hide");
-            }
-        })
-    })
+         var DeleteApplication = function () {
 
+            $("#myLoaderDiv").show();
 
-    var ConfirmDelete = function (ApplicationID) {
-        $("#hiddenApplicationID").val(ApplicationID);
-        $("#myModal").modal('show');
-    }
+            var appID = $("#hiddenApplicationID").val();
+            $.ajax({
+                type: "POST",
+                url: "/JobApplications/Delete",
+                data: { id: appID },
+                success: function () {
+                    $("#loaderDiv").hide();
+                    $("#myModal").modal("hide");
+                    $("#row_" + appID).remove();
+                }
+             })
 
-    var DeleteApplication = function () {
+             
+        }
 
-        $("#myLoaderDiv").show();
-
-        var appID = $("#hiddenApplicationID").val();
-
-        $.ajax({
-            type: "POST",
-            url: "/JobApplications/DeleteConfirmed",
-            data: { id: appID },
-            success: function () {
-                $("#loaderDiv").hide();
-                $("#myModal").modal("hide");
-                $("#row_" + appID).remove();
-            }
-        })
-    }
-</script>
+    </script>
     
     }
 

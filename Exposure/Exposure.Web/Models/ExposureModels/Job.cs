@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Exposure.Entities
 {
@@ -39,12 +40,14 @@ namespace Exposure.Entities
         [DataType(DataType.Date)]
         [DisplayName("Start Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [CustomDateAttribute(ErrorMessage ="Please select a start date atleast 3 days from today.")]
         public DateTime? StartDate { get; set; }
 
 
         [DataType(DataType.Date)]
-        [DisplayName("Est. End Date")]
+        [DisplayName("End Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [EndDate(DateStartProperty ="StartDate", ErrorMessage = "End Date cannot be before start date")]
         public DateTime? EndDate { get; set; }
 
         
@@ -78,6 +81,8 @@ namespace Exposure.Entities
         [DefaultValue(false)]
         public bool Completed { get; set; }
 
+        public DateTime? ExpiryDate { get; set; }
+
         public virtual Suburb Suburb{ get; set; }
 
         public virtual ICollection<JobApplication> Applications { get; set; }
@@ -92,11 +97,24 @@ namespace Exposure.Entities
 
     }
 
-    //public class CustomDateAttribute:RangeAttribute
-    //{
-    //    public CustomDateAttribute()
-    //        : base(typeof(DateTime), DateTime.UtcNow.ToShortDateString())
-                  
-    //    { }
-    //}
+    public class CustomDateAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            return value != null && (DateTime)value > DateTime.UtcNow.AddDays(3);
+        }
+    }
+
+    public class EndDateAttribute: ValidationAttribute
+    {
+        public string DateStartProperty { get; set; }
+        public override bool IsValid(object value)
+        {
+            string dateStartString = HttpContext.Current.Request[DateStartProperty];
+            DateTime dateEnd = (DateTime)value;
+            DateTime dateStart = DateTime.Parse(dateStartString);
+
+            return dateStart < dateEnd;
+        }
+    }
 }

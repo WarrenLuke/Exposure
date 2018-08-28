@@ -52,7 +52,7 @@
                                               @job.Suburb.City.CityName
                         </div>
                     </div> 
-                    @if (User.IsInRole("Worker"))
+                    if (User.IsInRole("Worker"))
                     {
                         @Html.HiddenFor(model => model.OffenderID, new { Value = job.EmployerID })
                     }

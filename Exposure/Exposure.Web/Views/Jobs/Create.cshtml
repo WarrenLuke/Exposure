@@ -36,7 +36,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.SkillID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("SkillID", null, htmlAttributes: new { @class = "form-control", @id="Skill" })
+                        @Html.DropDownList("SkillID", null, htmlAttributes: new { @class = "form-control", @id = "Skill" })
                         @Html.ValidationMessageFor(model => model.SkillID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.SuburbID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("SuburbID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("SuburbID", null, htmlAttributes: new { @class = "form-control", @id = "Skill" })
                         @Html.ValidationMessageFor(model => model.SuburbID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -72,46 +72,51 @@
                         @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10" id="demo">
-                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control date date-picker", onkeydown = "return false", onpaste = "return false", id="StartDate" } })
-                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger " })
+                <form id="myForm">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10" id="demo">
+                            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false", @id = "sDate" } })
+                            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger " })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false", id = "StartDate" } })
-                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false", @id = "eDate" } })
+                            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 bfh-timepicker">
-                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10 bfh-timepicker">
+                            @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", @id = "sTime" } })
+                            @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control", @id = "eTime" } })
+                            @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control" } }) 
-                        @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                </form>
+                
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @id = "rate" } })
+                            @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#" class="btn btn-default" onclick="calculate()">Calculate <i class="glyphicon glyphicon-c"></i></a>
+                        </div>
                     </div>
-                </div>
+                
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
@@ -120,12 +125,13 @@
                 </div>
             </div>
             <br /><br />
-            <div class=" col-md-offset-1 col-md-4 content">
+            <div class=" col-md-offset-1 col-md-3 content">
                 <h3>Recommended Rate for Different Skills</h3>
                 <hr />
                 <div class="row">
                     <div class="col-md-6"><strong>Skill</strong> </div><div class="col-md-6"><strong>Hourly Rate(R)</strong></div>
                 </div>
+
                 @foreach (var skill in ViewBag.Skills)
                 {
                     <div class="row" style="text-align:left">
@@ -133,8 +139,35 @@
                     </div>
                 }
             </div>
+            <input type="hidden" id="hiddenRate" />
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a href="#" class="close" data-dismiss="modal">&times;</a>
+                            <h3 class="modal-title">Recommended Rate Calculation</h3>
+                        </div>
+                        <div class="modal-body">
+                            <h3 style="font-family:'Californian FB'">Recommended rate(per day) is - R <label for="rate"></label></h3>
+                            <h4 style="font-family:'Californian FB'">The recommended rate has been calculated according to the following selections:</h4>
+                            <p style="font-family:'Californian FB'">
+                                Skill: <label for="skill"></label><br />
+                                Start Date: <label for="sDate"></label> <br />
+                                End Date: <label for="eDate"></label> <br />
+                                Start Time: <label for="sTime"></label> <br />
+                                End Time: <label for="eTime"></label><br />
+                                <br />
+                                To use this rate, please click apply below.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-danger" data-dismiss="modal">Cancel</a>
+                            <a href="#" class="btn btn-success" onclick="ApplyRate()">Apply</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 }
 
@@ -148,53 +181,40 @@
     @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js")
     @Scripts.Render("~/Scripts/jquery.datetimepicker.js")
     @Scripts.Render("~/Scripts/jquery.min.js")
-    <script type="text/javascript">
-                $(function () {
-                    $(".date-picker").datepicker({
-                        changeMonth: true,
-                        changeYear: true,
-                        yearRange: "-100:+0",
-                        dateFormat: 'dd-MM-yy',
-                        parseDate: "dd-MM-yy"
 
-                    });
-
-                    function toDate(selector) {
-                        var from = $(selector).val.split("-")
-                        return new Date(from[2], from[1] - 1, from[0])
-                    }
-
-                    jQuery.validator.methods.date = function (value, element) {
-                        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-                        if (isChrome) {
-                            var d = new Date();
-                            return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
-                        }
-                        else {
-                            return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
-                        }
-                    };
-                });
-
-                $('#StartDate').datepicker({
-                    minDate: "-0D"
-                });
-    </script>
     <script>
 
-    </script>
-    <style type="text/css">
-        @Styles.Render("~/Content/themes/base/jquery-ui.css")
-        @Styles.Render("~/Content/themes/base/datepicker.css")
-        @Styles.Render("~/Content/themes/base/core.css")
-        @Styles.Render("~/Content/themes/base/theme.css")
-        @Styles.Render("~/Content/themes/base/jquery.datetimepicker.min.css")
-        #minicart {
-            display: none;
+        var ApplyRate = function () {
+            $("#rate").val($("#hiddenRate").val());
+            $("#myModal").modal("hide");
+            $("#rate").focus();
         }
 
-        #ShowCart:hover + #minicart {
-            display: block;
+        var calculate = function () {
+            var id = $("#Skill").val();
+            var skill = $("#Skill :selected").text();
+            var eT = $("#eTime").val();
+            var sT = $("#sTime").val();
+            var sDate = $("#sDate").val();
+            var eDate = $("#eDate").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Jobs/Calculate",
+                data: { id: id, start: sDate, end: eDate, eTime: eT, sTime: sT },
+                success: function (payPerDay) {
+                    $("label[for=skill]").text(skill);
+                    $("label[for=sDate]").text(sDate);
+                    $("label[for=eDate]").text(eDate);
+                    $("label[for=sTime]").text(sT);
+                    $("label[for=eTime]").text(eT);
+                    $("label[for=rate]").text(payPerDay)
+                    $("#hiddenRate").val(payPerDay);
+                    $("#myModal").modal("show");
+                    
+                }
+            })
         }
-    </style>
+
+    </script>
 }

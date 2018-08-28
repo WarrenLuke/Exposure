@@ -7,9 +7,7 @@ using Microsoft.Owin.Security;
 namespace Exposure.Web.Models
 {
     public class IndexViewModel
-    {
-
-        
+    {        
         public string Username { get; set; }
 
         [DisplayName("First Name")]

@@ -377,7 +377,7 @@ namespace Exposure.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {                                       
-            ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
+            ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(x=>x.SubName), "SuburbID", "SubName");
             return View();
         }
 
@@ -390,9 +390,7 @@ namespace Exposure.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName");
-
-
+                ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(x=>x.SubName), "SuburbID", "SubName");
 
                 var user = new ApplicationUser
                 {
@@ -406,9 +404,7 @@ namespace Exposure.Web.Controllers
                     PhoneNumber = model.PhoneNumber,
                     SuburbID = model.SuburbID,
                     RegDate = DateTime.UtcNow                    
-                };
-
-                
+                };                                
 
                 var role = model.Role;
                 var result = await UserManager.CreateAsync(user, model.Password);
@@ -444,9 +440,10 @@ namespace Exposure.Web.Controllers
                 }
                     AddErrors(result);
                 }
+            ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(x => x.SubName), "SuburbID", "SubName");
 
-                // If we got this far, something failed, redisplay form
-                return View(model);
+            // If we got this far, something failed, redisplay form
+            return View(model);
             }
         
 

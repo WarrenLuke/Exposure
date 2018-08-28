@@ -48,10 +48,10 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
             }
             context.Cities.AddOrUpdate(
                 cit => cit.CityName,
-                new City() {CityName = "Port Elizabeth", CityAbbrev = "PE" });
+                new City() {CityName = "Port Elizabeth", CityAbbrev = "PE", CityID=1 });
 
             context.Suburbs.AddOrUpdate(
-               sub => sub.SuburbID,
+               sub => sub.SubName,
                new Suburb() { SubName = "Adcockvale", CityID = 1 },
                new Suburb() { SubName = "Algoa Bay", CityID = 1 },
                new Suburb() { SubName = "Algoa Park", CityID = 1 },
@@ -214,7 +214,7 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                     AddressLine1 = "University Way",
                     Email = "admin@exposure.com",
                     UserName = "admin",
-                    SuburbID = 1114,
+                    SuburbID = 1,
                     Gender = "Male"
                 };
 
