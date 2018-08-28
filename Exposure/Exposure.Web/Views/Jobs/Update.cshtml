@@ -17,7 +17,7 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <strong>Warning!</strong>@TempData["Application"]. <a href="@Url.Action("Index", "JobApplications")">Click here</a> to review applcations.
+                <strong>Warning!&nbsp;</strong>@TempData["Application"] <a href="@Url.Action("Index", "JobApplications")">Click here</a> to review applcations.
             </div>
         }
         <div class="form-horizontal">            
@@ -30,6 +30,7 @@
                     @Html.HiddenFor(model => model.Title, new { id = item.Title })                    
                     @Html.HiddenFor(model => model.JobID, new { id = ViewBag.JobID })
                     @Html.HiddenFor(model => model.StartDate, new { @Value = item.StartDate })
+                    @Html.HiddenFor(model => model.EndDate, new { @Value = item.EndDate})
                 </div>
             </div>
 

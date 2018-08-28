@@ -19,39 +19,66 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Jobs
-        public ActionResult Index(string id, int? skill, DateTime? startDate, string search, int? page)
+        public ActionResult Index(string id, int? skill, DateTime? startDate, DateTime? endDate, string search, string sortOrder)
         {
 
-            ViewBag.Skills = new SelectList(db.Skills, "SkillID", "SkillDescription");
             var jobs = db.Jobs.Include(j => j.Employer);
-            var jobHistory = db.JobApplications.Include(j => j.Job.Employer);
+            var jobHistory = db.JobApplications.Include(j => j.Job);
 
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    jobs = jobs.OrderByDescending(j => j.Title);
+                    jobHistory = jobHistory.OrderByDescending(j => j.Job.Title);
+                    break;
+                case "date":
+                    jobs = jobs.OrderBy(j => j.DateAdvertised);
+                    jobHistory = jobHistory.OrderBy(j => j.Job.StartDate);
+                    break;
+                case "date_desc":
+                    jobs = jobs.OrderByDescending(j => j.DateAdvertised);
+                    jobHistory = jobHistory.OrderByDescending(j => j.Job.StartDate);
+                    break;
+                case "rate_desc":
+                    jobs = jobs.OrderByDescending(j => j.Rate);
+                    jobHistory = jobHistory.OrderByDescending(j => j.Job.Rate);
+                    break;
+                case "rate":
+                    jobs = jobs.OrderBy(j => j.Rate);
+                    jobHistory = jobHistory.OrderBy(j => j.Job.Rate);
+                    break;
+                default:
+                    jobs = jobs.OrderBy(j => j.DateAdvertised);
+                    jobHistory = jobHistory.OrderBy(j => j.Job.StartDate);
+                    break;
+            }
 
 
             if (User.IsInRole("Admin"))
             {
-                jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised);
             }
             else if (User.IsInRole("Employer"))
             {
                 var userId = User.Identity.GetUserId();
-                jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised).Where(j => j.Employer.EmployerID == userId);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised).Where(j => j.Employer.EmployerID == userId);
 
             }
             else if (User.IsInRole("Worker"))
             {
-                jobHistory = db.JobApplications.Include(j => j.Job.Employer).Include(j => j.Job).Include(j => j.WorkerID.Equals(id)).OrderByDescending(x => x.Job.StartDate).OrderBy(x => x.Job.Completed);
+                jobHistory = jobHistory.Where(j => j.WorkerID == id).Where(x=>x.Flagged!=true).Where(x=>x.Response == Reply.Hired);
             }
 
 
             if (!String.IsNullOrEmpty(id))
             {
                 jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.EmployerID.Equals(id)).OrderBy(j => j.DateAdvertised);
+
             }
 
             if (skill != null)
             {
-                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.SkillID == skill).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Where(j => j.SkillID == skill).OrderBy(j => j.DateAdvertised);
             }
 
             if (startDate != null)
@@ -61,21 +88,11 @@ namespace Exposure.Web.Controllers
 
             if (!String.IsNullOrEmpty(search))
             {
-                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.Title.Contains(search)).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.Title.Contains(search)).OrderBy(j => j.DateAdvertised).Where(j => j.Description.Contains(search));
             }
 
             //var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser);
             var workers = db.JobApplications.Include(j => j.Job).Include(j => j.Worker).Include(j => j.Worker.ApplicationUser).Include(w => w.Worker).Where(w => w.Response == Reply.Hired);
-
-            //if (User.IsInRole("Worker"))
-            //{
-            //    ViewBag.Worker = User.Identity.GetUserId();
-
-            //}
-            //else if (User.IsInRole("Employer"))
-            //{
-            //    ViewBag.Employer = User.Identity.GetUserId();
-            //}
 
 
             //ViewBag.JobID = job;
@@ -83,7 +100,10 @@ namespace Exposure.Web.Controllers
             ViewBag.WList = workers;
             ViewBag.Jobs = jobs;
             ViewBag.JobHistory = jobHistory;
-
+            ViewBag.skill = new SelectList(db.Skills.OrderBy(x => x.SkillDescription), "SkillID", "SkillDescription");
+            ViewBag.location = new SelectList(db.Suburbs.OrderBy(x => x.SubName), "SuburbID", "SubName");
+            ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             return View(jobs);
 
 
@@ -221,6 +241,7 @@ namespace Exposure.Web.Controllers
                 TempData["Application"] = "No application has been accepted/submitted for this job yet.";
             }
 
+
             if (job.Completed == true)
             {
                 TempData["Completed"] = "Job already completed";
@@ -239,26 +260,26 @@ namespace Exposure.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employer")]
-        public ActionResult Update([Bind(Include = "JobID,Completed")]Job job)
+        public ActionResult Update([Bind(Include = "JobID,Completed, StartDate, EndDate")]Job job)
         {
             Job a = db.Jobs.Find(job.JobID);
 
             a.Completed = job.Completed;
 
-            var state = ModelState;
-            try
+
+            if (ModelState.IsValid)
             {
                 db.Entry(a).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                ViewBag.Job = db.Jobs.Where(j => j.JobID == job.JobID);
-                ViewBag.JobID = job.JobID;
-                ViewBag.SuburbID = new SelectList(db.Suburbs, job.SuburbID);
-                return View(job);
-            }
+
+
+            ViewBag.Job = db.Jobs.Where(j => j.JobID == job.JobID);
+            ViewBag.JobID = job.JobID;
+            ViewBag.SuburbID = new SelectList(db.Suburbs, job.SuburbID);
+            return View(a);
+
 
         }
 
@@ -290,8 +311,9 @@ namespace Exposure.Web.Controllers
 
             var PayPerDay = sk.Recom_Rate * hours;
             var skill = sk.SkillDescription;
+            var result = new { rate = sk.Recom_Rate, payPerDay = PayPerDay };
 
-            return Json(PayPerDay, skill);
+            return Json(result, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -384,37 +406,20 @@ namespace Exposure.Web.Controllers
             j.AddressLine1 = job.AddressLine1;
             j.AddressLine2 = job.AddressLine2;
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 db.Entry(j).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index", new { id = User.Identity.GetUserId() });
             }
-            
+
 
             ViewBag.jobSkills = new SelectList(db.Skills, "SkillID", "SkillDescription");
             ViewBag.JobID = j.JobID;
             return View(job);
         }
 
-        // GET: Jobs/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Job job = db.Jobs.Find(id);
-        //    if (job == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(job);
-        //}
 
-        // POST: Jobs/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
         public JsonResult Delete(int id)
         {
             bool result = false;

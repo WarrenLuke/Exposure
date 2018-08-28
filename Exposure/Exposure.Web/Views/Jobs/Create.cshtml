@@ -76,6 +76,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10" id="demo">
+                            @*<input type="text" id="startDate" class="form-control ui-datepicker-current ui-datepicker"  />*@
                             @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false", @id = "sDate" } })
                             @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger " })
                         </div>
@@ -85,7 +86,7 @@
                         @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false", @id = "eDate" } })
-                            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger", @id = "end" })
                         </div>
                     </div>
 
@@ -105,18 +106,18 @@
                         </div>
                     </div>
                 </form>
-                
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-8">
-                            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @id = "rate" } })
-                            @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="col-md-2">
-                            <a href="#" class="btn btn-default" onclick="calculate()">Calculate <i class="glyphicon glyphicon-c"></i></a>
-                        </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @id = "rate" } })
+                        @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
                     </div>
-                
+                    <div class="col-md-2" style="justify-content:center">
+                        <a href="#" class="btn btn-default" onclick="calculate()">Calculate <i class="glyphicon glyphicon-c"></i></a>
+                    </div>
+                </div>
+
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
@@ -156,6 +157,7 @@
                                 End Date: <label for="eDate"></label> <br />
                                 Start Time: <label for="sTime"></label> <br />
                                 End Time: <label for="eTime"></label><br />
+                                Hourly Rate: <label for="hr"></label><br />
                                 <br />
                                 To use this rate, please click apply below.
                             </p>
@@ -180,6 +182,7 @@
     @Scripts.Render("~/Scripts/jquery-3.1.1.min.js")
     @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js")
     @Scripts.Render("~/Scripts/jquery.datetimepicker.js")
+    @Scripts.Render("~/Content/jquery-ui.css")
     @Scripts.Render("~/Scripts/jquery.min.js")
 
     <script>
@@ -188,9 +191,13 @@
             $("#rate").val($("#hiddenRate").val());
             $("#myModal").modal("hide");
             $("#rate").focus();
+            $("#rate").$this
         }
 
         var calculate = function () {
+            if ($("#sDate").val() == null) {
+                return Error("Start Date, End Date, Start Time and End time are reqiured for calculation");
+            }
             var id = $("#Skill").val();
             var skill = $("#Skill :selected").text();
             var eT = $("#eTime").val();
@@ -202,19 +209,38 @@
                 type: "POST",
                 url: "/Jobs/Calculate",
                 data: { id: id, start: sDate, end: eDate, eTime: eT, sTime: sT },
-                success: function (payPerDay) {
+                success: function (data) {
                     $("label[for=skill]").text(skill);
                     $("label[for=sDate]").text(sDate);
                     $("label[for=eDate]").text(eDate);
                     $("label[for=sTime]").text(sT);
                     $("label[for=eTime]").text(eT);
-                    $("label[for=rate]").text(payPerDay)
-                    $("#hiddenRate").val(payPerDay);
+                    $("label[for=hr").text(data.rate)
+                    $("label[for=rate]").text(data.payPerDay)
+                    $("#hiddenRate").val(data.payPerDay);
                     $("#myModal").modal("show");
-                    
+
                 }
             })
         }
+
+        $(document).ready(function () {
+            $("#sDate").datepicker({
+                numberOfMonths: 2,
+                onSelect: function (selected) {
+                    $("#endDate").datepicker("option", "minDate", selected)
+                }
+            })
+
+            $("#eDate").datepicker({
+                numberOfMonths: 2,
+                onSelect: function (selected) {
+                    $("#startDate").datepicker("option", "maxDate", selected)
+                }
+            })
+        })
+
+
 
     </script>
 }

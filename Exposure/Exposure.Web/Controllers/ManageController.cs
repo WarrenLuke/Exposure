@@ -147,7 +147,8 @@ namespace Exposure.Web.Controllers
         [Authorize(Roles="Admin")]
         public ActionResult AllUsers()
         {
-            var users = db.Users.Include(w => w.Worker).Include(e => e.Employer).Where(j => j.Id != User.Identity.GetUserId());
+            var userID = User.Identity.GetUserId();
+            var users = db.Users.Include(w => w.Worker).Include(e => e.Employer).Where(j => j.Id != userID);
             ViewBag.Users = users;
 
             return View();

@@ -23,7 +23,7 @@ namespace Exposure.Entities
         [Required]
         [StringLength(20)]
         public string Title { get; set; }
-        
+
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         [DisplayName("Date Advertised")]
         public DateTime? DateAdvertised { get; set; }
@@ -40,23 +40,23 @@ namespace Exposure.Entities
         [DataType(DataType.Date)]
         [DisplayName("Start Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [CustomDateAttribute(ErrorMessage ="Please select a start date atleast 3 days from today.")]
+        //[CustomDateAttribute(ErrorMessage = "Please select a start date atleast 3 days from today.")]
         public DateTime? StartDate { get; set; }
 
 
         [DataType(DataType.Date)]
         [DisplayName("End Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [EndDate(DateStartProperty ="StartDate", ErrorMessage = "End Date cannot be before start date")]
+        //[EndDate(DateStartProperty = "StartDate", ErrorMessage = "End Date cannot be before start date")]
         public DateTime? EndDate { get; set; }
 
-        
+
         [DisplayName("Start Time")]
         [DataType(DataType.Time)]
-        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode =true)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime? StartTime { get; set; }
 
-                
+
         [DisplayName("End Time")]
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
@@ -66,7 +66,7 @@ namespace Exposure.Entities
         [DisplayName("Rate")]
         [DataType(DataType.Currency)]
         public double Rate { get; set; }
-        
+
         [Required]
         [DisplayName("Location")]
         public int SuburbID { get; set; }
@@ -74,7 +74,7 @@ namespace Exposure.Entities
         [Required]
         [DisplayName("Address Line 1")]
         public string AddressLine1 { get; set; }
-        
+
         [DisplayName("Address Line 2")]
         public string AddressLine2 { get; set; }
 
@@ -83,7 +83,7 @@ namespace Exposure.Entities
 
         public DateTime? ExpiryDate { get; set; }
 
-        public virtual Suburb Suburb{ get; set; }
+        public virtual Suburb Suburb { get; set; }
 
         public virtual ICollection<JobApplication> Applications { get; set; }
 
@@ -97,24 +97,28 @@ namespace Exposure.Entities
 
     }
 
-    public class CustomDateAttribute : ValidationAttribute
-    {
-        public override bool IsValid(object value)
-        {
-            return value != null && (DateTime)value > DateTime.UtcNow.AddDays(3);
-        }
-    }
+    //public class CustomDateAttribute : ValidationAttribute
+    //{
+    //    public override bool IsValid(object value)
+    //    {
+    //        return value != null && (DateTime)value > DateTime.UtcNow.AddDays(3);
+    //    }
+    //}
 
-    public class EndDateAttribute: ValidationAttribute
-    {
-        public string DateStartProperty { get; set; }
-        public override bool IsValid(object value)
-        {
-            string dateStartString = HttpContext.Current.Request[DateStartProperty];
-            DateTime dateEnd = (DateTime)value;
-            DateTime dateStart = DateTime.Parse(dateStartString);
+    //public class EndDateAttribute : ValidationAttribute
+    //{
+    //    public string DateStartProperty { get; set; }
+    //    public override bool IsValid(object value)
+    //    {
 
-            return dateStart < dateEnd;
-        }
-    }
+    //        string dateStartString = HttpContext.Current.Request[DateStartProperty];
+
+    //        DateTime dateStart = DateTime.Parse(dateStartString);
+    //        DateTime dateEnd = (DateTime)value;
+
+            
+
+    //        return dateStart < dateEnd;
+    //    }
+    //}
 }

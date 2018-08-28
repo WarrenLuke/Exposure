@@ -112,10 +112,7 @@ namespace Exposure.Web.Controllers
 
                 }
             }
-            else if (check == 0)
-            {
-                result = true;
-            }
+            
 
 
             if (result == false)

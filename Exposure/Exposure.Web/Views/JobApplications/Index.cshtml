@@ -20,21 +20,21 @@
 @using (Html.BeginForm("Index", "JobApplications", FormMethod.Get))
 {
     <div>
-    <div class="col-md-2">
-        <p>Category: </p>@Html.DropDownList("skill", null, "All", new { @class = "form-control" })
-        <br />
+        <div class="col-md-2">
+            <p>Category: </p>@Html.DropDownList("skill", null, "All", new { @class = "form-control" })
+            <br />
 
+        </div>
+        <div class="col-md-4">
+            <br />
+            <input type="submit" class="btn btn-default" value="Filter" />
+        </div>
     </div>
-    <div class="col-md-4">
-        <br />
-        <input type="submit" class="btn btn-default" value="Filter" />
-    </div>
-</div>
 }
 
 
-    @if (User.IsInRole("Admin"))
-    {
+@if (User.IsInRole("Admin"))
+{
     <table class="table">
         <tr>
             <th>
@@ -54,53 +54,53 @@
 
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Job.Employer.ApplicationUser.FirstName)&nbsp;@Html.DisplayFor(modelItem => item.Job.Employer.ApplicationUser.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Worker.ApplicationUser.FirstName)&nbsp; @Html.DisplayFor(modelItem => item.Worker.ApplicationUser.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Motivation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Response)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Details", new { id = item.JobApplicationID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.JobApplicationID })
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job.Employer.ApplicationUser.FirstName)&nbsp;@Html.DisplayFor(modelItem => item.Job.Employer.ApplicationUser.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Worker.ApplicationUser.FirstName)&nbsp; @Html.DisplayFor(modelItem => item.Worker.ApplicationUser.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Motivation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Response)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.JobApplicationID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.JobApplicationID })
+                </td>
+            </tr>
         }
-     </table>
-    }
-    else if (User.IsInRole("Worker"))
-    {   
-        <input type="hidden" id="hiddenApplicationID" />
-        <div class="modal fade" id="myModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <a href="#" class="close" data-dismiss="modal">&times;</a>
-                        <h3 class="modal-title">Retract Application?</h3>
+    </table>
+}
+else if (User.IsInRole("Worker"))
+{
+    <input type="hidden" id="hiddenApplicationID" />
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Retract Application?</h3>
+                </div>
+                <div class="modal-body">
+                    <h4>Are you sure you want to retract this application? </h4>
+                    <div style="text-align:center; display:none" id="loaderDiv">
+                        <img src="~/Images/InternetSlowdown_Day.gif" width="150" />
                     </div>
-                    <div class="modal-body">
-                        <h4>Are you sure you want to retract this application? </h4>
-                        <div style="text-align:center; display:none" id="loaderDiv">
-                            <img src="~/Images/InternetSlowdown_Day.gif" width="150" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
-                        <a href="#" class="btn btn-success" onclick="DeleteApplication()">Confirm</a>
-                        
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <a href="#" class="btn btn-success" onclick="DeleteApplication()">Confirm</a>
+
                 </div>
             </div>
         </div>
+    </div>
 
-        <table class="table">
+    <table class="table">
         <tr>
             <th>Title</th>
             <th>Skill</th>
@@ -142,23 +142,23 @@
                     <td>
                         @application.Response
                     </td>
-                    @if(application.Response == Reply.Pending)
+                    @if (application.Response == Reply.Pending)
                     {
                         <td>
                             <a href="@Url.Action("Edit","JobApplications", new { id=application.JobApplicationID })" class="btn btn-info" data-toggle="tooltip" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                            
+
                             <a href="#" class="btn btn-danger" onclick="ConfirmDelete(@application.JobApplicationID)" data-toggle="tooltip" title="Retract"><i class="glyphicon glyphicon-trash"></i></a>
                         </td>
-                    }                
-                </tr>            
-            }            
+                    }
+                </tr>
+            }
         }
-        </table>       
-        
-    }
-    else if (User.IsInRole("Employer"))
-    {
-        <table>
+    </table>
+
+}
+else if (User.IsInRole("Employer"))
+{
+    <table class="table">
         <tr>
             <th>Title</th>
             <th>Skill</th>
@@ -195,36 +195,36 @@
                 <td>
                     @application.Response
                 </td>
-                 <td>
-                @if(application.Response!=ViewBag.Rejected || application.Response != ViewBag.Hired)
-                {
-                   
-                    <a href="@Url.Action("Edit","JobApplications",new { id = application.JobApplicationID })">Respond</a> <br/>
-                   
-                }
-                @if(application.Job.Completed == true && application.Response == ViewBag.Hired)
-                {
-                    <a href="@Url.Action("Create", "Reviews", new { job = application.Job.JobID })">Review Worker</a>
-                }
+                <td>
+                    @if (application.Response != ViewBag.Rejected || application.Response != ViewBag.Hired)
+                    {
+
+                        <a href="@Url.Action("Edit","JobApplications",new { id = application.JobApplicationID })">Respond</a> <br />
+
+                    }
+                    @if (application.Job.Completed == true && application.Response == ViewBag.Hired)
+                    {
+                        <a href="@Url.Action("Create", "Reviews", new { job = application.Job.JobID })">Review Worker</a>
+                    }
                 </td>
             </tr>
         }
-            </table>
-    }
-    
+    </table>
+}
+
 <div class="text-left">
     <a href="@Url.Action("Index", "Manage")">Back to profile</a>
 </div>
 @section scripts{
-    
-    <script>       
+
+    <script>
 
         function ConfirmDelete(ApplicationID) {
             $("#hiddenApplicationID").val(ApplicationID);
             $("#myModal").modal('show');
         }
 
-         var DeleteApplication = function () {
+        var DeleteApplication = function () {
 
             $("#myLoaderDiv").show();
 
@@ -238,13 +238,13 @@
                     $("#myModal").modal("hide");
                     $("#row_" + appID).remove();
                 }
-             })
+            })
 
-             
+
         }
 
     </script>
-    
-    }
 
-    
+}
+
+

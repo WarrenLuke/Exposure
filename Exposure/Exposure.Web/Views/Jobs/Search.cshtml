@@ -3,10 +3,24 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Job Search";
+    ViewBag.Title = "Jobs";
 }
 
-<h2>@ViewBag.Title</h2><br />
+
+<div class="row">
+    <div class="col-md-2">
+        <h2>@ViewBag.Title</h2>
+    </div>
+    <div class="col-md-3">
+        <br />
+        @if (User.IsInRole("Employer"))
+        {
+            <a href="@Url.Action("Create", "Jobs")" class="btn btn-default">Create new</a>
+        }
+    </div>
+</div>
+
+<hr />
 @using (Html.BeginForm("Search", "Jobs", FormMethod.Get))
 {
     <div class="row">
@@ -20,10 +34,10 @@
             <p>Sort by: </p>@Html.DropDownList("sortOrder", new SelectList(
 new List<Object>
 {
-           new{value="date", text= "Latest"},
-           new{value="date_desc", text="Date Advitised(Desc)"},
-           new {value="rate", text="Rate"},
-           new {value="rate_desc", text="Rate(Desc)"}
+new{value="date", text= "Latest"},
+new{value="date_desc", text="Date Advitised(Desc)"},
+new {value="rate", text="Rate"},
+new {value="rate_desc", text="Rate(Desc)"}
 },
 "value", "text", 2), new { @class = "form-control" })
         </div>
@@ -47,7 +61,7 @@ new List<Object>
         {
             <tr>
                 <td>
-                    <strong>Title:</strong> @Html.DisplayFor(modelItem => item.Title)<br/>
+                    <strong>Title:</strong> @Html.DisplayFor(modelItem => item.Title)<br />
                     <strong>Location:</strong> @Html.DisplayFor(modelItem => item.Suburb.SubName) <br />
                     <strong>Rate(ZAR):</strong> @Html.DisplayFor(modelItem => item.Rate) <br />
                     <strong>Start Date:</strong> @Html.DisplayFor(modelItem => item.StartDate)<br />
@@ -58,9 +72,13 @@ new List<Object>
                 </td>
                 <td align="right">
                     <strong>Date Advertised:</strong><br />
-                    @item.DateAdvertised<br /><br/><br/>                   
+                    @item.DateAdvertised<br /><br /><br />
 
-                    <a href="@Url.Action("Create", "JobApplications", new { id = item.JobID, skill = item.SkillID })" class="btn btn-default"  data-toggle="tooltip" data-placement="right" title="Click Here To Apply">Apply</a><br />
+                    @if (User.IsInRole("Worker"))
+                    {
+                        <a href="@Url.Action("Create", "JobApplications", new { id = item.JobID, skill = item.SkillID })" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Click Here To Apply" style="vertical-align:bottom">Apply</a><br />
+
+                    }
 
                 </td>
             </tr>
@@ -74,9 +92,9 @@ new List<Object>
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
-        
+
     });
 
-    
+
 </script>
 
