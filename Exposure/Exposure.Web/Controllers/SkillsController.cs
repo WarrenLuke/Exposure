@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
+using PagedList;
 
 namespace Exposure.Web.Controllers
 {
@@ -17,9 +18,14 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Skills
-        public ActionResult Index()
+        public ActionResult Index(int page =1, int pageSize = 10 )
         {
-            return View(db.Skills.ToList());
+            var skills = db.Skills.OrderBy(x=>x.SkillDescription).ToList();
+            PagedList<Skill> model = new PagedList<Skill>(skills, page, pageSize);
+
+            ViewBag.Skills = model;
+
+            return View(model);
         }
 
         // GET: Skills/Details/5
@@ -90,31 +96,23 @@ namespace Exposure.Web.Controllers
             }
             return View(skill);
         }
-
-        // GET: Skills/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Skill skill = db.Skills.Find(id);
-            if (skill == null)
-            {
-                return HttpNotFound();
-            }
-            return View(skill);
-        }
+       
+        
 
         // POST: Skills/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public JsonResult Delete(int id)
         {
+            bool result = false;
+
             Skill skill = db.Skills.Find(id);
-            db.Skills.Remove(skill);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (skill!= null)
+            {
+                db.Skills.Remove(skill);
+                db.SaveChanges();
+                result = true;
+            }
+            
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

@@ -34,12 +34,68 @@ namespace Exposure.Web.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.gb = generalBusiness;
             return View(generalBusiness);
+        }
+
+        //GET: /GeneralBusinesses/UpdateBanner
+        public ActionResult UpdateBanner(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            GeneralBusiness gb = db.GeneralBusinesses.Find(id);
+
+            if (gb == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(gb);
+
+        }
+
+        //POST: /GeneralBusinesses/UpdateBanner
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateBanner([Bind(Exclude = "CompanyBanner, Logo")]GeneralBusiness gb)
+        {          
+            byte[] imageData = null;
+
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase poImgFile = Request.Files["CompanyBanner"];
+                var image = poImgFile;
+                using (var binary = new BinaryReader(poImgFile.InputStream))
+                {
+                    imageData = binary.ReadBytes(poImgFile.ContentLength);
+                }
+            }
+
+            gb.CompanyBanner = imageData;
+            
+
+            if (gb != null)
+            {                   
+                    db.Entry(gb).State = EntityState.Modified;
+                    db.SaveChanges();
+                    TempData["PicUpdate"] = "Profile Picture Changed Successfully";
+                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });              
+                    
+            }            
+
+            return View(gb);
         }
 
         // GET: GeneralBusinesses/Create
         public ActionResult Create()
         {
+
+            ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(x => x.SubName), "SuburbID", "SubName");
+
             return View();
         }
 
@@ -48,29 +104,29 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Exclude="CompanyLogo",Include = "ID,CompanyName,Slogan,Description")] GeneralBusiness gb)
+        public ActionResult Create([Bind(Exclude="CompanyBanner, Logo ",Include = "ID,CompanyName,Slogan,Description, SuburbID, TelNo, FaxNo")] GeneralBusiness gb)
         {
 
-            byte[] imageData = null;
+            //byte[] imageData = null;
 
-            if (Request.Files.Count > 0)
-            {
-                HttpPostedFileBase poImgFile = Request.Files["ProfilePic"];
-                var image = poImgFile;
-                using (var binary = new BinaryReader(poImgFile.InputStream))
-                {
-                    imageData = binary.ReadBytes(poImgFile.ContentLength);
-                }
+            //if (Request.Files.Count > 0)
+            //{
+            //    HttpPostedFileBase poImgFile = Request.Files["ProfilePic"];
+            //    var image = poImgFile;
+            //    using (var binary = new BinaryReader(poImgFile.InputStream))
+            //    {
+            //        imageData = binary.ReadBytes(poImgFile.ContentLength);
+            //    }
 
-            }
+            //}
 
-            gb.CompanyLogo = imageData;
+            //gb.CompanyBanner = imageData;
 
             if (ModelState.IsValid)
             {
                 db.GeneralBusinesses.Add(gb);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToRoute("Default", new { controller = "Manage", action="Index" });
             }
 
             return View(gb);

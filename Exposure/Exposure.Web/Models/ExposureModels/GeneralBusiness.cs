@@ -14,9 +14,9 @@ namespace Exposure.Entities
         [ScaffoldColumn(false)]
         public int ID { get; set; }
 
-        [DisplayName("Company Logo")]
-        [Column(TypeName = "image")]
-        public byte[] CompanyLogo { get; set; }
+        [DisplayName("Company Banner")]
+        [Column(TypeName = "image")]        
+        public byte[] CompanyBanner { get; set; }
 
         [DisplayName("Logo")]
         [Column(TypeName = "image")]
@@ -29,11 +29,20 @@ namespace Exposure.Entities
         [Required]
         public string Slogan { get; set; }
 
+        [ForeignKey("Suburb")]
+        public int SuburbID { get; set; }
+
         [Required]
         [StringLength(1024)]
         public string Description { get; set; }
 
-        //public  Logo { get; set; }
+        [DisplayName("Fax No.")]       
+        public string FaxNo { get; set; }
+
+        [DisplayName("Telephone No.")]
+        public string TelNo { get; set; }
+
+        public virtual Suburb Suburb { get; set; }
 
     }
 }

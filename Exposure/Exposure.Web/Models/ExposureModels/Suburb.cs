@@ -26,6 +26,8 @@ namespace Exposure.Entities
       
         public virtual ICollection<ApplicationUser> applicationUsers { get; set; }
 
+        public virtual ICollection<GeneralBusiness> GeneralBusinesses { get; set; }
+
         public virtual ICollection<Job> Jobs { get; set; }
 
 

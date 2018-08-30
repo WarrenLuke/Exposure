@@ -305,13 +305,15 @@ namespace Exposure.Web.Controllers
             var st = Convert.ToDouble(sTime.Hour);
             var et = Convert.ToDouble(eTime.Hour);
 
-            var Days = end - start;
+            var days = end - start;
+            var totDays = Convert.ToDouble(days.Days);
 
             var hours = et - st;
 
             var PayPerDay = sk.Recom_Rate * hours;
+            var jobPay = PayPerDay * totDays;
             var skill = sk.SkillDescription;
-            var result = new { rate = sk.Recom_Rate, payPerDay = PayPerDay };
+            var result = new { rate = sk.Recom_Rate, payPerDay = PayPerDay, JobPay = jobPay };
 
             return Json(result, JsonRequestBehavior.AllowGet);
 

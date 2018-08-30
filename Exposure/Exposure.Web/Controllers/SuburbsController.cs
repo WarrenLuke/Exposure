@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
+using PagedList;
 
 namespace Exposure.Web.Controllers
 {
@@ -16,10 +17,16 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Suburbs
-        public ActionResult Index()
+        public ActionResult Index(int page = 1, int pageSize = 10)
         {
-            var suburbs = db.Suburbs.Include(s => s.City);
-            return View(suburbs.ToList());
+            var suburbs = db.Suburbs.Include(s => s.City).OrderBy(x=>x.SubName);
+            var suburbsList = suburbs.ToList();
+
+            PagedList<Suburb> model = new PagedList<Suburb>(suburbsList, page, pageSize);
+
+            ViewBag.Suburbs = model;
+
+            return View(model);
         }
 
         // GET: Suburbs/Details/5
@@ -95,30 +102,21 @@ namespace Exposure.Web.Controllers
             return View(suburb);
         }
 
-        // GET: Suburbs/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Suburb suburb = db.Suburbs.Find(id);
-            if (suburb == null)
-            {
-                return HttpNotFound();
-            }
-            return View(suburb);
-        }
+       
 
-        // POST: Suburbs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        // POST: Suburbs/Delete/5        
+        public JsonResult Delete(int id)
         {
+            var result = false;
             Suburb suburb = db.Suburbs.Find(id);
-            db.Suburbs.Remove(suburb);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if(suburb !=null)
+            {
+                db.Suburbs.Remove(suburb);
+                db.SaveChanges();
+                result = true;
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

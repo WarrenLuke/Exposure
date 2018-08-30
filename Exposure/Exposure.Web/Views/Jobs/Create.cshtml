@@ -52,7 +52,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.SuburbID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("SuburbID", null, htmlAttributes: new { @class = "form-control", @id = "Skill" })
+                        @Html.DropDownList("SuburbID", null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.SuburbID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -149,7 +149,7 @@
                             <h3 class="modal-title">Recommended Rate Calculation</h3>
                         </div>
                         <div class="modal-body">
-                            <h3 style="font-family:'Californian FB'">Recommended rate(per day) is - R <label for="rate"></label></h3>
+                            <h3 style="font-family:'Californian FB'">Recommended rate(per day) is - R<label for="rate"></label></h3>
                             <h4 style="font-family:'Californian FB'">The recommended rate has been calculated according to the following selections:</h4>
                             <p style="font-family:'Californian FB'">
                                 Skill: <label for="skill"></label><br />
@@ -157,7 +157,8 @@
                                 End Date: <label for="eDate"></label> <br />
                                 Start Time: <label for="sTime"></label> <br />
                                 End Time: <label for="eTime"></label><br />
-                                Hourly Rate: <label for="hr"></label><br />
+                                Hourly Rate:R <label for="hr"></label><br />
+                                Total Cost for Job: R<label for="totCost"></label>
                                 <br />
                                 To use this rate, please click apply below.
                             </p>
@@ -177,13 +178,9 @@
     @Html.ActionLink("Back to Profile", "Index")
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/Scripts/jquery-3.1.1.min.js")
-    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js")
-    @Scripts.Render("~/Scripts/jquery.datetimepicker.js")
-    @Scripts.Render("~/Content/jquery-ui.css")
-    @Scripts.Render("~/Scripts/jquery.min.js")
+@section Scripts {     
+     @Scripts.Render("~/Scripts/jquery.datetimepicker.js") 
+    
 
     <script>
 
@@ -215,8 +212,9 @@
                     $("label[for=eDate]").text(eDate);
                     $("label[for=sTime]").text(sT);
                     $("label[for=eTime]").text(eT);
-                    $("label[for=hr").text(data.rate)
-                    $("label[for=rate]").text(data.payPerDay)
+                    $("label[for=hr").text(data.rate);
+                    $("label[for=rate]").text(data.payPerDay);
+                    $("label[for=totCost").text(data.JobPay);
                     $("#hiddenRate").val(data.payPerDay);
                     $("#myModal").modal("show");
 
@@ -224,21 +222,21 @@
             })
         }
 
-        $(document).ready(function () {
-            $("#sDate").datepicker({
-                numberOfMonths: 2,
-                onSelect: function (selected) {
-                    $("#endDate").datepicker("option", "minDate", selected)
-                }
-            })
+        //$(document).ready(function () {
+        //    $("#sDate").datepicker({
+        //        numberOfMonths: 2,
+        //        onSelect: function (selected) {
+        //            $("#endDate").datepicker("option", "minDate", selected)
+        //        }
+        //    })
 
-            $("#eDate").datepicker({
-                numberOfMonths: 2,
-                onSelect: function (selected) {
-                    $("#startDate").datepicker("option", "maxDate", selected)
-                }
-            })
-        })
+        //    $("#eDate").datepicker({
+        //        numberOfMonths: 2,
+        //        onSelect: function (selected) {
+        //            $("#startDate").datepicker("option", "maxDate", selected)
+        //        }
+        //    })
+        //})
 
 
 

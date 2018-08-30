@@ -4,7 +4,12 @@
 }
 
 <h2>User Profile</h2>
-<hr/>
+@if (User.IsInRole("Admin"))
+{
+    <a href="@Url.Action("AllUsers", "Manage")">Back to Users</a>
+}
+<hr />
+
 @foreach (var user in ViewBag.User)
 {
     <div class="row">
@@ -130,14 +135,14 @@
                 </div>
             </div>
         }
-        
+
 
     </div>
-    <br/>
+    <br />
     <div class="row">
-        <hr/>
+        <hr />
         <h3>Reviews</h3>
-        <hr/>
+        <hr />
         <table class="table">
 
             @foreach (var rev in ViewBag.Reviews)

@@ -12,6 +12,7 @@ using Exposure.Entities;
 using Exposure.Web.DataContexts;
 using System.Data;
 using System.Data.Entity;
+using PagedList;
 
 namespace Exposure.Web.Controllers
 {
@@ -145,13 +146,14 @@ namespace Exposure.Web.Controllers
         }
 
         [Authorize(Roles="Admin")]
-        public ActionResult AllUsers()
+        public ActionResult AllUsers(int page = 1, int pageSize = 10)
         {
             var userID = User.Identity.GetUserId();
-            var users = db.Users.Include(w => w.Worker).Include(e => e.Employer).Where(j => j.Id != userID);
-            ViewBag.Users = users;
+            var users = db.Users.Include(w => w.Worker).Include(e => e.Employer).Where(j => j.Id != userID).OrderBy(x=>x.FirstName + x.LastName).ToList();
+            PagedList<ApplicationUser> model = new PagedList<ApplicationUser>(users, page, pageSize);
+            ViewBag.Users = model;
 
-            return View();
+            return View(model);
         }
 
         [Authorize(Roles ="Admin")]
@@ -165,7 +167,7 @@ namespace Exposure.Web.Controllers
             }
             else
             {
-                return RedirectToRoute("Default", new { controller = "GeneralBusinesses", action = "Edit", id = 1 });
+                return RedirectToRoute("Default", new { controller = "GeneralBusinesses", action = "Details", id = 1 });
             }
         }
 

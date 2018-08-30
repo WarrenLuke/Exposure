@@ -384,6 +384,14 @@
     <Compile Include="DataContexts\IdentityMigrations\201808260952341_JobExpiration.Designer.cs">
       <DependentUpon>201808260952341_JobExpiration.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201808302032373_GeneralBus1.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201808302032373_GeneralBus1.Designer.cs">
+      <DependentUpon>201808302032373_GeneralBus1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201808302044578_CompanyBanner.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201808302044578_CompanyBanner.Designer.cs">
+      <DependentUpon>201808302044578_CompanyBanner.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -814,6 +822,7 @@
     <Content Include="Views\GeneralBusinesses\Index.cshtml" />
     <Content Include="Views\Account\UpdatePicture.cshtml" />
     <Content Include="Views\Account\RemovePicture.cshtml" />
+    <Content Include="Views\GeneralBusinesses\UpdateBanner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -963,6 +972,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201808260952341_JobExpiration.resx">
       <DependentUpon>201808260952341_JobExpiration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201808302032373_GeneralBus1.resx">
+      <DependentUpon>201808302032373_GeneralBus1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201808302044578_CompanyBanner.resx">
+      <DependentUpon>201808302044578_CompanyBanner.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
