@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+<script src="~/Scripts/Chart.min.js"></script>
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<h2>@ViewBag.Title</h2>
+
+@if (User.IsInRole("Admin"))
+{
+    <div class="row" style="height:300px">
+        <div class="col-md-6" id="chartContainter">
+            <canvas id="SkillChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="UserChar"></canvas>
+        </div>
+    </div>
+    
+}
+
+<script>
+    
+
+    var randomColorPlugin = {
+        beforeUpdate: function (chart) {
+            var backgroundColor = [];
+            var borderColor = [];
+            var hoverBackgroundColor = [];
+
+            for (var i = 0; i < chart.config.data.datasets[0].data.length; i++) {
+                var color = "rgba(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 99) + "," + Math.floor(Math.random() * 132) + ",";
+
+                backgroundColor.push(color + "1");
+                hoverBackgroundColor.push(color + "0.5");
+                borderColor.push(color + "1)");
+
+            }
+
+            chart.config.data.datasets[0].backgroundColor = backgroundColor;
+            chart.config.data.datasets[0].borderColor = borderColor;
+            chart.config.data.datasets[0].hoverBackgroundColor = hoverBackgroundColor;
+            chart.config.option.tooltip.backgroundColor = backgroundColor;
+        }
+    };
+
+    Chart.pluginService.register(randomColorPlugin);
+    
+    var stx = $("#SkillChart");
+    var repArray = @Html.Raw(Json.Encode(ViewBag.Reps));
+    var skills = @Html.Raw(Json.Encode(ViewBag.Skills));   
+   
+    var skillNutChart = new Chart(stx, {
+        type: 'doughnut',
+        data: {
+            labels: skills,
+            datasets: [{
+                label: "Current Jobs Advertised",
+                data: repArray,    
+                backgroundColor: 'rgba(255,99,132,1)',
+                borderColor: 'rgba(255,99,132, 1)',
+                hoverBackgroudColor: 'rgba(255,99,132,0.5)',
+                borderWidth: 1
+            }]
+        },
+        option: {
+            cutoutPercentage: 50,
+            rotation: -0.5 * Math.PI,
+            circumference: 2 * Math.PI,
+            animation: {
+                animateRotate: true,
+                animateScale: false
+            },
+            tooltip: {
+                backgroundColor: 'rgba(255, 99,132,0.2)'
+            }
+
+
+
+        }
+    });
+
+    @*var utx = $("#UserChart");
+    var userRep = @Html.Raw(Json.Encode(ViewBag.UserReps));
+    var userTypes = @Html.Raw(Json.Encode(ViewBag.UserTypes));
+    
+    var userNutChart = new Chart(utx, {
+        type: 'doughnut',
+        data: {
+            labels: userTypes,
+            datasets: [{
+                label: "User Activ,ity",
+                data: userRep,
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor
+            }]
+        }
+    })*@
+</script>

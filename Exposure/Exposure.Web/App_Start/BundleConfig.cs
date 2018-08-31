@@ -12,11 +12,11 @@ namespace Exposure.Web
             //            "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").
-                Include("~/Scripts/jquery-1.12.4.min.js", "~/Scripts/jquery-ui-1.12.1.min.js"));
+                Include("~/Scripts/jquery-1.12.4.min.js", "~/Scripts/jquery-ui-1.12.1.min.js", 
+                "~/Scripts/Chart.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
-
             
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're

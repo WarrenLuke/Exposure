@@ -17,13 +17,33 @@ namespace Exposure.Web.Controllers
     public class HomeController : Controller
     {
         private IdentityDb db = new IdentityDb();
+
+
         public ActionResult Index()
         {
-                    
-            ViewBag.Users = db.Users.Where(f=>f.Status==null).Count();
+
+            ViewBag.Users = db.Users.Where(f => f.Status == null).Count();
             ViewBag.Jobs = db.Jobs.Where(c => c.Completed == false).Count();
             ViewBag.SJobs = db.Jobs.Where(c => c.Completed == true).Where(c => c.EndDate >= DbFunctions.AddDays(DateTime.UtcNow, -30)).Count();
+
+            return View();
+        }
+
+        public ActionResult Dashboard()
+        {
+            var list = db.Jobs.Include(x => x.Skill);
+            List<int> repartitions = new List<int>();
+            var skills = db.Skills.Select(x=>x.SkillDescription).Distinct();
             
+
+            foreach (var item in skills)
+            {
+                repartitions.Add(list.Count(x => x.Skill.SkillDescription == item));
+            }
+            var rep = repartitions;
+            ViewBag.Skills = skills;            
+            ViewBag.Reps = rep;
+
             return View();
         }
 
@@ -55,29 +75,29 @@ namespace Exposure.Web.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if(Id==null)
+                if (Id == null)
                 {
                     Id = User.Identity.GetUserId();
                 }
-                
+
 
                 var bdUsers = HttpContext.GetOwinContext().Get<IdentityDb>();
-                var userImage = bdUsers.Users.Where(x => x.Id == Id).FirstOrDefault();                
-                
+                var userImage = bdUsers.Users.Where(x => x.Id == Id).FirstOrDefault();
+
 
                 if (userImage.ProfilePic == null)
                 {
                     var user = db.Users.Find(Id);
                     string fileName = null;
 
-                    if(user.Gender == "Male")
+                    if (user.Gender == "Male")
                     {
                         fileName = HttpContext.Server.MapPath(@"~/Images/Male.jpg");
                     }
                     else
                     {
                         fileName = HttpContext.Server.MapPath(@"~/Images/Female.jpg");
-                    }                    
+                    }
 
                     byte[] imageData = null;
                     FileInfo fileInfo = new FileInfo(fileName);
@@ -87,7 +107,7 @@ namespace Exposure.Web.Controllers
                     imageData = br.ReadBytes((int)imageFileLength);
                     return File(imageData, "image/jpeg");
 
-                }               
+                }
                 return new FileContentResult(userImage.ProfilePic, "image/jpeg");
             }
             else
@@ -102,6 +122,6 @@ namespace Exposure.Web.Controllers
                 imageData = br.ReadBytes((int)imageFileLength);
                 return File(imageData, "image/png");
             }
-            }
         }
     }
+}
