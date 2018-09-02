@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using Exposure.Web.Controllers;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Exposure.Web.Controllers
 {
@@ -31,18 +32,34 @@ namespace Exposure.Web.Controllers
 
         public ActionResult Dashboard()
         {
-            var list = db.Jobs.Include(x => x.Skill);
+            var jlist = db.Jobs.Include(x => x.Skill);
             List<int> repartitions = new List<int>();
             var skills = db.Skills.Select(x=>x.SkillDescription).Distinct();
-            
+            var jCount = jlist.Count();
 
             foreach (var item in skills)
             {
-                repartitions.Add(list.Count(x => x.Skill.SkillDescription == item));
+                repartitions.Add(jlist.Count(x => x.Skill.SkillDescription == item));
             }
-            var rep = repartitions;
+
+            IdentityRole wRole = db.Roles.First(r => r.Name == "Worker");
+            int wCount = db.Set<IdentityUserRole>().Count(r => r.RoleId == wRole.Id);
+            IdentityRole eRole = db.Roles.First(r => r.Name == "Employer");
+            int eCount = db.Set<IdentityUserRole>().Count(r => r.RoleId == eRole.Id);
+            List<int> uReps = new List<int>();
+
+            uReps.Add(wCount);
+            uReps.Add(eCount);
+           
+
+            var rep = repartitions;            
             ViewBag.Skills = skills;            
             ViewBag.Reps = rep;
+            ViewBag.WCount = wCount;
+            ViewBag.ECount = eCount;
+            ViewBag.jCount = jCount;
+            var ureps = uReps;
+            ViewBag.UserReps = ureps;            
 
             return View();
         }

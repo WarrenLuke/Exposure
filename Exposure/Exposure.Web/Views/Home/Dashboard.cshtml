@@ -3,61 +3,119 @@
 }
 <script src="~/Scripts/Chart.min.js"></script>
 <script src="~/Scripts/jquery-1.12.4.min.js"></script>
-<h2>@ViewBag.Title</h2>
-
+<h1>@ViewBag.Title</h1>
+<hr />
+<style>
+    #chartContainter {
+        background-color:ghostwhite;
+        border:outset;
+        border-width:4px;
+        border-color:whitesmoke;
+        
+    }
+</style>
 @if (User.IsInRole("Admin"))
 {
-    <div class="row" style="height:300px">
-        <div class="col-md-6" id="chartContainter">
-            <canvas id="SkillChart"></canvas>
+    <div class="row">
+        <h2 style="text-align:center; text-decoration:underline">Summary</h2>
+        <div class="col-md-offset-1 col-xs-4" id="chartContainter">
+            <h3>Total Jobs: <label for="Jobs"></label></h3>
+            <canvas id="SkillChart" class="col-xs-4"></canvas>
         </div>
-        <div class="col-md-6">
-            <canvas id="UserChar"></canvas>
+        <div class="col-md-offset-2 col-xs-4" id="chartContainter">
+            <h3> Total Users: <label for="Users"></label></h3>
+            <canvas id="UserChart" class="col-xs-offset-1 col-xs-4"></canvas>
         </div>
     </div>
+    <hr/>
+    <div class="row">  
+        <div class="col-md-12">
+
+        </div>
+        <h3>Graph</h3>
+       
+    </div>
+
     
+
+
 }
 
 <script>
-    
+
+    var doughTextPlugin = {
+        beforeDraw: function (chart) {
+            if (chart.config.options.elements.center) {
+
+                var ctx = chart.chart.ctx;
+
+                var centerConfig = chart.config.options.elements.center;
+                var fontStyle = centerConfig.fontStyle || 'California FB';
+                var txt = centerConfig.text;
+                var color = centerConfig.color || "#000";
+                var sidePadding = centerConfig.sidePadding || 20;
+                var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+                ctx.font = "30px" + fontStyle;
+
+                var stringWidth = ctx.measureText(txt).width;
+                var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+                var widthRatio = elementWidth / stringWidth;
+                var newFontSize = Math.floor(30 * widthRatio);
+                var elementHeight = (chart.innerRadius * 2);
+
+                var fontSizeToUse = Math.min(newFontSize, elementHeight);
+
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+                var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+                ctx.font = fontSizeToUse + "px" + fontStyle;
+                ctx.fillStyle = color;
+
+                ctx.fillText(txt, centerX, centerY);
+                ctx.save();
+            }
+        }
+    }
 
     var randomColorPlugin = {
         beforeUpdate: function (chart) {
             var backgroundColor = [];
-            var borderColor = [];
+
             var hoverBackgroundColor = [];
 
             for (var i = 0; i < chart.config.data.datasets[0].data.length; i++) {
                 var color = "rgba(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 99) + "," + Math.floor(Math.random() * 132) + ",";
 
                 backgroundColor.push(color + "1");
-                hoverBackgroundColor.push(color + "0.5");
-                borderColor.push(color + "1)");
+                hoverBackgroundColor.push(color + "0.5)");
+
 
             }
 
             chart.config.data.datasets[0].backgroundColor = backgroundColor;
-            chart.config.data.datasets[0].borderColor = borderColor;
             chart.config.data.datasets[0].hoverBackgroundColor = hoverBackgroundColor;
             chart.config.option.tooltip.backgroundColor = backgroundColor;
         }
     };
-
+    Chart.pluginService.register(doughTextPlugin);
     Chart.pluginService.register(randomColorPlugin);
-    
+
     var stx = $("#SkillChart");
     var repArray = @Html.Raw(Json.Encode(ViewBag.Reps));
-    var skills = @Html.Raw(Json.Encode(ViewBag.Skills));   
-   
+    var skills = @Html.Raw(Json.Encode(ViewBag.Skills));
+    $("label[for=Jobs]").text(@ViewBag.jCount)
+
     var skillNutChart = new Chart(stx, {
         type: 'doughnut',
         data: {
             labels: skills,
             datasets: [{
                 label: "Current Jobs Advertised",
-                data: repArray,    
+                data: repArray,
                 backgroundColor: 'rgba(255,99,132,1)',
-                borderColor: 'rgba(255,99,132, 1)',
+                borderColor: '#ffffff',
                 hoverBackgroudColor: 'rgba(255,99,132,0.5)',
                 borderWidth: 1
             }]
@@ -79,20 +137,43 @@
         }
     });
 
-    @*var utx = $("#UserChart");
+    var utx = $("#UserChart");
     var userRep = @Html.Raw(Json.Encode(ViewBag.UserReps));
-    var userTypes = @Html.Raw(Json.Encode(ViewBag.UserTypes));
-    
+    var eCount = @Html.Raw(Json.Encode(ViewBag.ECount));
+    var wCount = @Html.Raw(Json.Encode(ViewBag.WCount));
+    var uTotal = wCount + eCount;
+    $("label[for=Users]").text(uTotal);
     var userNutChart = new Chart(utx, {
         type: 'doughnut',
         data: {
-            labels: userTypes,
+            labels: ['Workers', 'Employers'],
             datasets: [{
-                label: "User Activ,ity",
-                data: userRep,
+                label: "User Activity",
+                data: [wCount, eCount],
                 backgroundColor: 'rgba(255,99,132,0.2)',
-                borderColor
+                borderColor: '#ffffff'
             }]
+        },
+        option: {
+            elements: {
+                center: {
+                    text: "Total",
+                    color: '#36A2EB',
+                    fontStyle: 'California FB',
+                    sidePadding: 15
+                }
+            },
+            cutoutPercentage: 50,
+            rotation: -0.5 * Math.PI,
+            circumference: 2 * Math.PI,
+            animation: {
+                animateRotate: true,
+                animateScale: false
+            },
+            tooltip: {
+                backgroundColor: 'rgba(255, 99,132,0.2)'
+            }
         }
-    })*@
+
+    })
 </script>

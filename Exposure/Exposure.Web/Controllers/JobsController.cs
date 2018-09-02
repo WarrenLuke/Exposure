@@ -19,7 +19,7 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Jobs
-        public ActionResult Index(string id, int? skill, DateTime? startDate, DateTime? endDate, string search, string sortOrder)
+        public ActionResult Index(string id, int? skill, DateTime? startDate, DateTime? endDate, string search, string sortOrder, int? location)
         {
 
             var jobs = db.Jobs.Include(j => j.Employer);
@@ -56,7 +56,7 @@ namespace Exposure.Web.Controllers
 
             if (User.IsInRole("Admin"))
             {
-                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb);
             }
             else if (User.IsInRole("Employer"))
             {
@@ -76,6 +76,11 @@ namespace Exposure.Web.Controllers
 
             }
 
+            if(location != null)
+            {
+                jobs = jobs.Where(x => x.SuburbID == location);
+            }
+
             if (skill != null)
             {
                 jobs = jobs.Where(j => j.SkillID == skill).OrderBy(j => j.DateAdvertised);
@@ -83,12 +88,12 @@ namespace Exposure.Web.Controllers
 
             if (startDate != null)
             {
-                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.StartDate >= startDate).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.StartDate >= startDate);
             }
 
             if (!String.IsNullOrEmpty(search))
             {
-                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.Title.Contains(search)).OrderBy(j => j.DateAdvertised).Where(j => j.Description.Contains(search));
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.Title.Contains(search)).Where(j => j.Description.Contains(search));
             }
 
             //var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser);

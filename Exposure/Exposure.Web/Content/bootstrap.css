@@ -73,6 +73,7 @@ a:hover {
 h1 {
   margin: 0.67em 0;
   font-size: 2em;
+  font-family: 'Californian FB';
 }
 
 abbr[title] {
@@ -275,7 +276,7 @@ table {
   }
   h2,
   h3 {
-    page-break-after: avoid;
+    page-break-after: avoid;    
   }
   .navbar {
     display: none;
@@ -476,7 +477,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Californian FB", Helvetica, Arial, sans-serif;
   font-weight: 500;
   line-height: 1.1;
 }

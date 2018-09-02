@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,10 @@ namespace Exposure.Entities
         public int CityID { get; set; }
 
         [Required]
+        [DisplayName("Name")]
         public string CityName { get; set; }
 
+        [DisplayName("Abbreviation")]
         public string CityAbbrev { get; set; }
 
         public virtual ICollection<Suburb> Suburbs { get; set; }

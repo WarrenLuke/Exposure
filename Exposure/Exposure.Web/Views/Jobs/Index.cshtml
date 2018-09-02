@@ -5,9 +5,9 @@
     ViewBag.Title = "Jobs";
 }
 @*<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
-<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
-<link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />*@
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />*@
 
 @if (TempData["JobSuccess"] != null)
 {
@@ -44,10 +44,10 @@
             <p>Sort by: </p>@Html.DropDownList("sortOrder", new SelectList(
 new List<Object>
 {
-            new{value="date", text= "Latest"},
-            new{value="date_desc", text="Date Advertised(Desc)"},
-            new {value="rate", text="Rate"},
-            new {value="rate_desc", text="Rate(Desc)"}
+    new{value="date", text= "Latest"},
+    new{value="date_desc", text="Date Advertised(Desc)"},
+    new {value="rate", text="Rate(Lowest)"},
+    new {value="rate_desc", text="Rate(Highest)"}
 },
 "value", "text", 2), new { @class = "form-control" })
         </div>
@@ -237,26 +237,22 @@ new List<Object>
 }
 else if (User.IsInRole("Admin"))
 {
+    <br />
     <div style="overflow-x:auto">
         <table class="table ">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Employer.ApplicationUser.FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Skill.SkillDescription)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Suburb.SubName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AddressLine1)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AddressLine2)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    <text>Employer Name</text>
+                </th>
+                <th>
+                    <text>Skill</text>
+                </th>
+
+                <th>
+                    <text>Location</text>
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.DateAdvertised)
@@ -284,58 +280,64 @@ else if (User.IsInRole("Admin"))
                 </th>
                 <th></th>
             </tr>
-
-            @foreach (var item in Model)
+            @if (Model != null)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        <a href="@Url.Action("UserDetails", "Account", new {id= item.Employer.EmployerID })">@Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName)  @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.LastName) </a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Suburb.SubName)
-                    </td>
-                    <th>
-                        @Html.DisplayFor(modelItem => item.AddressLine1)
-                    </th>
-                    <th>
-                        @Html.DisplayFor(modelItem => item.AddressLine2)
-                    </th>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateAdvertised)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Rate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Completed)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Details", "Details", new { id = item.JobID }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.JobID })
-                    </td>
-                </tr>
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("UserDetails", "Account", new {id= item.Employer.EmployerID })">@Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName)  @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.LastName) </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AddressLine1)<br />
+                            @if (item.AddressLine2 != null)
+                            {
+                                @Html.DisplayFor(modelItem => item.AddressLine2)<br />
+                            }
+                            @Html.DisplayFor(modelItem => item.Suburb.SubName)<br />
+                            @Html.DisplayFor(modelItem => item.Suburb.City.CityName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateAdvertised)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Completed)
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-danger" onclick="DeleteJob(@item.JobID)"><i class="glyphicon glyphicon-trash"></i></a>
+                        </td>
+                    </tr>
+                }
             }
+            else
+            {
+                <tr><td>No jobs Available to display</td></tr>
+            }
+
 
         </table>
     </div>
@@ -418,57 +420,57 @@ else if (User.IsInRole("Worker"))
         }
 
 
-            $(document).ready(function () {
-                $('[data-toggle="tooltip"]').tooltip();
-                $('#myTable').dataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    "filter": false,
-                    "orderMulti": false,
-                    "pageLength": 5,
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $('#myTable').dataTable({
+                "processing": true,
+                "serverSide": true,
+                "filter": false,
+                "orderMulti": false,
+                "pageLength": 5,
 
-                    //Used to call action method in controller
-                    "ajax": {
-                        "url": "/.../...",
-                        "type": "POST",
-                        "datatype": "json",
+                //Used to call action method in controller
+                "ajax": {
+                    "url": "/.../...",
+                    "type": "POST",
+                    "datatype": "json",
+                },
+
+                //Used to hide certain columns from the table
+                "columnDefs":
+                    [{
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
                     },
+                    {
+                        "targets": [7],
+                        "searchable": false,
+                        "orderable": false
+                    },
+                    {
+                        "targets": [8],
+                        "searchable": false,
+                        "orderable": false
+                    },
+                    {
+                        "targets": [9],
+                        "searchable": false,
+                        "orderable": false
+                    }],
 
-                    //Used to hide certain columns from the table
-                    "columnDefs":
-                        [{
-                            "targets": [0],
-                            "visible": false,
-                            "searchable": false
-                        },
-                        {
-                            "targets": [7],
-                            "searchable": false,
-                            "orderable": false
-                        },
-                        {
-                            "targets": [8],
-                            "searchable": false,
-                            "orderable": false
-                        },
-                        {
-                            "targets": [9],
-                            "searchable": false,
-                            "orderable": false
-                        }],
+                "columns": [
+                    { "data": "JobID", "name": "JobID", "autoWidth": true },
+                    { "data": "Title", "name": "Title", "autoWidth": true },
+                    { "data": "Description", "title": "Description", "name": "ContactName", "autoWidth": true },
+                    { "data": "SkillName", "name": "SkillName", "autoWidth": true },
+                    { "data": "EndData", "name": "EndDate", "autoWidth": true },
+                    { "data": "Rate", "name": "Rate", "autoWidth": true },
+                    { "data": "Status", "name": "Status", "autoWidth": true },
+                ]
 
-                    "columns": [
-                        { "data": "JobID", "name": "JobID", "autoWidth": true },
-                        { "data": "Title", "name": "Title", "autoWidth": true },
-                        { "data": "Description", "title": "Description", "name": "ContactName", "autoWidth": true },
-                        { "data": "SkillName", "name": "SkillName", "autoWidth": true },
-                        { "data": "EndData", "name": "EndDate", "autoWidth": true },
-                        { "data": "Rate", "name": "Rate", "autoWidth": true },
-                        { "data": "Status", "name": "Status", "autoWidth": true },
-                    ]
-
-                });
             });
+        });
 
 
     </script>
