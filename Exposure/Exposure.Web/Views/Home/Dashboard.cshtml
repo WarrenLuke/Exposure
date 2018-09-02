@@ -7,11 +7,10 @@
 <hr />
 <style>
     #chartContainter {
-        background-color:ghostwhite;
-        border:outset;
-        border-width:4px;
-        border-color:whitesmoke;
-        
+        background-color: ghostwhite;
+        border: outset;
+        border-width: 4px;
+        border-color: whitesmoke;
     }
 </style>
 @if (User.IsInRole("Admin"))
@@ -26,17 +25,21 @@
             <h3> Total Users: <label for="Users"></label></h3>
             <canvas id="UserChart" class="col-xs-offset-1 col-xs-4"></canvas>
         </div>
+        <div class="col-md-4">
+            <h3> Total Job Applications: <label for="Applications"></label></h3>
+            <canvas id="AppChart" class="col-xs-4"></canvas>
+        </div>
     </div>
-    <hr/>
-    <div class="row">  
+    <hr />
+    <div class="row">
         <div class="col-md-12">
 
         </div>
         <h3>Graph</h3>
-       
+
     </div>
 
-    
+
 
 
 }
@@ -106,7 +109,6 @@
     var repArray = @Html.Raw(Json.Encode(ViewBag.Reps));
     var skills = @Html.Raw(Json.Encode(ViewBag.Skills));
     $("label[for=Jobs]").text(@ViewBag.jCount)
-
     var skillNutChart = new Chart(stx, {
         type: 'doughnut',
         data: {
@@ -157,7 +159,7 @@
         option: {
             elements: {
                 center: {
-                    text: "Total",
+                    text: 'Total',
                     color: '#36A2EB',
                     fontStyle: 'California FB',
                     sidePadding: 15
@@ -176,4 +178,43 @@
         }
 
     })
+
+    var atx = $("#AppChart");
+    var appReps = @Html.Raw(Json.Encode(ViewBag.AppReps));
+    var replies = @Html.Raw(Json.Encode(ViewBag.Replies));
+    var aCount = @Html.Raw(Json.Encode(ViewBag.ACount));
+    $("label[for=[Applications]").text(aCount);
+    var appNutChart = new Chart(atx, {
+        type: 'dougnut',
+        data: {
+            labels: replies,
+            dataset: [{
+                label: "Applications",
+                data: appRep,
+                backgroundColot: 'rgba(255,99,132,0.2)',
+                borderColor: '#ffffff'
+            }]
+        },
+        option: {
+            elements: {
+                center: {
+                    text: 'Total',
+                    color: '#36A2EB',
+                    frontStyle: 'California FB',
+                    sidePadding:15
+                }
+            },
+            cutoutPercentage: 50,
+            rotation: -0.5 * Math.PI,
+            circumference: 2 * Math.PI,
+            animation: {
+                animateRotate: true,
+                animateScale: false
+            },
+            tooltip: {
+                backgroundColor: 'rgba(255,99,132,0.2)'
+            }
+        }
+    })
+
 </script>

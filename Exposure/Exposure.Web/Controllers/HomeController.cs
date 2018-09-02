@@ -12,6 +12,7 @@ using Exposure.Web.Controllers;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Exposure.Entities;
 
 namespace Exposure.Web.Controllers
 {
@@ -32,16 +33,23 @@ namespace Exposure.Web.Controllers
 
         public ActionResult Dashboard()
         {
+            #region jobs
             var jlist = db.Jobs.Include(x => x.Skill);
             List<int> repartitions = new List<int>();
-            var skills = db.Skills.Select(x=>x.SkillDescription).Distinct();
+            var skills = db.Skills.Select(x => x.SkillDescription).Distinct();
             var jCount = jlist.Count();
 
             foreach (var item in skills)
             {
                 repartitions.Add(jlist.Count(x => x.Skill.SkillDescription == item));
             }
+            var rep = repartitions;
+            ViewBag.Skills = skills;
+            ViewBag.Reps = rep;
 
+            #endregion
+
+            #region UserRoles
             IdentityRole wRole = db.Roles.First(r => r.Name == "Worker");
             int wCount = db.Set<IdentityUserRole>().Count(r => r.RoleId == wRole.Id);
             IdentityRole eRole = db.Roles.First(r => r.Name == "Employer");
@@ -50,16 +58,28 @@ namespace Exposure.Web.Controllers
 
             uReps.Add(wCount);
             uReps.Add(eCount);
-           
-
-            var rep = repartitions;            
-            ViewBag.Skills = skills;            
-            ViewBag.Reps = rep;
             ViewBag.WCount = wCount;
             ViewBag.ECount = eCount;
-            ViewBag.jCount = jCount;
+
             var ureps = uReps;
-            ViewBag.UserReps = ureps;            
+            ViewBag.UserReps = ureps;
+            #endregion
+
+            #region JobApplication
+            var appList = db.JobApplications;
+            List<int> appRepartitions = new List<int>();
+            List<Reply> replies = new List<Reply>();
+            var aCount = appList.Count();
+
+            foreach(var item in replies)
+            {
+                appRepartitions.Add(appList.Count(x => x.Response == item));
+            }
+
+            var appReps = appRepartitions;
+            ViewBag.Replies = replies;
+            ViewBag.AppReps = appReps;
+            #endregion
 
             return View();
         }
