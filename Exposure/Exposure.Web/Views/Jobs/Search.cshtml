@@ -1,6 +1,7 @@
-﻿@model IEnumerable<Exposure.Entities.Job>
+﻿@using PagedList;
 @using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@using System.Web.Mvc;
+@model IPagedList<Exposure.Entities.Job>
 
 @{
     ViewBag.Title = "Jobs";
@@ -12,10 +13,25 @@
         <h2>@ViewBag.Title</h2>
     </div>
     <div class="col-md-3">
-        <br />
+
         @if (User.IsInRole("Employer"))
         {
             <a href="@Url.Action("Create", "Jobs")" class="btn btn-default">Create new</a>
+        }
+    </div>
+    <div class="col-md-offset-2 col-md-5" style="text-align:right">
+        @using (Html.BeginForm("Search", "Jobs", FormMethod.Get))
+        {
+            <div class="col-md-offset-3 col-md-6">
+                <br />
+                @Html.Editor("search", new { htmlAttributes = new { @class = "form-control clearable", @placeholder = "Search" } })
+            </div>
+            <div class="col-md-3" style="vertical-align:top">
+                <br />
+                <input type="submit" class="btn btn-default" value="Search" />
+            </div>
+
+
         }
     </div>
 </div>
@@ -23,7 +39,7 @@
 <hr />
 @using (Html.BeginForm("Search", "Jobs", FormMethod.Get))
 {
-    <div class="row">
+    <div class="row search">
         <div class="col-md-2">
             <p>Category: </p>@Html.DropDownList("skill", null, "All", new { @class = "form-control" })
         </div>
@@ -32,21 +48,24 @@
         </div>
         <div class="col-md-2">
             <p>Sort by: </p>@Html.DropDownList("sortOrder", new SelectList(
-new List<Object>
-{
-new{value="date", text= "Latest"},
-new{value="date_desc", text="Date Advitised(Desc)"},
-new {value="rate", text="Rate"},
-new {value="rate_desc", text="Rate(Desc)"}
-},
-"value", "text", 2), new { @class = "form-control" })
+ new List<Object>
+ {
+            new{value="date", text= "Latest"},
+            new{value="date_desc", text="Oldest"},
+            new {value="rate", text="Rate"},
+            new {value="rate_desc", text="Rate(Desc)"}
+ },
+     "value", "text", 2), new { @class = "form-control" })
         </div>
         <div class="col-md-2">
-            <p>Search: </p>@Html.Editor("search", new { htmlAttributes = new { @class = "form-control" } })
+            <p>From: &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" id="ClearDate" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear">&times;</a></i> </p> @Html.TextBox("frmDate", null, new { @class = "form-control datepicker", @id = "frmDate", onkeydown = "return false", onpaste = "return false", placeholder = "Select from date" })
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
+            <p>To:  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" id="ClearDate" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear">&times;</a></i></p> @Html.TextBox("toDate", null, new { @class = "form-control datepicker", @id = "toDate", onkeydown = "return false", onpaste = "return false", placeholder = "Select to date" })
+        </div>
+        <div class="col-md-2" style="text-align:right">
             <br />
-            <input type="submit" class="btn btn-default" value="Filter" />
+            <input type="submit" class="btn btn-default" value="Filter" style="width:100px" />
         </div>
     </div>
 }
@@ -57,24 +76,24 @@ new {value="rate_desc", text="Rate(Desc)"}
         {
             <tr>@TempData["Empty"]</tr>
         }
-        @foreach (var item in Model)
+        @foreach (var item in ViewBag.Jobs)
         {
             <tr>
                 <td>
-                    <strong>Title:</strong> @Html.DisplayFor(modelItem => item.Title)<br />
-                    <strong>Location:</strong> @Html.DisplayFor(modelItem => item.Suburb.SubName) <br />
-                    <strong>Rate(ZAR):</strong> @Html.DisplayFor(modelItem => item.Rate) <br />
-                    <strong>Start Date:</strong> @Html.DisplayFor(modelItem => item.StartDate)<br />
-                    <strong>Start Time:</strong> @Html.DisplayFor(modeilItem => item.StartTime)<br />
-                    <strong>Employer:</strong> @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.FirstName)  @Html.DisplayFor(modelItem => item.Employer.ApplicationUser.LastName)<br />
+                    <strong>Title:</strong> @item.Title<br />
+                    <strong>Location:</strong> @item.Suburb.SubName <br />
+                    <strong>Rate(ZAR):</strong> @item.Rate <br />
+                    <strong>Start Date:</strong> @item.StartDate<br />
+                    <strong>Start Time:</strong> @item.StartTime<br />
+                    <strong>Employer:</strong> @item.Employer.ApplicationUser.FirstName  @item.Employer.ApplicationUser.LastName<br />
                     <strong>Description: </strong> <br />
-                    @Html.DisplayFor(modelItem => item.Description)<br />
+                    @item.Description<br />
                 </td>
                 <td align="right">
                     <strong>Date Advertised:</strong><br />
                     @item.DateAdvertised<br /><br /><br />
 
-                    @if (User.IsInRole("Worker"))
+                    @if (User.IsInRole("Worker") || User.Identity.IsAuthenticated == false)
                     {
                         <a href="@Url.Action("Create", "JobApplications", new { id = item.JobID, skill = item.SkillID })" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Click Here To Apply" style="vertical-align:bottom">Apply</a><br />
 
@@ -87,13 +106,41 @@ new {value="rate_desc", text="Rate(Desc)"}
     </table>
 
 </div>
-
-<br />
+<div class="col-md-10">
+    <div class="center">
+        @Html.PagedListPager(Model, page => Url.Action("Search", new { page, pageSize = Model.PageSize }))
+        Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Jobs
+    </div>
+</div><br />
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
 
     });
+
+    var $dates = $('#frmDate, #toDate').datepicker();
+    $("#ClearDate").on('click', function () {
+        $("#frmDate").datepicker('setDate', null);
+        $("#toDate").datepicker('setDate', null);
+    })
+
+    $(function () {
+        $("#frmDate").datepicker({
+            onSelect: function (selected) {
+                $("#toDate").datepicker("option", "minDate", selected)
+            }
+        })
+
+        $("#toDate").datepicker({
+
+        })
+
+
+    })
+
+    $("#clear").click(function () {
+        $(this).text("")
+    })
 
 
 </script>

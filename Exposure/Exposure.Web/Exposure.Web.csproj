@@ -206,6 +206,7 @@
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Controllers\SkillsController.cs" />
     <Compile Include="Controllers\SuburbsController.cs" />
+    <Compile Include="Controllers\WorkersController.cs" />
     <Compile Include="Controllers\WorkerSkillsController.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201805101215466_Initial.cs" />
@@ -391,6 +392,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201808302044578_CompanyBanner.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201808302044578_CompanyBanner.Designer.cs">
       <DependentUpon>201808302044578_CompanyBanner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809031705340_JobDateReq.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809031705340_JobDateReq.Designer.cs">
+      <DependentUpon>201809031705340_JobDateReq.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
@@ -581,6 +586,19 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\jquery-ui.structure.css" />
+    <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\jquery.datetimepicker.css" />
+    <Content Include="Content\jquery.datetimepicker.min.css" />
+    <Content Include="Content\jquery.timepicker.css" />
+    <Content Include="Content\jquery.timepicker.min.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -627,6 +645,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\expo.PNG" />
+    <Content Include="Images\FAQ.jfif" />
+    <Content Include="Images\Female.jpg" />
+    <Content Include="Images\InternetSlowdown_Day.gif" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\Male.jpg" />
+    <Content Include="Images\noImg.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -718,17 +743,30 @@
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
-    <Content Include="Scripts\jquery-1.12.4.js" />
-    <Content Include="Scripts\jquery-1.12.4.min.js" />
-    <Content Include="Scripts\jquery-1.12.4.min.map" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <Content Include="Scripts\jquery.datetimepicker.less" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.datetimepicker.js" />
+    <Content Include="Scripts\jquery.timepicker.js" />
+    <Content Include="Scripts\jquery.timepicker.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config">
@@ -826,10 +864,11 @@
     <Content Include="Views\Account\RemovePicture.cshtml" />
     <Content Include="Views\GeneralBusinesses\UpdateBanner.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Employers\Dashboard.cshtml" />
+    <Content Include="Views\Workers\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -981,6 +1020,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201808302044578_CompanyBanner.resx">
       <DependentUpon>201808302044578_CompanyBanner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809031705340_JobDateReq.resx">
+      <DependentUpon>201809031705340_JobDateReq.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

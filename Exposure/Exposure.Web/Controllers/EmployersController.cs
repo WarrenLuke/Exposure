@@ -25,6 +25,11 @@ namespace Exposure.Web.Controllers
             return View(employers.ToList());
         }
 
+        public ActionResult Dashboard()
+        {
+            return View();
+        }
+
         // GET: Employers/Details/5
         public ActionResult Details(string id)
         {

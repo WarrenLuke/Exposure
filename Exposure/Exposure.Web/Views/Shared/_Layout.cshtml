@@ -7,6 +7,9 @@
     <title>@ViewBag.Title-Exposure</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
     <style>
         .btn {
             display: inline-block;
@@ -131,19 +134,17 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Help", "Help", "Home")</li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li>@Html.ActionLink("Profile", "Index", "Manage")</li>}
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
-    <div class="nav navbar">
+    <div>
         <div class="container">
             @RenderBody()
         </div>
-        <div class="navbar">            
+        <div>
+
             <hr />
             <footer style="background-color:#ff6a00" class="footer wrapper">
                 <div class="row">

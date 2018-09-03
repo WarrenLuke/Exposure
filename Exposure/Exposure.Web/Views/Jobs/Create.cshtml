@@ -77,15 +77,15 @@
                         @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10" id="demo">
                             @*<input type="text" id="startDate" class="form-control ui-datepicker-current ui-datepicker"  />*@
-                            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false", @id = "sDate" } })
-                            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger " })
+                            @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control datepicker", onkeydown = "return false", onpaste = "return false", @id = "sDate", placeholder = "Select Start Date" })
+                            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger ", @id="sError",  })
                         </div>
                     </div>
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false", @id = "eDate" } })
+                            @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker", onkeydown = "return false", onpaste = "return false", @id = "eDate", placeholder ="Select End Date" })
                             @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger", @id = "end" })
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10 bfh-timepicker">
-                            @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", @id = "sTime" } })
+                            @Html.TextBoxFor(model => model.StartTime,null ,new { @class = " form-control timepicker", @id = "sTime" } )
                             @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -101,20 +101,20 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control", @id = "eTime" } })
+                            @Html.TextBoxFor(model => model.EndTime, null ,new { @class = "form-control timepicker", @id = "eTime" } )
                             @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </form>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Rate, "Rate(Daily)" ,htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-7">
                         @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @id = "rate" } })
                         @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-md-2" style="justify-content:center">
-                        <a href="#" class="btn btn-default" onclick="calculate()">Calculate <i class="glyphicon glyphicon-c"></i></a>
+                        <a href="#" class="btn btn-default" onclick="calculate()" id="calc">Calculate <i class="glyphicon glyphicon-c"></i></a>
                     </div>
                 </div>
 
@@ -178,7 +178,7 @@
     @Html.ActionLink("Back to Profile", "Index")
 </div>
 
-@section Scripts {     
+@section Scripts {
 
     <script>
 
@@ -189,9 +189,28 @@
             $("#rate").$this
         }
 
+        //while ($("#Skill").val() == null || $("#eTime").val() == null || $("#sTime").val() != null || $("#sDate").val() == null || $("#eDate").val() == null) {
+        //    $("#calc").hide()
+        //}
+        //$(function () {
+        //    if ($("#Skill").val() == null) {
+        //        $("#calc").hide()
+        //    } else if ($("#eTime").val() == null) {
+        //        $("#calc").hide()
+        //    } else if ($("#sTime").val() == null) {
+        //        $("#calc").hide()
+        //    } else if ($("#sDate").val() == null) {
+        //        $("#calc").hide()
+        //    } else if ($("#eDate").val() == null) {
+        //        $("#calc").hide()
+        //    } else {
+        //        $("#calc").show()
+        //    }
+
+        //})
         var calculate = function () {
-            if ($("#sDate").val() == null) {
-                return Error("Start Date, End Date, Start Time and End time are reqiured for calculation");
+            onclick: if ($("#sDate").val() == null) {
+                return $("#sError").show();
             }
             var id = $("#Skill").val();
             var skill = $("#Skill :selected").text();
@@ -220,21 +239,59 @@
             })
         }
 
-        //$(document).ready(function () {
-        //    $("#sDate").datepicker({
-        //        numberOfMonths: 2,
-        //        onSelect: function (selected) {
-        //            $("#endDate").datepicker("option", "minDate", selected)
-        //        }
-        //    })
 
-        //    $("#eDate").datepicker({
-        //        numberOfMonths: 2,
-        //        onSelect: function (selected) {
-        //            $("#startDate").datepicker("option", "maxDate", selected)
-        //        }
-        //    })
-        //})
+        var minDay = @Html.Raw(Json.Encode(ViewBag.minDay))
+        var minYear = @Html.Raw(Json.Encode(ViewBag.minYear))
+        var minMonth = @Html.Raw(Json.Encode(ViewBag.minMonth))
+
+        $(function () {
+            $("#sDate").datepicker({
+                numberOfMonths: 1,
+                minYear: 2018,
+                maxYear: 2018,
+                minDate: new Date(minYear, minMonth, minDay),
+                onSelect: function (selected) {
+                    $("#eDate").datepicker("option", "minDate", selected)
+                }
+
+
+            })
+
+            $("#eDate").datepicker({
+                numberOfMonths: 1,
+                minDate: $("#sDate").val(),
+                onSelect: function (selected) {
+                    $("#sDate").datepicker("option", "maxDate", selected)
+                }
+            })
+            })
+        $(function () {
+            
+            $("#sTime").timepicker({
+                timeFormat: 'HH:mm p',
+                durationTime: true,
+                minTime: '8:00am',
+                maxTime: '12:00pm',
+                defaultTime: '8:00am',
+                dropdown: true,
+                scrollbar: true,
+                change: function (selected) {
+                $("#eTime").timepicker("option", "minTime", selected)
+                }
+            })
+            
+            $("#eTime").timepicker({
+                durationTime: true,
+                timeFormat: 'HH:mm p',
+                maxTime: '4:00pm',                
+                dropdown: true,
+                scrollbar:true
+            })
+        })
+            
+        
+
+
 
 
 

@@ -23,8 +23,9 @@ namespace Exposure.Web.Controllers
 
         public ActionResult Index()
         {
-
-            ViewBag.Users = db.Users.Where(f => f.Status == null).Count();
+            IdentityRole adRole = db.Roles.First(r => r.Name == "Admin");
+            int users = db.Set<IdentityUserRole>().Count(r => r.RoleId != adRole.Id);
+            ViewBag.Users = users;
             ViewBag.Jobs = db.Jobs.Where(c => c.Completed == false).Count();
             ViewBag.SJobs = db.Jobs.Where(c => c.Completed == true).Where(c => c.EndDate >= DbFunctions.AddDays(DateTime.UtcNow, -30)).Count();
 

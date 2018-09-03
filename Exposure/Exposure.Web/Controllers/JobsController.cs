@@ -19,7 +19,7 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Jobs
-        public ActionResult Index(string id, int? skill, DateTime? startDate, DateTime? endDate, string search, string sortOrder, int? location)
+        public ActionResult Index(string id, int? skill, DateTime? frmDate, DateTime? toDate, string search, string sortOrder, int? location)
         {
 
             var jobs = db.Jobs.Include(j => j.Employer);
@@ -61,7 +61,7 @@ namespace Exposure.Web.Controllers
             else if (User.IsInRole("Employer"))
             {
                 var userId = User.Identity.GetUserId();
-                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).OrderBy(j => j.DateAdvertised).Where(j => j.Employer.EmployerID == userId);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.Employer.EmployerID == userId);
 
             }
             else if (User.IsInRole("Worker"))
@@ -69,10 +69,27 @@ namespace Exposure.Web.Controllers
                 jobHistory = jobHistory.Where(j => j.WorkerID == id).Where(x=>x.Flagged!=true).Where(x=>x.Response == Reply.Hired);
             }
 
+            if (frmDate != null && toDate != null)
+            {
+                jobs = jobs.Where(x => x.StartDate >= frmDate && x.StartDate <= toDate);
+                jobHistory = jobHistory.Where(x => x.Job.StartDate > frmDate && x.Job.StartDate < toDate);
+            }
+            else if (frmDate != null)
+            {
+                jobs = jobs.Where(x => x.StartDate >=  frmDate);
+                jobHistory = jobHistory.Where(x => x.Job.StartDate >= frmDate);
+
+            }
+            else if (toDate != null)
+            {
+                jobs = jobs.Where(x => x.StartDate >= toDate);
+                jobHistory = jobHistory.Where(x => x.Job.StartDate >= toDate);
+
+            }
 
             if (!String.IsNullOrEmpty(id))
             {
-                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.EmployerID.Equals(id)).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.EmployerID.Equals(id));
 
             }
 
@@ -83,13 +100,10 @@ namespace Exposure.Web.Controllers
 
             if (skill != null)
             {
-                jobs = jobs.Where(j => j.SkillID == skill).OrderBy(j => j.DateAdvertised);
+                jobs = jobs.Where(j => j.SkillID == skill);
             }
 
-            if (startDate != null)
-            {
-                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.StartDate >= startDate);
-            }
+            
 
             if (!String.IsNullOrEmpty(search))
             {
@@ -115,7 +129,7 @@ namespace Exposure.Web.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Search(string currentFilter, string sortOrder, int? skill, string search, int? page, int? location)
+        public ActionResult Search(string currentFilter, string sortOrder, int? skill, string search, int? location, DateTime? frmDate, DateTime? toDate, int page = 1, int pageSize=10)
         {
 
             if (search != null)
@@ -138,13 +152,13 @@ namespace Exposure.Web.Controllers
             switch (sortOrder)
             {
                 case "title_desc":
-                    jobs = jobs.OrderByDescending(j => j.Title);
+                    jobs = jobs.OrderBy(j => j.Title);
                     break;
                 case "date":
-                    jobs = jobs.OrderBy(j => j.DateAdvertised);
+                    jobs = jobs.OrderByDescending(j => j.DateAdvertised);
                     break;
                 case "date_desc":
-                    jobs = jobs.OrderByDescending(j => j.DateAdvertised);
+                    jobs = jobs.OrderBy(j => j.DateAdvertised);
                     break;
                 case "rate_desc":
                     jobs = jobs.OrderByDescending(j => j.Rate);
@@ -156,6 +170,23 @@ namespace Exposure.Web.Controllers
                     jobs = jobs.OrderBy(j => j.DateAdvertised);
                     break;
             }
+
+            if (frmDate != null && toDate != null) 
+            {
+                jobs = jobs.Where(x => x.StartDate > frmDate && x.StartDate < toDate);
+            }
+            else if (frmDate != null)
+            {
+                jobs = jobs.Where(x => x.StartDate == frmDate);
+            }
+            else if (toDate != null)
+            {
+                jobs = jobs.Where(x => x.StartDate == toDate);
+            }
+
+
+
+
 
             if (skill != null)
             {
@@ -173,8 +204,9 @@ namespace Exposure.Web.Controllers
                 jobs = jobs.Where(j => j.Title.Contains(search));
             }
 
-            //int pageSize = 3;
-            //int pageNumber = (page ?? 1);
+            var jobsList = jobs.ToList();
+            PagedList<Job> model = new PagedList<Job>(jobsList, page, pageSize);
+            
             var rows = jobs.Count();
             if (rows == 0)
             {
@@ -182,9 +214,9 @@ namespace Exposure.Web.Controllers
 
             }
 
-            ViewBag.Jobs = jobs;
+            ViewBag.Jobs = model;
 
-            return View(jobs);
+            return View(model);
         }
 
         public ActionResult History(string SortOrder, string id, int? skill, DateTime? startDate, string search)
@@ -330,6 +362,10 @@ namespace Exposure.Web.Controllers
         {
             var skills = db.Skills.ToList().OrderBy(s => s.SkillDescription);
             ViewBag.Skills = skills;
+            var minDate = DateTime.UtcNow.AddDays(3);
+            ViewBag.minMonth = minDate.Month;
+            ViewBag.minDay = minDate.Day;
+            ViewBag.minYear = minDate.Year;
             ViewBag.EmployerName = User.Identity.Name;
             ViewBag.SkillID = new SelectList(db.Skills.OrderBy(x => x.SkillDescription), "SkillID", "SkillDescription");
             ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(s => s.SubName), "SuburbID", "SubName");

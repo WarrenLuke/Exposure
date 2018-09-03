@@ -38,14 +38,16 @@ namespace Exposure.Entities
 
 
         [DataType(DataType.Date)]
+        [Required(ErrorMessage = "Please select a start date for the job")]
         [DisplayName("Start Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         //[CustomDateAttribute(ErrorMessage = "Please select a start date atleast 3 days from today.")]
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
 
         [DataType(DataType.Date)]
         [DisplayName("End Date")]
+        [Required(ErrorMessage = "Please select a end date for the job")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         //[EndDate(DateStartProperty = "StartDate", ErrorMessage = "End Date cannot be before start date")]
         public DateTime? EndDate { get; set; }
@@ -53,14 +55,16 @@ namespace Exposure.Entities
 
         [DisplayName("Start Time")]
         [DataType(DataType.Time)]
+        [Required(ErrorMessage = "Please select a start time for the job")]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime? StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
 
         [DisplayName("End Time")]
         [DataType(DataType.Time)]
+        [Required(ErrorMessage = "Please select an end time for your job")]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime? EndTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         [Required(ErrorMessage = "Please specify how much you will be paying]")]
         [DisplayName("Rate")]
@@ -97,28 +101,5 @@ namespace Exposure.Entities
 
     }
 
-    //public class CustomDateAttribute : ValidationAttribute
-    //{
-    //    public override bool IsValid(object value)
-    //    {
-    //        return value != null && (DateTime)value > DateTime.UtcNow.AddDays(3);
-    //    }
-    //}
-
-    //public class EndDateAttribute : ValidationAttribute
-    //{
-    //    public string DateStartProperty { get; set; }
-    //    public override bool IsValid(object value)
-    //    {
-
-    //        string dateStartString = HttpContext.Current.Request[DateStartProperty];
-
-    //        DateTime dateStart = DateTime.Parse(dateStartString);
-    //        DateTime dateEnd = (DateTime)value;
-
-            
-
-    //        return dateStart < dateEnd;
-    //    }
-    //}
+   
 }

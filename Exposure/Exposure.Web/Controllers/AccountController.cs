@@ -85,7 +85,7 @@ namespace Exposure.Web.Controllers
 
             if(user==null)
             {
-                ModelState.AddModelError("", "Incorrect Email or/and Passwaord");
+                ModelState.AddModelError("", "Incorrect Email or/and Password");
                 return View(model);
             }
             // This doesn't count login failures towards account lockout

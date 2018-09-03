@@ -1497,3 +1497,4 @@ C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Ex
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.JobExpiration.resources
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.GeneralBus1.resources
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.CompanyBanner.resources
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.JobDateReq.resources

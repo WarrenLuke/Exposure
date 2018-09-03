@@ -55,15 +55,7 @@
         <section id="socialLoginForm">
             @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
         </section><br/>
-        @if(TempData["Notice"]!=null)
-        {
-            <div class="alert alert-success" role="alert">
-                @TempData["Notice"];
-            </div> 
-        }
+        
     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
