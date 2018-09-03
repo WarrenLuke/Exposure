@@ -44,12 +44,12 @@
     }
 
 </table>
-<div class="col-md-10">
+<divaa class="col-md-10">
     <div class="center">
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
         Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Suburbs
     </div>
-</div><br /><br /><br /> <br />
+</divaa><br /><br /><br /> <br />
 <input type="hidden" id="hiddenSuburbID" />
 <input type="hidden" id="hiddenSubName" />
 <div class="modal fade" id="myModal">

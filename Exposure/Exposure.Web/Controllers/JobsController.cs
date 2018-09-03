@@ -297,12 +297,12 @@ namespace Exposure.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employer")]
-        public ActionResult Update([Bind(Include = "JobID,Completed, StartDate, EndDate")]Job job)
+        public ActionResult Update([Bind(Include = "JobID,Completed,StartDate, EndDate, EndTime, StartTime, DateAdvertised, Title, Description, AddressLine1, Rate, SuburbID")]Job job)
         {
             Job a = db.Jobs.Find(job.JobID);
 
             a.Completed = job.Completed;
-
+                       
 
             if (ModelState.IsValid)
             {
