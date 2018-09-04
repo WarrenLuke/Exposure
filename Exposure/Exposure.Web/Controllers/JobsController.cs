@@ -362,10 +362,13 @@ namespace Exposure.Web.Controllers
         {
             var skills = db.Skills.ToList().OrderBy(s => s.SkillDescription);
             ViewBag.Skills = skills;
-            var minDate = DateTime.UtcNow.AddDays(3);
+
+            var minDate = DateTime.Now.AddDays(3);
             ViewBag.minMonth = minDate.Month;
             ViewBag.minDay = minDate.Day;
             ViewBag.minYear = minDate.Year;
+            ViewBag.stringDate = minDate.ToString();
+
             ViewBag.EmployerName = User.Identity.Name;
             ViewBag.SkillID = new SelectList(db.Skills.OrderBy(x => x.SkillDescription), "SkillID", "SkillDescription");
             ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(s => s.SubName), "SuburbID", "SubName");
@@ -417,14 +420,37 @@ namespace Exposure.Web.Controllers
             {
                 return HttpNotFound();
             }
+            #region minDate
+            var minDate = DateTime.Now.AddDays(3);
+            ViewBag.minMonth = minDate.Month;
+            ViewBag.minDay = minDate.Day;
+            ViewBag.minYear = minDate.Year;
+            #endregion
+            
+            #region defaultDate
+            var endDate = Convert.ToDateTime(job.EndDate);
+            ViewBag.eMonth = endDate.Month.ToString();
+            ViewBag.eDay = endDate.Day.ToString();
+            ViewBag.eYear = endDate.Year.ToString();
+
+            var startDate = Convert.ToDateTime(job.StartDate);
+            ViewBag.sMonth = startDate.Month;
+            ViewBag.sDay = startDate.Day;
+            ViewBag.sYear = startDate.Year;
+            #endregion
+
+            #region DefaultTime
+            ViewBag.endTime = job.EndTime.ToShortTimeString();
+            //ViewBag.endHour = endTime.Hour;
+            //ViewBag.endMinute = endTime.Minute;
+
+            ViewBag.startTime = job.StartTime.ToShortTimeString();
+            //ViewBag.startHour = startTime.Hour;
+            //ViewBag.startMinute = startTime.Minute;
+            #endregion
 
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", job.SuburbID);
-            ViewBag.JobID = id;
-
-            ViewBag.StartDate = job.StartDate;
-            ViewBag.EndDate = job.EndDate;
-
-
+            ViewBag.JobID = id;         
 
             return View(job);
 
@@ -435,7 +461,7 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Exclude = "DateAdvertised, Title", Include = "JobID,Title,DateAdvertised,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2,StartDate, EndDate")] Job job)
+        public ActionResult Edit([Bind(Exclude = "DateAdvertised", Include = "JobID,Title,DateAdvertised,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2,StartDate, EndDate")] Job job)
         {
             Job j = db.Jobs.Find(job.JobID);
 

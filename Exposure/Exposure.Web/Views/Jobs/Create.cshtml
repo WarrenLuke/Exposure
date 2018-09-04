@@ -189,25 +189,7 @@
             $("#rate").$this
         }
 
-        //while ($("#Skill").val() == null || $("#eTime").val() == null || $("#sTime").val() != null || $("#sDate").val() == null || $("#eDate").val() == null) {
-        //    $("#calc").hide()
-        //}
-        //$(function () {
-        //    if ($("#Skill").val() == null) {
-        //        $("#calc").hide()
-        //    } else if ($("#eTime").val() == null) {
-        //        $("#calc").hide()
-        //    } else if ($("#sTime").val() == null) {
-        //        $("#calc").hide()
-        //    } else if ($("#sDate").val() == null) {
-        //        $("#calc").hide()
-        //    } else if ($("#eDate").val() == null) {
-        //        $("#calc").hide()
-        //    } else {
-        //        $("#calc").show()
-        //    }
-
-        //})
+        
         var calculate = function () {
             onclick: if ($("#sDate").val() == null) {
                 return $("#sError").show();
@@ -240,16 +222,16 @@
         }
 
 
-        var minDay = @Html.Raw(Json.Encode(ViewBag.minDay))
-        var minYear = @Html.Raw(Json.Encode(ViewBag.minYear))
-        var minMonth = @Html.Raw(Json.Encode(ViewBag.minMonth))
+        var mDay = @Html.Raw(Json.Encode(ViewBag.minDay))
+        var mYear = @Html.Raw(Json.Encode(ViewBag.minYear))
+        var mMonth = @Html.Raw(Json.Encode(ViewBag.minMonth));
+        var stringDate = @Html.Raw(Json.Encode(ViewBag.stringDate));
+
 
         $(function () {
             $("#sDate").datepicker({
                 numberOfMonths: 1,
-                minYear: 2018,
-                maxYear: 2018,
-                minDate: new Date(minYear, minMonth, minDay),
+                minDate: new Date(mYear, mMonth -1, mDay),             
                 onSelect: function (selected) {
                     $("#eDate").datepicker("option", "minDate", selected)
                 }
@@ -259,7 +241,7 @@
 
             $("#eDate").datepicker({
                 numberOfMonths: 1,
-                minDate: $("#sDate").val(),
+                minDate: new Date(mYear, mMonth - 1, mDay),
                 onSelect: function (selected) {
                     $("#sDate").datepicker("option", "maxDate", selected)
                 }

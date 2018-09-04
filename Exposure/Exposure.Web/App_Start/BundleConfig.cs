@@ -7,12 +7,10 @@ namespace Exposure.Web
     {
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
-        {
-            //bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-            //            "~/Scripts/jquery-{version}.js"));
+        {            
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").
-                Include("~/Scripts/jquery-3.3.1.min.js", "~/Scripts/jquery-ui.js", 
+                Include("~/Scripts/jquery-3.3.1.min.js", "~/Scripts/jquery-ui-1.12.1.min.js", 
                 "~/Scripts/Chart.min.js", "~/Scripts/moment.min.js", "~/Scripts/moment-with-locales.min.js",
                 "~/Scripts/jquery.timepicker.min.js"));
 
@@ -35,7 +33,9 @@ namespace Exposure.Web
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/jquery-ui.css","~/Content/jquery.timepicker.css"));
+                      "~/Content/jquery-ui.css",
+                      "~/Content/jquery.timepicker.css"
+                      ));
         }
     }
 }

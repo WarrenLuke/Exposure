@@ -32,6 +32,7 @@ namespace Exposure.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Dashboard()
         {
             #region jobs
@@ -70,16 +71,21 @@ namespace Exposure.Web.Controllers
             var appList = db.JobApplications;
             List<int> appRepartitions = new List<int>();
             List<Reply> replies = new List<Reply>();
+            replies.Add(Reply.Hired);
+            replies.Add(Reply.Pending);
+            replies.Add(Reply.Rejected);
             var aCount = appList.Count();
 
-            foreach(var item in replies)
+            foreach (var item in replies)
             {
                 appRepartitions.Add(appList.Count(x => x.Response == item));
             }
 
             var appReps = appRepartitions;
-            ViewBag.Replies = replies;
+            var reply = replies;
+            ViewBag.Replies = reply;
             ViewBag.AppReps = appReps;
+            ViewBag.ACount = aCount;
             #endregion
 
             return View();

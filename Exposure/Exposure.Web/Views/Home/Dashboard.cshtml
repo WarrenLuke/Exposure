@@ -7,28 +7,32 @@
 <hr />
 <style>
     #chartContainter {
-        background-color: ghostwhite;
-        border: outset;
+        background-color: ghostwhite;        
         border-width: 4px;
         border-color: whitesmoke;
+        height:250px;
     }
 </style>
 @if (User.IsInRole("Admin"))
 {
-    <div class="row">
-        <h2 style="text-align:center; text-decoration:underline">Summary</h2>
-        <div class="col-md-offset-1 col-xs-4" id="chartContainter">
-            <h3>Total Jobs: <label for="Jobs"></label></h3>
-            <canvas id="SkillChart" class="col-xs-4"></canvas>
+    <div class="panel panel-default" style="background-color:whitesmoke; line-height:18px">
+        <div class="panel-heading" style="background-color:antiquewhite">
+            <h1 style="text-align:center">Summary</h1>
         </div>
-        <div class="col-md-offset-2 col-xs-4" id="chartContainter">
-            <h3> Total Users: <label for="Users"></label></h3>
-            <canvas id="UserChart" class="col-xs-offset-1 col-xs-4"></canvas>
-        </div>
-        <div class="col-md-4">
-            <h3> Total Job Applications: <label for="Applications"></label></h3>
-            <canvas id="AppChart" class="col-xs-4"></canvas>
-        </div>
+        <div class="panel-body">
+            <div class="col-md-4" id="chartContainter">
+                <h3 style="text-align:center">Total Jobs: <label for="Jobs"></label></h3>
+                <canvas id="SkillChart" class="col-xs-4"></canvas>
+            </div>
+            <div class="col-md-4" id="chartContainter">
+                <h3 style="text-align:center"> Total Users: <label for="Users"></label></h3>
+                <canvas id="UserChart" class="col-md-4"></canvas>
+            </div>
+            <div class="col-md-4">
+                <h3 style="text-align:center"> Total Applications: <text id="apps"></text></h3>
+                <canvas id="AppChart" class="col-xs-4"></canvas>
+            </div>
+        </div>        
     </div>
     <hr />
     <div class="row">
@@ -183,15 +187,15 @@
     var appReps = @Html.Raw(Json.Encode(ViewBag.AppReps));
     var replies = @Html.Raw(Json.Encode(ViewBag.Replies));
     var aCount = @Html.Raw(Json.Encode(ViewBag.ACount));
-    $("label[for=[Applications]").text(aCount);
+    $("#apps").text(aCount);
     var appNutChart = new Chart(atx, {
-        type: 'dougnut',
+        type: 'doughnut',
         data: {
-            labels: replies,
-            dataset: [{
+            labels: ['Hired', 'Pending', 'Rejected'],
+            datasets: [{
                 label: "Applications",
-                data: appRep,
-                backgroundColot: 'rgba(255,99,132,0.2)',
+                data: appReps,
+                backgroundColor: 'rgba(255,99,132,0.2)',
                 borderColor: '#ffffff'
             }]
         },
