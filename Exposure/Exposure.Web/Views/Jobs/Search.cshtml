@@ -58,10 +58,10 @@
      "value", "text", 2), new { @class = "form-control" })
         </div>
         <div class="col-md-2">
-            <p>From: &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" id="ClearDate" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear">&times;</a></i> </p> @Html.TextBox("frmDate", null, new { @class = "form-control datepicker", @id = "frmDate", onkeydown = "return false", onpaste = "return false", placeholder = "Select from date" })
+            <p>From: &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear Dates">&times;</a></i> </p> @Html.TextBox("frmDate", null, new { @class = "form-control datepicker", @id = "frmDate", onkeydown = "return false", onpaste = "return false", placeholder = "Select from date" })
         </div>
         <div class="col-md-2">
-            <p>To:  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" id="ClearDate" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear">&times;</a></i></p> @Html.TextBox("toDate", null, new { @class = "form-control datepicker", @id = "toDate", onkeydown = "return false", onpaste = "return false", placeholder = "Select to date" })
+            <p>To:  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear Dates">&times;</a></i></p> @Html.TextBox("toDate", null, new { @class = "form-control datepicker", @id = "toDate", onkeydown = "return false", onpaste = "return false", placeholder = "Select to date" })
         </div>
         <div class="col-md-2" style="text-align:right">
             <br />
@@ -118,20 +118,22 @@
 
     });
 
-    var $dates = $('#frmDate, #toDate').datepicker();
-    $("#ClearDate").on('click', function () {
+    
+    var Dates = function () {
         $("#frmDate").datepicker('setDate', null);
         $("#toDate").datepicker('setDate', null);
-    })
-
+    }
     $(function () {
-        $("#frmDate").datepicker({
+        $("#frmDate").datepicker({            
             onSelect: function (selected) {
                 $("#toDate").datepicker("option", "minDate", selected)
             }
         })
 
         $("#toDate").datepicker({
+            onSelect: function (selected) {
+                $("#frmDate").datepicker("option", "maxDate", selected)
+            }
 
         })
 

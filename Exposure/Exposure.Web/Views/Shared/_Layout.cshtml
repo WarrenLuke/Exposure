@@ -10,81 +10,10 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
-    <link href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css" type="text/css" rel="stylesheet" />
-    <style>
-        
-        .btn {
-            display: inline-block;
-            padding: 6px 12px;
-            margin-bottom: 0;
-            font-size: 14px;
-            font-weight: normal;
-            line-height: 1.428571429;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            cursor: pointer;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -o-user-select: none;
-            user-select: none;
-        }
+    @Styles.Render("~/Content/bootstrap.css")
+    @Scripts.Render("~/Scripts/jquery-3.3.1.min.js")
+    @RenderSection("scripts", required: false)
 
-            .btn:hover,
-            .btn:focus {
-                color: #333333;
-                text-decoration: none;
-            }
-
-        .btn-default {
-            color: #e7e7e7;
-            background-color: #ff6a00;
-            border-color: #eeeeee;
-        }
-
-            .btn-default:hover,
-            .btn-default:focus,
-            .btn-default:active,
-            .btn-default.active,
-            .open .dropdown-toggle.btn-default {
-                color: #ff6a00;
-                background-color: #ebebe3;
-                border-color: #ff6a00;
-            }
-
-        .nav > li.disabled > a:hover,
-        .nav > li.disabled > a:focus {
-            color: #999999;
-            text-decoration: none;
-            cursor: not-allowed;
-            background-color: transparent;
-        }
-
-        .footer {
-            position: relative, sticky;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background-color: red;
-            color: white;
-            text-align: center;
-        }
-
-        .wrapper {
-            min-height: 5%;
-            margin-bottom: -15px;
-        }
-        /*.footer, .push{
-            height:100px;
-            width:100%;
-            bottom:0;
-            left:0;
-        }*/
-    </style>
 </head>
 <body>
     <div class="container">
@@ -178,9 +107,8 @@
         </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    
+    
     <script>
         window.onscroll = function () { myFunction() };
         // Get the navbar
