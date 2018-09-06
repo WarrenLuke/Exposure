@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<Exposure.Entities.Job>
 @using Exposure.Entities
-
 @{
     ViewBag.Title = "Jobs";
 }
@@ -8,7 +7,6 @@
     <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
     <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />*@
-
 @if (TempData["JobSuccess"] != null)
 {
     <div class="alert alert-success alert-dismissable" role="alert">
@@ -18,7 +16,6 @@
         @TempData["JobSuccess"]
     </div>
 }
-
 @if (TempData["ReviewSuccess"] != null)
 {
     <div class="alert alert-success alert-dismissable" role="alert">
@@ -37,7 +34,6 @@
         }
     </div>
     <div class="col-md-offset-1 col-md-2" style="text-align:">
-
     </div>
     <div class="col-md-offset-2 col-md-5" style="text-align:right">
         @using (Html.BeginForm("Index", "Jobs", FormMethod.Get))
@@ -57,7 +53,6 @@
 </div>
 <br />
 
-
 @using (Html.BeginForm("Index", "Jobs", FormMethod.Get))
 {
     <div class="row search">
@@ -71,17 +66,17 @@
             <p>Sort by: </p>@Html.DropDownList("sortOrder", new SelectList(
 new List<Object>
 {
-        new{value="date", text= "Latest"},
-        new{value="date_desc", text="Date Advertised(Desc)"},
-        new {value="rate", text="Rate(Lowest)"},
-        new {value="rate_desc", text="Rate(Highest)"}
+new{value="date", text= "Latest"},
+new{value="date_desc", text="Date Advertised(Desc)"},
+new {value="rate", text="Rate(Lowest)"},
+new {value="rate_desc", text="Rate(Highest)"}
 },
 "value", "text", 2), new { @class = "form-control" })
         </div>
         <div class="col-md-2">
-            <p>From:  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear dates">&times;</a></i> </p> @Html.TextBox("frmDate", null, new { @class = "form-control datepicker", @id = "frmDate", onkeydown = "return false", onpaste = "return false", placeholder= "Select from Date" })
+            <p>From:  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear dates">&times;</a></i> </p> @Html.TextBox("frmDate", null, new { @class = "form-control datepicker", @id = "frmDate", onkeydown = "return false", onpaste = "return false", placeholder = "Select from Date" })
         </div>
-        <div class="col-md-2"> 
+        <div class="col-md-2">
             <p>To: &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear dates">&times;</a></i></p>@Html.TextBox("toDate", null, new { @class = "form-control datepicker", @id = "toDate", onkeydown = "return false", onpaste = "return false", placeholder = "Select to Date" })
         </div>
         <div class="col-md-2" style="text-align:right">
@@ -90,7 +85,6 @@ new List<Object>
         </div>
     </div>
 }
-
 @if (User.IsInRole("Employer"))
 {
     <br />
@@ -117,7 +111,6 @@ new List<Object>
                 <th>
                     Location
                 </th>
-
                 <th>
                     @Html.DisplayNameFor(model => model.DateAdvertised)
                 </th>
@@ -144,19 +137,14 @@ new List<Object>
                 </th>
                 <th></th>
             </tr>
-            @if (ViewBag.Jobs == null)
-            {
-                <tr><td>No jobs to display </td></tr>
-            }
-            else
+
+            @if (Model != null)
             {
                 foreach (var item in Model)
                 {
                     <tr id="row_@item.JobID">
                         <td>
-
                             @Html.DisplayFor(modelItem => item.Title)
-
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Skill.SkillDescription)
@@ -170,7 +158,6 @@ new List<Object>
                             @Html.DisplayFor(modelItem => item.Suburb.SubName)<br />
                             @Html.DisplayFor(modelItem => item.Suburb.City.CityName)
                         </td>
-
                         <td>
                             @Html.DisplayFor(modelItem => item.DateAdvertised)
                         </td>
@@ -204,7 +191,6 @@ new List<Object>
                             }
                         </td>
                         <td style="text-align:center">
-
                             @if (item.Completed == false)
                             {
 
@@ -221,7 +207,6 @@ new List<Object>
                                     }
                                 }
                             }
-
                             <a href="@Url.Action("Details", "Jobs", new { id = item.JobID })" class="btn btn-info" data-toggle="tooltip" title="Details"><i class="glyphicon glyphicon-list-alt"></i></a>
                             <br />
                             <a href="#" onclick="ConfirmDelete(@item.JobID)" class="btn btn-danger" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-trash"></i></a>
@@ -231,6 +216,13 @@ new List<Object>
             }
         </table>
 
+        @if (ViewBag.JobAmt == 0)
+        {
+            <div class="alert alert-warning">
+                <text>No jobs available to display</text>
+            </div>
+            <br/>
+        }
         <div class="col-md-6">
             <a href="@Url.Action("Index", "Manage")">Back to profile</a>
         </div>
@@ -250,12 +242,10 @@ new List<Object>
                     <div class="modal-footer">
                         <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
                         <a href="#" class="btn btn-success" onclick="DeleteJob()">Confirm</a>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 }
 else if (User.IsInRole("Admin"))
@@ -273,7 +263,6 @@ else if (User.IsInRole("Admin"))
                 <th>
                     <text>Skill</text>
                 </th>
-
                 <th>
                     <text>Location</text>
                 </th>
@@ -303,7 +292,7 @@ else if (User.IsInRole("Admin"))
                 </th>
                 <th></th>
             </tr>
-            @if (Model != null)
+            @if (ViewBag.JobAmt != 0)
             {
                 foreach (var item in Model)
                 {
@@ -361,8 +350,8 @@ else if (User.IsInRole("Admin"))
                 <tr><td>No jobs Available to display</td></tr>
             }
 
-
         </table>
+
     </div>
 }
 else if (User.IsInRole("Worker"))
@@ -381,7 +370,6 @@ else if (User.IsInRole("Worker"))
                     <th>Job Status</th>
                 </tr>
             </thead>
-
             @foreach (var item in ViewBag.JobHistory)
             {
                 <tr>
@@ -406,7 +394,6 @@ else if (User.IsInRole("Worker"))
                     </td>
                 </tr>
             }
-
         </table>
     </div>
     <a href="@Url.Action("Index", "Manage")">Back to profile</a>
@@ -415,9 +402,7 @@ else if (User.IsInRole("Worker"))
 
 }
 
-
 @section scripts{
-
     <script>
 
         function ConfirmDelete(JobID) {
@@ -427,7 +412,7 @@ else if (User.IsInRole("Worker"))
 
         var DeleteJob = function () {
 
-            $("#myLoaderDiv").show();
+            $("#loaderDiv").show();
 
             var jobID = $("#hiddenJobID").val();
             $.ajax({
@@ -441,64 +426,14 @@ else if (User.IsInRole("Worker"))
                 }
             });
         }
-       
+
         var Dates = function () {
             $("#frmDate").datepicker('setDate', null);
             $("#toDate").datepicker('setDate', null);
         }
 
 
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            $('#myTable').dataTable({
-                "processing": true,
-                "serverSide": true,
-                "filter": false,
-                "orderMulti": false,
-                "pageLength": 5,
 
-                //Used to call action method in controller
-                "ajax": {
-                    "url": "/.../...",
-                    "type": "POST",
-                    "datatype": "json",
-                },
-
-                //Used to hide certain columns from the table
-                "columnDefs":
-                    [{
-                        "targets": [0],
-                        "visible": false,
-                        "searchable": false
-                    },
-                    {
-                        "targets": [7],
-                        "searchable": false,
-                        "orderable": false
-                    },
-                    {
-                        "targets": [8],
-                        "searchable": false,
-                        "orderable": false
-                    },
-                    {
-                        "targets": [9],
-                        "searchable": false,
-                        "orderable": false
-                    }],
-
-                "columns": [
-                    { "data": "JobID", "name": "JobID", "autoWidth": true },
-                    { "data": "Title", "name": "Title", "autoWidth": true },
-                    { "data": "Description", "title": "Description", "name": "ContactName", "autoWidth": true },
-                    { "data": "SkillName", "name": "SkillName", "autoWidth": true },
-                    { "data": "EndData", "name": "EndDate", "autoWidth": true },
-                    { "data": "Rate", "name": "Rate", "autoWidth": true },
-                    { "data": "Status", "name": "Status", "autoWidth": true },
-                ]
-
-            });
-        });
 
         $(function () {
             $("#frmDate").datepicker({
@@ -515,9 +450,6 @@ else if (User.IsInRole("Worker"))
         })
     </script>
 
-
 }
-
-
 
 

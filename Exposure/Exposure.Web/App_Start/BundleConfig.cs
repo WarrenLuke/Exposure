@@ -10,7 +10,7 @@ namespace Exposure.Web
         {            
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").
-                Include("~/Scripts/jquery-3.3.1.min.js", "~/Scripts/jquery-ui-1.12.1.min.js", 
+                Include("~/Scripts/jquery-ui-1.12.1.min.js", 
                 "~/Scripts/Chart.min.js", "~/Scripts/moment.min.js", "~/Scripts/moment-with-locales.min.js",
                 "~/Scripts/jquery.timepicker.min.js"));
 

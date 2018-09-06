@@ -36,7 +36,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.SkillID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("SkillID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("SkillID", null, htmlAttributes: new { @class = "form-control", @id = "Skill" })
                         @Html.ValidationMessageFor(model => model.SkillID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -72,46 +72,52 @@
                         @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10" id="demo">
-                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false" } })
-                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger " })
+                <form id="myForm">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10" id="demo">
+                            @*<input type="text" id="startDate" class="form-control ui-datepicker-current ui-datepicker"  />*@
+                            @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control datepicker", onkeydown = "return false", onpaste = "return false", @id = "sDate", placeholder = "Select Start Date" })
+                            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger ", @id="sError",  })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", onkeydown = "return false", onpaste = "return false", id = "StartDate" } })
-                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker", onkeydown = "return false", onpaste = "return false", @id = "eDate", placeholder ="Select End Date" })
+                            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger", @id = "end" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 bfh-timepicker">
-                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10 bfh-timepicker">
+                            @Html.TextBoxFor(model => model.StartTime,null ,new { @class = " form-control timepicker", @id = "sTime" } )
+                            @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.EndTime, null ,new { @class = "form-control timepicker", @id = "eTime" } )
+                            @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
+                </form>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control" } }) <a href="#" data-toggle="tooltip" title="This is the rate per day in Rands that you are willing to pay the worker"> What is this?<span class="glyphicon glyphicon-question-sign"></span></a>
+                    @Html.LabelFor(model => model.Rate, "Rate(Daily)" ,htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @id = "rate" } })
                         @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
                     </div>
+                    <div class="col-md-2" style="justify-content:center">
+                        <a href="#" class="btn btn-default" onclick="calculate()" id="calc">Calculate <i class="glyphicon glyphicon-c"></i></a>
+                    </div>
                 </div>
+
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
@@ -120,12 +126,13 @@
                 </div>
             </div>
             <br /><br />
-            <div class=" col-md-offset-1 col-md-4 content">
+            <div class=" col-md-offset-1 col-md-3 content">
                 <h3>Recommended Rate for Different Skills</h3>
                 <hr />
                 <div class="row">
                     <div class="col-md-6"><strong>Skill</strong> </div><div class="col-md-6"><strong>Hourly Rate(R)</strong></div>
                 </div>
+
                 @foreach (var skill in ViewBag.Skills)
                 {
                     <div class="row" style="text-align:left">
@@ -133,8 +140,37 @@
                     </div>
                 }
             </div>
+            <input type="hidden" id="hiddenRate" />
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a href="#" class="close" data-dismiss="modal">&times;</a>
+                            <h3 class="modal-title">Recommended Rate Calculation</h3>
+                        </div>
+                        <div class="modal-body">
+                            <h3 style="font-family:'Californian FB'">Recommended rate(per day) is - R<label for="rate"></label></h3>
+                            <h4 style="font-family:'Californian FB'">The recommended rate has been calculated according to the following selections:</h4>
+                            <p style="font-family:'Californian FB'">
+                                Skill: <label for="skill"></label><br />
+                                Start Date: <label for="sDate"></label> <br />
+                                End Date: <label for="eDate"></label> <br />
+                                Start Time: <label for="sTime"></label> <br />
+                                End Time: <label for="eTime"></label><br />
+                                Hourly Rate:R <label for="hr"></label><br />
+                                Total Cost for Job: R<label for="totCost"></label>
+                                <br />
+                                To use this rate, please click apply below.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-danger" data-dismiss="modal">Cancel</a>
+                            <a href="#" class="btn btn-success" onclick="ApplyRate()">Apply</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 }
 
@@ -143,55 +179,101 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/Scripts/jquery-3.1.1.min.js")
-    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js")
-    @Scripts.Render("~/Scripts/jquery.datetimepicker.js")
-    @Scripts.Render("~/Scripts/jquery.min.js")
-    <script type="text/javascript">
-                //$(function () {
-                //    $(".date-picker").datepicker({
-                //        changeMonth: true,
-                //        changeYear: true,
-                //        yearRange: "-100:+0",
-                //        dateFormat: 'dd-MM-yy',
-                //        parseDate: "dd-MM-yy"
 
-                //    });
+    <script>
 
-                //    function toDate(selector) {
-                //        var from = $(selector).val.split("-")
-                //        return new Date(from[2], from[1] - 1, from[0])
-                //    }
+        var ApplyRate = function () {
+            $("#rate").val($("#hiddenRate").val());
+            $("#myModal").modal("hide");
+            $("#rate").focus();
+            $("#rate").$this
+        }
 
-                //    jQuery.validator.methods.date = function (value, element) {
-                //        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-                //        if (isChrome) {
-                //            var d = new Date();
-                //            return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
-                //        }
-                //        else {
-                //            return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
-                //        }
-                //    };
-                //});
+        
+        var calculate = function () {
+            
+            var id = $("#Skill").val();
+            var skill = $("#Skill :selected").text();
+            var eT = $("#eTime").val();
+            var sT = $("#sTime").val();
+            var sDate = $("#sDate").val();
+            var eDate = $("#eDate").val();
 
-                //$('#StartDate').datepicker({
-                //    minDate: "-0D"
-                //});
+            $.ajax({
+                type: "POST",
+                url: "/exposure/Jobs/Calculate",
+                data: { id: id, start: sDate, end: eDate, eTime: eT, sTime: sT },
+                success: function (data) {
+                    $("label[for=skill]").text(skill);
+                    $("label[for=sDate]").text(sDate);
+                    $("label[for=eDate]").text(eDate);
+                    $("label[for=sTime]").text(sT);
+                    $("label[for=eTime]").text(eT);
+                    $("label[for=hr").text(data.rate);
+                    $("label[for=rate]").text(data.payPerDay);
+                    $("label[for=totCost").text(data.JobPay);
+                    $("#hiddenRate").val(data.payPerDay);
+                    $("#myModal").modal("show");
+
+                }
+            })
+        }
+
+
+        var mDay = @Html.Raw(Json.Encode(ViewBag.minDay))
+        var mYear = @Html.Raw(Json.Encode(ViewBag.minYear))
+        var mMonth = @Html.Raw(Json.Encode(ViewBag.minMonth));
+        var stringDate = @Html.Raw(Json.Encode(ViewBag.stringDate));
+
+
+        $(function () {
+            $("#sDate").datepicker({
+                numberOfMonths: 1,
+                minDate: new Date(mYear, mMonth -1, mDay),             
+                onSelect: function (selected) {
+                    $("#eDate").datepicker("option", "minDate", selected)
+                }
+
+
+            })
+
+            $("#eDate").datepicker({
+                numberOfMonths: 1,
+                minDate: new Date(mYear, mMonth - 1, mDay),
+                onSelect: function (selected) {
+                    $("#sDate").datepicker("option", "maxDate", selected)
+                }
+            })
+            })
+        $(function () {
+            
+            $("#sTime").timepicker({
+                timeFormat: 'HH:mm p',
+                durationTime: true,
+                minTime: '8:00am',
+                maxTime: '12:00pm',
+                defaultTime: '8:00am',
+                dropdown: true,
+                scrollbar: true,
+                change: function (selected) {
+                $("#eTime").timepicker("option", "minTime", selected)
+                }
+            })
+            
+            $("#eTime").timepicker({
+                durationTime: true,
+                timeFormat: 'HH:mm p',
+                maxTime: '4:00pm',                
+                dropdown: true,
+                scrollbar:true
+            })
+        })
+            
+        
+
+
+
+
+
     </script>
-    <style type="text/css">
-        @Styles.Render("~/Content/themes/base/jquery-ui.css")
-        @Styles.Render("~/Content/themes/base/datepicker.css")
-        @Styles.Render("~/Content/themes/base/core.css")
-        @Styles.Render("~/Content/themes/base/theme.css")
-        @Styles.Render("~/Content/themes/base/jquery.datetimepicker.min.css")
-        #minicart {
-            display: none;
-        }
-
-        #ShowCart:hover + #minicart {
-            display: block;
-        }
-    </style>
 }

@@ -5,15 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title-Exposure</title>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @Styles.Render("~/Content/bootstrap.css")
-    @Scripts.Render("~/Scripts/jquery-3.3.1.min.js")
     @RenderSection("scripts", required: false)
-
 </head>
 <body>
     <div class="container">
@@ -109,20 +108,6 @@
 
     
     
-    <script>
-        window.onscroll = function () { myFunction() };
-        // Get the navbar
-        var navbar = document.getElementById("navbar");
-        // Get the offset position of the navbar
-        var sticky = navbar.offsetTop;
-        // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-        function myFunction() {
-            if (window.pageYOffset >= sticky) {
-                navbar.classList.add("sticky")
-            } else {
-                navbar.classList.remove("sticky");
-            }
-        }
-    </script>
+    
 </body>
 </html>

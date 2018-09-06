@@ -71,39 +71,36 @@
 }
 <br />
 <div class="col-md-12">
-    <table class="table">
+   
         @if (TempData["Empty"] != null)
         {
-            <tr>@TempData["Empty"]</tr>
+            @TempData["Empty"]
         }
-        @foreach (var item in ViewBag.Jobs)
+        @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <strong>Title:</strong> @item.Title<br />
+
+            ViewBag.EndTime = item.EndTime.ToShortTimeString();
+            ViewBag.StartTime = item.StartTime.ToShortTimeString();
+            ViewBag.StartDate = item.StartDate.ToShortDateString();
+            ViewBag.EndDate = item.EndDate.Value.ToShortDateString();
+
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background-color:antiquewhite">
+                    <h3>@item.Title</h3> <text>(Advertised by: @item.Employer.ApplicationUser.FirstName  @item.Employer.ApplicationUser.LastName)</text>
+                </div>
+                <div class="panel-body">
                     <strong>Location:</strong> @item.Suburb.SubName <br />
                     <strong>Rate(ZAR):</strong> @item.Rate <br />
-                    <strong>Start Date:</strong> @item.StartDate<br />
-                    <strong>Start Time:</strong> @item.StartTime<br />
-                    <strong>Employer:</strong> @item.Employer.ApplicationUser.FirstName  @item.Employer.ApplicationUser.LastName<br />
+                    <strong>Duration:</strong> @ViewBag.StartDate till @ViewBag.EndDate<br />
+                    <strong>Start Time:</strong> @ViewBag.StartTime till @ViewBag.EndTime<br />
                     <strong>Description: </strong> <br />
                     @item.Description<br />
-                </td>
-                <td align="right">
-                    <strong>Date Advertised:</strong><br />
-                    @item.DateAdvertised<br /><br /><br />
-
-                    @if (User.IsInRole("Worker") || User.Identity.IsAuthenticated == false)
-                    {
-                        <a href="@Url.Action("Create", "JobApplications", new { id = item.JobID, skill = item.SkillID })" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Click Here To Apply" style="vertical-align:bottom">Apply</a><br />
-
-                    }
-
-                </td>
-            </tr>
+                </div>
+            </div>
+            
 
         }
-    </table>
+    
 
 </div>
 <div class="col-md-10">

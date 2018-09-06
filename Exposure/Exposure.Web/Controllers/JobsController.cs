@@ -117,7 +117,7 @@ namespace Exposure.Web.Controllers
             //ViewBag.JobID = job;
             //ViewBag.JList = jobs;
             ViewBag.WList = workers;
-            ViewBag.Jobs = jobs;
+            ViewBag.JobAmt = jobs.Count();
             ViewBag.JobHistory = jobHistory;
             ViewBag.skill = new SelectList(db.Skills.OrderBy(x => x.SkillDescription), "SkillID", "SkillDescription");
             ViewBag.location = new SelectList(db.Suburbs.OrderBy(x => x.SubName), "SuburbID", "SubName");
@@ -213,7 +213,7 @@ namespace Exposure.Web.Controllers
                 TempData["Empty"] = "No jobs available. Please edit your search criteria or check back later";
 
             }
-
+            
             ViewBag.Jobs = model;
 
             return View(model);

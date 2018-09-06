@@ -191,9 +191,7 @@
 
         
         var calculate = function () {
-            onclick: if ($("#sDate").val() == null) {
-                return $("#sError").show();
-            }
+            
             var id = $("#Skill").val();
             var skill = $("#Skill :selected").text();
             var eT = $("#eTime").val();
@@ -203,7 +201,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Jobs/Calculate",
+                url: "/exposure/Jobs/Calculate",
                 data: { id: id, start: sDate, end: eDate, eTime: eT, sTime: sT },
                 success: function (data) {
                     $("label[for=skill]").text(skill);
