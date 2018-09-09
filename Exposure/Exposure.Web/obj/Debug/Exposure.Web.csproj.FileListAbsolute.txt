@@ -1669,3 +1669,7 @@ C:\Users\s215047370\Downloads\Exposure-master\Exposure-master\Exposure\Exposure.
 C:\Users\s215047370\Downloads\Exposure-master\Exposure-master\Exposure\Exposure.Web\obj\Debug\Exposure.Web.csproj.CoreCompileInputs.cache
 C:\Users\s215047370\Downloads\Exposure-master\Exposure-master\Exposure\Exposure.Web\obj\Debug\Exposure.Web.dll
 C:\Users\s215047370\Downloads\Exposure-master\Exposure-master\Exposure\Exposure.Web\obj\Debug\Exposure.Web.pdb
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.JobDate.resources
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.DateAdvert.resources
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.RegDateFix.resources
+C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.Help.resources

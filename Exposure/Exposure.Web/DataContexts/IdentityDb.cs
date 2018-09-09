@@ -48,6 +48,8 @@ namespace Exposure.Web.DataContexts
         public System.Data.Entity.DbSet<Exposure.Entities.GeneralBusiness> GeneralBusinesses { get; set; }
 
         public System.Data.Entity.DbSet<Exposure.Entities.UserReviews> UserReviews { get; set; }
+
+        public System.Data.Entity.DbSet<Exposure.Entities.Help> Helps { get; set; }
     }
 }
    

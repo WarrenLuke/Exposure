@@ -33,7 +33,7 @@ namespace Exposure.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Dashboard()
+        public ActionResult Dashboard(DateTime? toDate, DateTime? frmDate, string viewBy, DateTime? startDate, DateTime? endDate)
         {
             #region jobs
             var jlist = db.Jobs.Include(x => x.Skill);
@@ -48,6 +48,7 @@ namespace Exposure.Web.Controllers
             var rep = repartitions;
             ViewBag.Skills = skills;
             ViewBag.Reps = rep;
+            ViewBag.jCount = jCount;
 
             #endregion
 
@@ -86,6 +87,77 @@ namespace Exposure.Web.Controllers
             ViewBag.Replies = reply;
             ViewBag.AppReps = appReps;
             ViewBag.ACount = aCount;
+            #endregion
+
+            #region BarChart
+            var jobs = db.Jobs.Include(s => s.Skill);
+            DateTime date = DateTime.UtcNow;
+
+            if (toDate != null || frmDate != null)
+            {
+                jobs = jobs.Where(x => x.DateAdvertised >= frmDate && x.DateAdvertised <= toDate);
+            }
+
+            var dates = db.Jobs.Select(x => x.DateAdvertised).Distinct();
+            List<int> barJobs = new List<int>();
+
+            List<string> dateReps = new List<string>();
+            foreach (var item in dates)
+            {
+                dateReps.Add(item.ToShortDateString());
+            }
+
+            foreach (var item in dates)
+            {
+                barJobs.Add(jobs.Count(x => x.DateAdvertised == item));
+            }
+
+            var jobList = barJobs;
+            var dReps = dateReps;
+            ViewBag.Dates = dReps;
+            ViewBag.Count = jobList;
+            #endregion
+
+            #region SiteActivity  
+            
+
+            
+            List<string> regDateReps = new List<string>();
+            if (startDate == null || endDate == null)
+            {
+                startDate = DateTime.UtcNow.AddDays(-30);
+                endDate = DateTime.UtcNow;
+            }
+
+            while (startDate <= endDate)
+            {
+                var dateString = startDate.Value.ToShortDateString();
+                regDateReps.Add(dateString);
+                startDate = startDate.Value.AddDays(1);
+            }
+
+
+            var Workers = db.Users.Include(x => x.Roles).Where(x => x.Roles.FirstOrDefault().RoleId == wRole.Id);
+            List<int> workReg = new List<int>();
+            foreach (var item in regDateReps)
+            {
+                var i = Convert.ToDateTime(item);
+                workReg.Add(Workers.Count(x => x.RegDate == i));
+            }
+
+            var Employers = db.Users.Include(x => x.Roles).Where(x => x.Roles.FirstOrDefault().RoleId == eRole.Id);
+            List<int> empReg = new List<int>();
+            foreach (var item in regDateReps)
+            {
+                var d = Convert.ToDateTime(item);
+                empReg.Add(Employers.Count(x => x.RegDate == d));
+            }
+            var emps = empReg;
+            var works = workReg;
+            var actReps = regDateReps; 
+            ViewBag.WorkAct = works;
+            ViewBag.EmpAct = emps;
+            ViewBag.ActDates = actReps;
             #endregion
 
             return View();

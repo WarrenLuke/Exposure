@@ -2,18 +2,15 @@
 @using PagedList.Mvc;
 @using System.Web.Mvc;
 @model IPagedList<Exposure.Entities.Job>
-
 @{
-    ViewBag.Title = "Jobs";
+    ViewBag.Title = "Advertised Jobs";
 }
-
 
 <div class="row">
     <div class="col-md-2">
         <h2>@ViewBag.Title</h2>
     </div>
     <div class="col-md-3">
-
         @if (User.IsInRole("Employer"))
         {
             <a href="@Url.Action("Create", "Jobs")" class="btn btn-default">Create new</a>
@@ -35,7 +32,6 @@
         }
     </div>
 </div>
-
 <hr />
 @using (Html.BeginForm("Search", "Jobs", FormMethod.Get))
 {
@@ -48,14 +44,14 @@
         </div>
         <div class="col-md-2">
             <p>Sort by: </p>@Html.DropDownList("sortOrder", new SelectList(
- new List<Object>
- {
-            new{value="date", text= "Latest"},
-            new{value="date_desc", text="Oldest"},
-            new {value="rate", text="Rate"},
-            new {value="rate_desc", text="Rate(Desc)"}
- },
-     "value", "text", 2), new { @class = "form-control" })
+new List<Object>
+{
+    new{value="date", text= "Latest"},
+    new{value="date_desc", text="Oldest"},
+    new {value="rate", text="Rate"},
+    new {value="rate_desc", text="Rate(Desc)"}
+},
+"value", "text", 2), new { @class = "form-control" })
         </div>
         <div class="col-md-2">
             <p>From: &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear Dates">&times;</a></i> </p> @Html.TextBox("frmDate", null, new { @class = "form-control datepicker", @id = "frmDate", onkeydown = "return false", onpaste = "return false", placeholder = "Select from date" })
@@ -71,36 +67,46 @@
 }
 <br />
 <div class="col-md-12">
-   
-        @if (TempData["Empty"] != null)
-        {
-            @TempData["Empty"]
-        }
-        @foreach (var item in Model)
-        {
 
-            ViewBag.EndTime = item.EndTime.ToShortTimeString();
-            ViewBag.StartTime = item.StartTime.ToShortTimeString();
-            ViewBag.StartDate = item.StartDate.ToShortDateString();
-            ViewBag.EndDate = item.EndDate.Value.ToShortDateString();
+    @if (TempData["Empty"] != null)
+    {
+        @TempData["Empty"]
+    }
+    @foreach (var item in Model)
+    {
 
-            <div class="panel panel-default">
-                <div class="panel-heading" style="background-color:antiquewhite">
-                    <h3>@item.Title</h3> <text>(Advertised by: @item.Employer.ApplicationUser.FirstName  @item.Employer.ApplicationUser.LastName)</text>
-                </div>
-                <div class="panel-body">
+        ViewBag.EndTime = item.EndTime.ToShortTimeString();
+        ViewBag.StartTime = item.StartTime.ToShortTimeString();
+        ViewBag.StartDate = item.StartDate.ToShortDateString();
+        ViewBag.EndDate = item.EndDate.Value.ToShortDateString();
+
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:antiquewhite">
+                <h3>@item.Title</h3><text>(Advertised by: @item.Employer.ApplicationUser.FirstName  @item.Employer.ApplicationUser.LastName)</text>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-4">
                     <strong>Location:</strong> @item.Suburb.SubName <br />
-                    <strong>Rate(ZAR):</strong> @item.Rate <br />
-                    <strong>Duration:</strong> @ViewBag.StartDate till @ViewBag.EndDate<br />
-                    <strong>Start Time:</strong> @ViewBag.StartTime till @ViewBag.EndTime<br />
+                    <strong>Rate (Per Day):</strong> <text>R</text>@item.Rate <br />
+                    <strong>Date:</strong> @ViewBag.StartDate till @ViewBag.EndDate<br />
+                    <strong>Time:</strong> @ViewBag.StartTime till @ViewBag.EndTime<br />
                     <strong>Description: </strong> <br />
                     @item.Description<br />
                 </div>
+                <div class="col-md-8" style="text-align:right">
+                    @if(User.IsInRole("Worker"))
+                    {
+                        <a href="@Url.Action("Create", "JobApplications", new { id= item.JobID, skill = item.SkillID })" class="btn btn-default">
+                            Apply
+                        </a>
+                    }
+                </div>
+                
             </div>
-            
+        </div>
 
-        }
-    
+
+    }
 
 </div>
 <div class="col-md-10">
@@ -115,13 +121,13 @@
 
     });
 
-    
+
     var Dates = function () {
         $("#frmDate").datepicker('setDate', null);
         $("#toDate").datepicker('setDate', null);
     }
     $(function () {
-        $("#frmDate").datepicker({            
+        $("#frmDate").datepicker({
             onSelect: function (selected) {
                 $("#toDate").datepicker("option", "minDate", selected)
             }
@@ -143,4 +149,3 @@
 
 
 </script>
-

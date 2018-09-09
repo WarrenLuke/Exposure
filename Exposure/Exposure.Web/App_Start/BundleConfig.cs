@@ -12,7 +12,7 @@ namespace Exposure.Web
             bundles.Add(new ScriptBundle("~/bundles/jquery").
                 Include("~/Scripts/jquery-ui-1.12.1.min.js", 
                 "~/Scripts/Chart.min.js", "~/Scripts/moment.min.js", "~/Scripts/moment-with-locales.min.js",
-                "~/Scripts/jquery.timepicker.min.js"));
+                "~/Scripts/jquery.timepicker.min.js","~/Scripts/daterangepicker.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -34,7 +34,8 @@ namespace Exposure.Web
                       "~/Content/site.css",
                       "~/Content/bootstrap.css",
                       "~/Content/jquery-ui.css",
-                      "~/Content/jquery.timepicker.css"
+                      "~/Content/jquery.timepicker.css",
+                      "~/Content/daterangepicker.css"
                       ));
         }
     }

@@ -2,22 +2,22 @@
     ViewBag.Title = "Dashboard";
 }
 <script src="~/Scripts/Chart.min.js"></script>
-<script src="~/Scripts/jquery-1.12.4.min.js"></script>
 <h1>@ViewBag.Title</h1>
 <hr />
 <style>
+
     #chartContainter {
-        background-color: ghostwhite;        
+        background-color: whitesmoke;
         border-width: 4px;
         border-color: whitesmoke;
-        height:250px;
+        height: 250px;
     }
 </style>
 @if (User.IsInRole("Admin"))
 {
     <div class="panel panel-default" style="background-color:whitesmoke; line-height:18px">
         <div class="panel-heading" style="background-color:antiquewhite">
-            <h1 style="text-align:center">Summary</h1>
+            <h2 style="text-align:center">Summary</h2>
         </div>
         <div class="panel-body">
             <div class="col-md-4" id="chartContainter">
@@ -28,28 +28,84 @@
                 <h3 style="text-align:center"> Total Users: <label for="Users"></label></h3>
                 <canvas id="UserChart" class="col-md-4"></canvas>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" id="chartContainer">
                 <h3 style="text-align:center"> Total Applications: <text id="apps"></text></h3>
                 <canvas id="AppChart" class="col-xs-4"></canvas>
             </div>
-        </div>        
+        </div>
     </div>
     <hr />
-    <div class="row">
-        <div class="col-md-12">
 
+    <div class="panel panel-default">
+        <div style="background-color:whitesmoke; line-height:18px">
+            <div class="panel panel-heading" style="background-color:antiquewhite">
+                <h2 style="text-align:center">Job Activity</h2>
+            </div>
+            <div class="panel panel-body" id="jobContainer">
+                <div class="row" id="chartContainer">
+                    @using (Html.BeginForm("Dashboard", "Home", FormMethod.Get))
+                    {
+                        <div class="col-md-8">
+                            <div class="col-md-1" style="vertical-align:bottom">
+                                <text>Between:<br /><i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear Dates">&times;</a></i> </text>
+                            </div>
+                            <div class="col-md-offset-1 col-md-4">
+                                @Html.TextBox("frmDate", null, new { @class = "form-control datepicker", @id = "frmDate", onpaste = "return false", onkeydown = "return false", placeholder = "Select begin date" })
+                            </div>
+                            <div class="col-md-1">
+                                <text>And:<br /><i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear Dates">&times;</a></i></text>
+                            </div>
+                            <div class="col-md-offset-1 col-md-4">
+                                @Html.TextBox("toDate", null, new { @class = "form-control datepicker", @id = "toDate", onpaste = "return false", onkeydown = "return false", placeholder = "Select end date" })
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-1">
+                            <input type="submit" value="Filter" class="btn btn-default" />
+                        </div>
+                    }
+                </div>
+                <hr />
+                <div class="row" id="chartContainer">
+                    <canvas id="Jobgraph" class="col-md-12"></canvas>
+                </div>
+            </div>
         </div>
-        <h3>Graph</h3>
 
     </div>
 
+    <div class="panel panel-default">
+        <div class="panel panel-heading" style="background-color:antiquewhite">
+            <h2 style="text-align:center">Site Activity</h2>
+        </div>
+        <div class="panel panel-body">
+            <div class="row">
+                <input type="text" name="dateRange" class="daterangepicker-field form-control" />
+                <input type="hidden" id="siteStartDate" />
+                <input type="hidden" id="siteEndDate" />
+            </div>
+            <div class="row">
+                <canvas id="siteActivity" class="col-md-12"></canvas>
+            </div>
+        </div>
 
-
-
+    </div>
 }
+
+
+
 
 <script>
 
+    $(".daterangepicker-field").daterangepicker({
+        forceUpdate: true,
+        opens: 'left',
+        callback: function (startDate, endDate, period) {
+            $("#siteStartDate").val(startDate);
+            $("#siteEndDate").val(endDate);
+        }
+    })
     var doughTextPlugin = {
         beforeDraw: function (chart) {
             if (chart.config.options.elements.center) {
@@ -89,18 +145,13 @@
     var randomColorPlugin = {
         beforeUpdate: function (chart) {
             var backgroundColor = [];
-
             var hoverBackgroundColor = [];
-
             for (var i = 0; i < chart.config.data.datasets[0].data.length; i++) {
                 var color = "rgba(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 99) + "," + Math.floor(Math.random() * 132) + ",";
 
                 backgroundColor.push(color + "1");
                 hoverBackgroundColor.push(color + "0.5)");
-
-
             }
-
             chart.config.data.datasets[0].backgroundColor = backgroundColor;
             chart.config.data.datasets[0].hoverBackgroundColor = hoverBackgroundColor;
             chart.config.option.tooltip.backgroundColor = backgroundColor;
@@ -137,9 +188,6 @@
             tooltip: {
                 backgroundColor: 'rgba(255, 99,132,0.2)'
             }
-
-
-
         }
     });
 
@@ -205,7 +253,7 @@
                     text: 'Total',
                     color: '#36A2EB',
                     frontStyle: 'California FB',
-                    sidePadding:15
+                    sidePadding: 15
                 }
             },
             cutoutPercentage: 50,
@@ -219,6 +267,112 @@
                 backgroundColor: 'rgba(255,99,132,0.2)'
             }
         }
-    })
+    });
 
+    var jtx = $("#Jobgraph");
+    var jobReps = @Html.Raw(Json.Encode(ViewBag.Count));
+    var jDates = @Html.Raw(Json.Encode(ViewBag.Dates));
+    var jobGraph = new Chart(jtx, {
+        type: 'bar',
+        data: {
+            labels: jDates,
+            datasets: [{
+                label: '# of Jobs',
+                data: jobReps,
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: '#ffffff',
+               
+                
+            }]
+        },
+        option: {
+            barThickness:2,
+            maxBarThickness: 1,
+            responsive: false,
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 80
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            tooltip: {
+                backgroundColor: 'rgba(255,99,132,0.2)'
+            }
+        }
+    });
+
+    var ctx = $("#siteActivity");
+    var workAct = @Html.Raw(Json.Encode(ViewBag.WorkAct));
+    var empAct = @Html.Raw(Json.Encode(ViewBag.EmpAct));
+    var actDates = @Html.Raw(Json.Encode(ViewBag.ActDates));
+    var activityGraph = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: 'Workers',
+                data: workAct,
+                fill: '#ffffff',
+                borderColor: '#ff6a00',
+                pointRadius: 3,
+                pointHoverBackgroundFill: '#ff6a00',
+                pointBackgroundColor: '#ff6a00'
+                //fillColor: '#ff6a00',
+                //pointColor: '#2ab8f5',
+                //strokeColor: 'rgb(255,99,132)',
+                //pointStrokeColor: '#fff',
+                //pointHighlightFill: '#fff',
+                //pointHighlightStroke: 'rgb(255,99,132)'
+            }, {
+                label: 'Employers',
+                data: empAct,
+                fill: '#ffffff',
+                borderColor: '#2ab8f5',
+                pointBackgroundColor: '#2ab8f5',
+                pointHoverBackgroundFill: '#ffffff',
+                pointHoverBorderWidth: '#2ab8f5',
+                pointHoverBorderWidth: 1,
+                pointRadius: 5,
+                pointHoverRadius: 6,
+                    
+                type: 'line'
+
+            }],
+            labels: actDates
+        },
+        option: {           
+            tooltip: {
+                backgroundColor: 'rgba(225,99,132,0,2)'
+            }
+        }
+
+    });
+
+
+    var Dates = function () {
+        $("#frmDate").datepicker('setDate', null);
+        $("#toDate").datepicker('setDate', null);
+    };
+    $(function () {
+        $("#frmDate").datepicker({
+            onSelect: function (selected) {
+                $("#toDate").datepicker("option", "minDate", selected)
+            }
+        })
+
+        $("#toDate").datepicker({
+            onSelect: function (selected) {
+                $("#frmDate").datepicker("option", "maxDate", selected)
+            }
+
+        })
+
+
+    });
 </script>

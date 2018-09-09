@@ -63,7 +63,7 @@ namespace Exposure.Web.Models
 
         public virtual Worker Worker { get; set; }
 
-        
+        [Column(TypeName = "date")]
         public DateTime? RegDate { get; set; }
 
 

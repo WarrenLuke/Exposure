@@ -198,6 +198,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployersController.cs" />
     <Compile Include="Controllers\GeneralBusinessesController.cs" />
+    <Compile Include="Controllers\HelpsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncidentsController.cs" />
     <Compile Include="Controllers\JobApplicationsController.cs" />
@@ -397,10 +398,27 @@
     <Compile Include="DataContexts\IdentityMigrations\201809031705340_JobDateReq.Designer.cs">
       <DependentUpon>201809031705340_JobDateReq.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809091334572_JobDate.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809091334572_JobDate.Designer.cs">
+      <DependentUpon>201809091334572_JobDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809091355035_DateAdvert.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809091355035_DateAdvert.Designer.cs">
+      <DependentUpon>201809091355035_DateAdvert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809091425316_RegDateFix.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809091425316_RegDateFix.Designer.cs">
+      <DependentUpon>201809091425316_RegDateFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809091439017_Help.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809091439017_Help.Designer.cs">
+      <DependentUpon>201809091439017_Help.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
     <Compile Include="Models\Enums\Status.cs" />
+    <Compile Include="Models\ExposureModels\Help.cs" />
     <Compile Include="Models\ExposureModels\UserIncidents.cs" />
     <Compile Include="Models\ExposureModels\UserReviews.cs" />
     <Compile Include="Models\ExposureModels\Worker.cs" />
@@ -589,6 +607,7 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\images\ui-icons_444444_256x240.png" />
     <Content Include="Content\images\ui-icons_555555_256x240.png" />
     <Content Include="Content\images\ui-icons_777620_256x240.png" />
@@ -668,6 +687,7 @@
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Chart.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\daterangepicker.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -791,6 +811,11 @@
     <Content Include="Views\Employers\Dashboard.cshtml" />
     <Content Include="Views\Workers\Dashboard.cshtml" />
     <Content Include="Views\Home\Help.cshtml" />
+    <Content Include="Views\Helps\Create.cshtml" />
+    <Content Include="Views\Helps\Delete.cshtml" />
+    <Content Include="Views\Helps\Details.cshtml" />
+    <Content Include="Views\Helps\Edit.cshtml" />
+    <Content Include="Views\Helps\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -948,6 +973,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201809031705340_JobDateReq.resx">
       <DependentUpon>201809031705340_JobDateReq.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809091334572_JobDate.resx">
+      <DependentUpon>201809091334572_JobDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809091355035_DateAdvert.resx">
+      <DependentUpon>201809091355035_DateAdvert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809091425316_RegDateFix.resx">
+      <DependentUpon>201809091425316_RegDateFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809091439017_Help.resx">
+      <DependentUpon>201809091439017_Help.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
