@@ -1,45 +1,73 @@
 ﻿@model IEnumerable<Exposure.Entities.GeneralBusiness>
-
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Company Details";
 }
+<h2>@ViewBag.Title</h2>
+<hr />
+<a href="@Url.Action("Index","Manage")">Back to Management</a><br/>
+<input type="submit" formaction="@Url.Action("Edit","GeneralBusinesses")" value="Edit Details" class="btn btn-default" />
+<div class="row">
+    <div class="panel panel-default panel-body col-md-6">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6">
+                <text><strong>Company Name:</strong></text>
+            </div>
+            <div class="col-md-6">
+                @item.CompanyName
+            </div>
 
-<h2>Index</h2>
+            <div class="col-md-6">
+                <text><strong>Company Location:</strong></text>
+            </div>
+            <div class="col-md-6">
+                @item.Suburb.SubName<br />
+                @item.Suburb.City.CityName
+            </div>
+            <div class="col-md-6">
+                <text><strong>Company Slogan:</strong></text>
+            </div>
+            <div class="col-md-6">
+                @item.Slogan
+            </div>
+            <div class="col-md-6">
+                <text><strong>Company Description:</strong></text>
+            </div>
+            <div class="col-md-6">
+                @item.Description
+            </div>
+            <div class="col-md-6">
+                <text><strong>Contact Information</strong></text>
+            </div>
+            @*<div class="col-md-6">
+                @item.TelNo <text>(Telephone No.)</text><br />
+                @item.FaxNo <text>(Fax No.)</text><br />
+                @item.EmailAddress
+            </div>*@
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CompanyName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Slogan)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th></th>
-    </tr>
+        }
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-12 panel panel-default panel-default">
+            <h3>Company Banner</h3>
+            <img src="@Url.Action("Banner", "Home")" class="col-md-12" style="width:220px;height:220px; background: #FFFFFF;
+                    border-radius: 0px;
+                    width:inherit;
+                    margin: auto;
+                    padding: 6px;
+                    box-shadow: 0px 0px 20px #888;" />
+        </div>
+        <div class="col-md-12 panel panel-default panel-body">
+            <h3>Company Logo</h3>
+            <img src="@Url.Action("Logo", "Home")" class="col-md-12" style="width:220px;height:220px; align-content:center; background: #FFFFFF;
+                        margin: auto;
+                        border-radius: 50px;
+                        padding: 6px;
+                        box-shadow: 0px 0px 20px #888;" />
+        </div>
+    </div>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CompanyName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Slogan)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
 
-</table>
+
+

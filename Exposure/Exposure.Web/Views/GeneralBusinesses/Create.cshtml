@@ -20,29 +20,15 @@
         }
     }
 }
-
-<h2>Add Company Information</h2>
-
-@using (Html.BeginForm("Create", "GeneralBusinesses", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-date" }))
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("Create", "GeneralBusinesses", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4></h4>
-        <hr />
+    <hr />
+    
+    <div class="col-md-6 form-horizontal panel panel panel-default">
+        <br />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        @*<div class="col-md-4">
-                <div class="form-group text-center">
-                    @Html.LabelFor(m => m.CompanyLogo, new { @class = "col-md-10 control-label text-center" })
-                    <div class="result">
-                        <img src="@imagePath" alt="image"/>
-                    </div>
-                    <div class="col-md-10 text-center">
-                        <input type="file" name="ProfilePic" id="fileUpload" accept=".png, .jpg, .jpeg, .gif, .tif" />
-                    </div>
-                </div>
-            </div>*@
         <div class="form-group">
             @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -50,7 +36,6 @@
                 @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Slogan, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -59,9 +44,9 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.SuburbID, "Suburb" ,htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SuburbID, "Suburb", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("SuburbID", null , new { @class = "form-control" } )
+                @Html.DropDownList("SuburbID", null, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Slogan, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -86,15 +71,42 @@
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default btn-lg" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-offset-1 col-md-5">
+        <div class="row">
+            <div class="col-md-12 panel panel-default panel-body">
+                <h3>Select Company Banner</h3>
+                <img src="@Url.Action("Banner", "Home")" class="col-md-12" style="width:220px;height:220px; background: #FFFFFF;
+                    border-radius: 0px;
+                    width:inherit;
+                    margin: auto;
+                    padding: 6px;
+                    box-shadow: 0px 0px 20px #888;" /><br /><br />
+                <input type="file" class="form-control" name="CompanyBanner" id="fileUpload" accept=".png, .jpg, .jpeg, .gif, .tif" />
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-12 panel panel-default panel-body" style="align-items:center">
+                <h3>Select Company Logo</h3>
+                <img src="@Url.Action("Logo", "Home")" class="col-md-12" style="width:220px;height:220px; align-content:center; background: #FFFFFF;
+                        margin: auto;
+                        border-radius: 50px;
+                        padding: 6px;
+                        box-shadow: 0px 0px 20px #888;" /><br /><br />
+                <input type="file" class="form-control" name="Logo" id="fileUpload" accept=".png, .jpg, .jpeg, .gif, .tif" />
+
             </div>
         </div>
     </div>
 }
-
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

@@ -36,11 +36,19 @@ namespace Exposure.Entities
         [StringLength(1024)]
         public string Description { get; set; }
 
-        [DisplayName("Fax No.")]       
+        [DisplayName("Fax No.")]
+        [Required]
         public string FaxNo { get; set; }
 
         [DisplayName("Telephone No.")]
+        [Required]
         public string TelNo { get; set; }
+
+        [DisplayName("Email")]
+        [EmailAddress]
+        [Required]
+        public string EmailAddress { get; set; }
+
 
         public virtual Suburb Suburb { get; set; }
 

@@ -414,6 +414,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201809091439017_Help.Designer.cs">
       <DependentUpon>201809091439017_Help.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809102205167_CompanyEmail.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809102205167_CompanyEmail.Designer.cs">
+      <DependentUpon>201809102205167_CompanyEmail.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\Role.cs" />
@@ -806,7 +810,6 @@
     <Content Include="Views\GeneralBusinesses\Index.cshtml" />
     <Content Include="Views\Account\UpdatePicture.cshtml" />
     <Content Include="Views\Account\RemovePicture.cshtml" />
-    <Content Include="Views\GeneralBusinesses\UpdateBanner.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Employers\Dashboard.cshtml" />
     <Content Include="Views\Workers\Dashboard.cshtml" />
@@ -816,6 +819,7 @@
     <Content Include="Views\Helps\Details.cshtml" />
     <Content Include="Views\Helps\Edit.cshtml" />
     <Content Include="Views\Helps\Index.cshtml" />
+    <Content Include="Views\Manage\SuburbsCities.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -985,6 +989,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201809091439017_Help.resx">
       <DependentUpon>201809091439017_Help.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809102205167_CompanyEmail.resx">
+      <DependentUpon>201809102205167_CompanyEmail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

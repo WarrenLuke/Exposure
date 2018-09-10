@@ -1,17 +1,23 @@
 ﻿@model IEnumerable<Exposure.Entities.Help>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Help Questions";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<div class="row">
+    <div class="col-md-3">
+        <a href="@Url.Action("Index","Manage")">Back to Management</a>
+    </div>
+    <div class="col-md-push-7 col-md-2">
+        <a href="@Url.Action("Create","Helps")" class="btn btn-default">Add Question</a>
+    </div>
+</div>
+<br/>
+<table class="table table-striped" >
     <tr>
-        <th>
+        <th width="350">
             @Html.DisplayNameFor(model => model.HelpQuestion)
         </th>
         <th>
@@ -29,8 +35,8 @@
             @Html.DisplayFor(modelItem => item.HelpAnswer)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.HelpID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.HelpID }) |
+            @Html.ActionLink("Edit", "Edit", new { id=item.HelpID }) 
+            
             @Html.ActionLink("Delete", "Delete", new { id=item.HelpID })
         </td>
     </tr>

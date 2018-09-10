@@ -12,6 +12,7 @@ using Exposure.Web.DataContexts;
 
 namespace Exposure.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class GeneralBusinessesController : Controller
     {
         private IdentityDb db = new IdentityDb();
@@ -19,7 +20,9 @@ namespace Exposure.Web.Controllers
         // GET: GeneralBusinesses
         public ActionResult Index()
         {
-            return View(db.GeneralBusinesses.ToList());
+            var gb = db.GeneralBusinesses.FirstOrDefault();
+            ViewBag.GeneralBus = gb;
+            return View(gb);
         }
 
         // GET: GeneralBusinesses/Details/5
@@ -38,58 +41,7 @@ namespace Exposure.Web.Controllers
             ViewBag.gb = generalBusiness;
             return View(generalBusiness);
         }
-
-        //GET: /GeneralBusinesses/UpdateBanner
-        public ActionResult UpdateBanner(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            GeneralBusiness gb = db.GeneralBusinesses.Find(id);
-
-            if (gb == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(gb);
-
-        }
-
-        //POST: /GeneralBusinesses/UpdateBanner
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpdateBanner([Bind(Exclude = "CompanyBanner, Logo")]GeneralBusiness gb)
-        {          
-            byte[] imageData = null;
-
-            if (Request.Files.Count > 0)
-            {
-                HttpPostedFileBase poImgFile = Request.Files["CompanyBanner"];
-                var image = poImgFile;
-                using (var binary = new BinaryReader(poImgFile.InputStream))
-                {
-                    imageData = binary.ReadBytes(poImgFile.ContentLength);
-                }
-            }
-
-            gb.CompanyBanner = imageData;
-            
-
-            if (gb != null)
-            {                   
-                    db.Entry(gb).State = EntityState.Modified;
-                    db.SaveChanges();
-                    TempData["PicUpdate"] = "Profile Picture Changed Successfully";
-                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });              
-                    
-            }            
-
-            return View(gb);
-        }
-
+        
         // GET: GeneralBusinesses/Create
         public ActionResult Create()
         {
@@ -104,23 +56,36 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Exclude="CompanyBanner, Logo ",Include = "ID,CompanyName,Slogan,Description, SuburbID, TelNo, FaxNo")] GeneralBusiness gb)
+        public ActionResult Create([Bind(Exclude="CompanyBanner, Logo ",Include = "ID,CompanyName,Slogan,Description, SuburbID, TelNo, FaxNo, EmailAddress")] GeneralBusiness gb)
         {
 
-            //byte[] imageData = null;
+            byte[] bannerData = null;
 
-            //if (Request.Files.Count > 0)
-            //{
-            //    HttpPostedFileBase poImgFile = Request.Files["ProfilePic"];
-            //    var image = poImgFile;
-            //    using (var binary = new BinaryReader(poImgFile.InputStream))
-            //    {
-            //        imageData = binary.ReadBytes(poImgFile.ContentLength);
-            //    }
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase poImgFile = Request.Files["CompanyBanner"];
+                var image = poImgFile;
+                using (var binary = new BinaryReader(poImgFile.InputStream))
+                {
+                    bannerData = binary.ReadBytes(poImgFile.ContentLength);
+                }
 
-            //}
+            }
 
-            //gb.CompanyBanner = imageData;
+            byte[] logoData = null;
+
+            if(Request.Files.Count > 0)
+            {
+                HttpPostedFileBase poImgFile = Request.Files["Logo"];
+                var image = poImgFile;
+                using (var binary = new BinaryReader(poImgFile.InputStream))
+                {
+                    logoData = binary.ReadBytes(poImgFile.ContentLength);
+                }
+            }
+
+            gb.Logo = logoData;
+            gb.CompanyBanner = bannerData;
 
             if (ModelState.IsValid)
             {
@@ -133,13 +98,11 @@ namespace Exposure.Web.Controllers
         }
 
         // GET: GeneralBusinesses/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            GeneralBusiness generalBusiness = db.GeneralBusinesses.Find(id);
+            
+            GeneralBusiness generalBusiness = db.GeneralBusinesses.FirstOrDefault();
+
             if (generalBusiness == null)
             {
                 return HttpNotFound();
@@ -152,8 +115,36 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,CompanyName,Slogan,Description")] GeneralBusiness generalBusiness)
+        public ActionResult Edit([Bind( Exclude ="CompanyBanner, Logo",Include = "ID,CompanyName,Slogan,Description, TelNo,FaxNo,SuburbID")] GeneralBusiness generalBusiness)
         {
+            byte[] bannerData = null;
+
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase poImgFile = Request.Files["CompanyBanner"];
+                var image = poImgFile;
+                using (var binary = new BinaryReader(poImgFile.InputStream))
+                {
+                    bannerData = binary.ReadBytes(poImgFile.ContentLength);
+                }
+
+            }
+
+            byte[] logoData = null;
+
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase poImgFile = Request.Files["Logo"];
+                var image = poImgFile;
+                using (var binary = new BinaryReader(poImgFile.InputStream))
+                {
+                    logoData = binary.ReadBytes(poImgFile.ContentLength);
+                }
+            }
+
+            generalBusiness.Logo = logoData;
+            generalBusiness.CompanyBanner = bannerData;
+
             if (ModelState.IsValid)
             {
                 db.Entry(generalBusiness).State = EntityState.Modified;

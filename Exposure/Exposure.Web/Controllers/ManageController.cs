@@ -177,6 +177,11 @@ namespace Exposure.Web.Controllers
             return RedirectToRoute("Defaults", new { controller = "Cities", action = "Index" });
         }
 
+        public ActionResult SuburbsCities()
+        {
+            return View();
+        }
+
         //GET: /Incidents/Index
         public ActionResult Incidents()
         {

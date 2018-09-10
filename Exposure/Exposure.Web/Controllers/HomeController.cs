@@ -119,9 +119,9 @@ namespace Exposure.Web.Controllers
             #endregion
 
             #region SiteActivity  
-            
 
-            
+
+
             List<string> regDateReps = new List<string>();
             if (startDate == null || endDate == null)
             {
@@ -154,7 +154,7 @@ namespace Exposure.Web.Controllers
             }
             var emps = empReg;
             var works = workReg;
-            var actReps = regDateReps; 
+            var actReps = regDateReps;
             ViewBag.WorkAct = works;
             ViewBag.EmpAct = emps;
             ViewBag.ActDates = actReps;
@@ -179,7 +179,9 @@ namespace Exposure.Web.Controllers
 
         public ActionResult Help()
         {
-            return View();
+            var faq = db.Helps;
+            ViewBag.FAQ = faq;
+            return View(faq);
         }
 
         public ActionResult Search()
@@ -238,6 +240,20 @@ namespace Exposure.Web.Controllers
                 imageData = br.ReadBytes((int)imageFileLength);
                 return File(imageData, "image/png");
             }
+        }
+
+
+        public FileContentResult Banner(int? Id)
+        {
+
+            var gb = db.GeneralBusinesses.FirstOrDefault();
+            return new FileContentResult(gb.CompanyBanner, "image/jpeg");
+        }
+
+        public FileContentResult Logo(int? Id)
+        {
+            var gb = db.GeneralBusinesses.FirstOrDefault();
+            return new FileContentResult(gb.Logo, "image/jpeg");
         }
     }
 }
