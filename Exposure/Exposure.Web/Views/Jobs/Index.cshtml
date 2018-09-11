@@ -1,12 +1,26 @@
-﻿@model IEnumerable<Exposure.Entities.Job>
+﻿@model IPagedList<Exposure.Entities.Job>
+@using PagedList;
+@using PagedList.Mvc;
+@using System.Web.Mvc;
+
 @using Exposure.Entities
 @{
     ViewBag.Title = "Jobs";
 }
-@*<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
-    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />*@
+
+@if (User.IsInRole("Worker"))
+{
+    <a href="@Url.Action("Dashboard","Workers")">Back to Dashboard</a>
+}
+else if (User.IsInRole("Employer"))
+{
+    <a href="@Url.Action("Dashboard","Employers")">Back to Dashboard</a>
+}
+else
+{
+    <a href="@Url.Action("Dashboard","Home")">Back to Management</a>
+}
+
 @if (TempData["JobSuccess"] != null)
 {
     <div class="alert alert-success alert-dismissable" role="alert">
@@ -66,10 +80,10 @@
             <p>Sort by: </p>@Html.DropDownList("sortOrder", new SelectList(
 new List<Object>
 {
-new{value="date", text= "Latest"},
-new{value="date_desc", text="Date Advertised(Desc)"},
-new {value="rate", text="Rate(Lowest)"},
-new {value="rate_desc", text="Rate(Highest)"}
+    new{value="date", text= "Latest"},
+    new{value="date_desc", text="Date Advertised(Desc)"},
+    new {value="rate", text="Rate(Lowest)"},
+    new {value="rate_desc", text="Rate(Highest)"}
 },
 "value", "text", 2), new { @class = "form-control" })
         </div>
@@ -103,37 +117,28 @@ new {value="rate_desc", text="Rate(Highest)"}
         <table class="table table-striped table-bordered dt-nowrap" id="myTable">
             <tr>
                 <th width="25">
-                    @Html.DisplayNameFor(model => model.Title)
+                    Title
                 </th>
                 <th width="25">
-                    @Html.DisplayNameFor(model => model.Skill.SkillDescription)
+                    Skill
                 </th>
                 <th>
                     Location
                 </th>
+
                 <th>
-                    @Html.DisplayNameFor(model => model.DateAdvertised)
+                    Duration
                 </th>
-                <th width="180">
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
+
                 <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
+                    Hours
                 </th>
+
                 <th>
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartTime)
+                    Rate
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.EndTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Rate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Completed)
+                    Completed
                 </th>
                 <th></th>
             </tr>
@@ -159,23 +164,13 @@ new {value="rate_desc", text="Rate(Highest)"}
                             @Html.DisplayFor(modelItem => item.Suburb.City.CityName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DateAdvertised)
+                            @Html.DisplayFor(modelItem => item.StartDate) till @Html.DisplayFor(modelItem => item.EndDate)
                         </td>
+
                         <td>
-                            @Html.DisplayFor(modelItem => item.Description)
+                            @Html.DisplayFor(modelItem => item.StartTime) till @Html.DisplayFor(modelItem => item.EndTime)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndTime)
-                        </td>
+
                         <td>
                             @Html.DisplayFor(modelItem => item.Rate)
                         </td>
@@ -221,8 +216,15 @@ new {value="rate_desc", text="Rate(Highest)"}
             <div class="alert alert-warning">
                 <text>No jobs available to display</text>
             </div>
-            <br/>
+            <br />
         }
+        <div class="col-md-10">
+            <div class="center">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+                Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Jobs
+            </div>
+        </div>
+
         <div class="col-md-6">
             <a href="@Url.Action("Index", "Manage")">Back to profile</a>
         </div>
@@ -252,43 +254,34 @@ else if (User.IsInRole("Admin"))
 {
     <br />
     <div style="overflow-x:auto">
-        <table class="table ">
+        <table class="table table-striped table-bordered dt-nowrap">
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
+                <th width="25">
+                    Title
                 </th>
                 <th>
-                    <text>Employer Name</text>
+                    Employer
+                </th>
+                <th width="25">
+                    Skill
                 </th>
                 <th>
-                    <text>Skill</text>
+                    Location
+                </th>
+
+                <th>
+                    Duration
+                </th>
+
+                <th>
+                    Hours
+                </th>
+
+                <th>
+                    Rate
                 </th>
                 <th>
-                    <text>Location</text>
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateAdvertised)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Rate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Completed)
+                    Completed
                 </th>
                 <th></th>
             </tr>
@@ -316,28 +309,25 @@ else if (User.IsInRole("Admin"))
                             @Html.DisplayFor(modelItem => item.Suburb.City.CityName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.DateAdvertised)
+                            @Html.DisplayFor(modelItem => item.StartDate) till @Html.DisplayFor(modelItem => item.EndDate)
                         </td>
+
                         <td>
-                            @Html.DisplayFor(modelItem => item.Description)
+                            @Html.DisplayFor(modelItem => item.StartTime) till @Html.DisplayFor(modelItem => item.EndTime)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndTime)
-                        </td>
+
                         <td>
                             @Html.DisplayFor(modelItem => item.Rate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Completed)
+                            @if (item.Completed == false)
+                            {
+                                <p>No</p>
+                            }
+                            else
+                            {
+                                <p>Yes</p>
+                            }
                         </td>
                         <td>
                             <a href="#" class="btn btn-danger" onclick="DeleteJob(@item.JobID)"><i class="glyphicon glyphicon-trash"></i></a>
@@ -351,14 +341,20 @@ else if (User.IsInRole("Admin"))
             }
 
         </table>
-
+        <div class="col-md-10">
+            <div class="center">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+                Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Jobs
+            </div>
+        </div>
     </div>
 }
 else if (User.IsInRole("Worker"))
 {
+    <a href="@Url.Action("Index", "Manage")">Back to profile</a>
     <br />
     <div style="overflow-y:auto">
-        <table id="myTable" class="table table-striped table-bordered dt-nowrap" width="100" cellspacing="0">
+        <table class="table table-striped table-bordered dt-nowrap" width="100" cellspacing="0">
             <thead>
                 <tr>
                     <th>Job Title</th>
@@ -368,6 +364,7 @@ else if (User.IsInRole("Worker"))
                     <th>End Date</th>
                     <th>Job Rate</th>
                     <th>Job Status</th>
+                    <th></th>
                 </tr>
             </thead>
             @foreach (var item in ViewBag.JobHistory)
@@ -390,16 +387,21 @@ else if (User.IsInRole("Worker"))
                         }
                     </td>
                     <td>
-                        <a href="@Url.Action("Create", "Reviews", new { job = item.JobID, employer = item.Job.EmployerID })">Review Employer </a>
+                        @if (item.Job.Completed == true)
+                        {
+                            <a href="@Url.Action("Create", "Reviews", new { job = item.JobID, employer = item.Job.EmployerID })">Review Employer </a>
+                        }
                     </td>
                 </tr>
             }
         </table>
     </div>
-    <a href="@Url.Action("Index", "Manage")">Back to profile</a>
-
-
-
+    <div class="col-md-10">
+        <div class="center">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+            Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Jobs
+        </div>
+    </div>
 }
 
 @section scripts{

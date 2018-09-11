@@ -19,12 +19,13 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Jobs
-        public ActionResult Index(string id, int? skill, DateTime? frmDate, DateTime? toDate, string search, string sortOrder, int? location)
+        public ActionResult Index(string id, int? skill, DateTime? frmDate, DateTime? toDate, string search, string sortOrder, int? location, int page=1, int pageSize = 10)
         {
 
             var jobs = db.Jobs.Include(j => j.Employer);
             var jobHistory = db.JobApplications.Include(j => j.Job);
 
+            #region Sorting
             switch (sortOrder)
             {
                 case "title_desc":
@@ -52,8 +53,9 @@ namespace Exposure.Web.Controllers
                     jobHistory = jobHistory.OrderBy(j => j.Job.StartDate);
                     break;
             }
+            #endregion
 
-
+            #region RoleCheck
             if (User.IsInRole("Admin"))
             {
                 jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb);
@@ -68,7 +70,9 @@ namespace Exposure.Web.Controllers
             {
                 jobHistory = jobHistory.Where(j => j.WorkerID == id).Where(x=>x.Flagged!=true).Where(x=>x.Response == Reply.Hired);
             }
+            #endregion
 
+            #region DateParams
             if (frmDate != null && toDate != null)
             {
                 jobs = jobs.Where(x => x.StartDate >= frmDate && x.StartDate <= toDate);
@@ -86,11 +90,12 @@ namespace Exposure.Web.Controllers
                 jobHistory = jobHistory.Where(x => x.Job.StartDate >= toDate);
 
             }
+            #endregion
+            
 
             if (!String.IsNullOrEmpty(id))
             {
                 jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.EmployerID.Equals(id));
-
             }
 
             if(location != null)
@@ -102,7 +107,6 @@ namespace Exposure.Web.Controllers
             {
                 jobs = jobs.Where(j => j.SkillID == skill);
             }
-
             
 
             if (!String.IsNullOrEmpty(search))
@@ -113,17 +117,19 @@ namespace Exposure.Web.Controllers
             //var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser);
             var workers = db.JobApplications.Include(j => j.Job).Include(j => j.Worker).Include(j => j.Worker.ApplicationUser).Include(w => w.Worker).Where(w => w.Response == Reply.Hired);
 
-
+            PagedList<Job> model = new PagedList<Job>(jobs, page, pageSize);
+            PagedList<JobApplication> jaModel = new PagedList<JobApplication>(jobHistory, page, pageSize);
             //ViewBag.JobID = job;
             //ViewBag.JList = jobs;
+            ViewBag.Jobs = model;
             ViewBag.WList = workers;
             ViewBag.JobAmt = jobs.Count();
-            ViewBag.JobHistory = jobHistory;
+            ViewBag.JobHistory = jaModel;
             ViewBag.skill = new SelectList(db.Skills.OrderBy(x => x.SkillDescription), "SkillID", "SkillDescription");
             ViewBag.location = new SelectList(db.Suburbs.OrderBy(x => x.SubName), "SuburbID", "SubName");
             ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
-            return View(jobs);
+            return View(model);
 
 
         }
@@ -149,6 +155,7 @@ namespace Exposure.Web.Controllers
             ViewBag.location = new SelectList(db.Suburbs, "SuburbID", "SubName");
             var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(c => c.Completed == false);
 
+            #region Sorting
             switch (sortOrder)
             {
                 case "title_desc":
@@ -170,7 +177,9 @@ namespace Exposure.Web.Controllers
                     jobs = jobs.OrderBy(j => j.DateAdvertised);
                     break;
             }
+            #endregion
 
+            #region DateParams
             if (frmDate != null && toDate != null) 
             {
                 jobs = jobs.Where(x => x.StartDate > frmDate && x.StartDate < toDate);
@@ -183,10 +192,7 @@ namespace Exposure.Web.Controllers
             {
                 jobs = jobs.Where(x => x.StartDate == toDate);
             }
-
-
-
-
+            #endregion
 
             if (skill != null)
             {

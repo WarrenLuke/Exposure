@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
+using PagedList;
 
 namespace Exposure.Web.Controllers
 {
@@ -17,9 +18,14 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Helps
-        public ActionResult Index()
+        public ActionResult Index(int page = 1, int pageSize = 10 )
         {
-            return View(db.Helps.ToList());
+            var FAQ = db.Helps.OrderBy(x => x.HelpQuestion).ToList();
+            PagedList<Help> model = new PagedList<Help>(FAQ, page, pageSize);
+            ViewBag.FAQ = model;
+
+
+            return View(model);
         }
 
         // GET: Helps/Details/5
@@ -91,30 +97,21 @@ namespace Exposure.Web.Controllers
             return View(help);
         }
 
-        // GET: Helps/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Help help = db.Helps.Find(id);
-            if (help == null)
-            {
-                return HttpNotFound();
-            }
-            return View(help);
-        }
+        
 
-        // POST: Helps/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        // POST: Helps/Delete/5        
+        public JsonResult Delete(int id)
         {
+            bool result = false;
             Help help = db.Helps.Find(id);
-            db.Helps.Remove(help);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if(help!= null)
+            {
+                db.Helps.Remove(help);
+                db.SaveChanges();
+                result = true;
+            }
+            
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

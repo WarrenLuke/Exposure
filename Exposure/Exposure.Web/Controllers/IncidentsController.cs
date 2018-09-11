@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace Exposure.Web.Controllers
 {
@@ -18,9 +19,13 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Incidents
-        public ActionResult Index(string Id)
+        public ActionResult Index(int page=1, int pageSize=10)
         {
-            return View();
+            var incidents = db.Incidents.Include(x => x.UserIncidents).Include(x => x.Job);
+            PagedList<Incident> model = new PagedList<Incident>(incidents, page, pageSize);
+            ViewBag.Incident = model;
+
+            return View(model);
         }
 
         // GET: Incidents/Details/5
