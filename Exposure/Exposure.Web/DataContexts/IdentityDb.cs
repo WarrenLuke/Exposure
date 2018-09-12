@@ -50,6 +50,8 @@ namespace Exposure.Web.DataContexts
         public System.Data.Entity.DbSet<Exposure.Entities.UserReviews> UserReviews { get; set; }
 
         public System.Data.Entity.DbSet<Exposure.Entities.Help> Helps { get; set; }
+
+        public System.Data.Entity.DbSet<Exposure.Entities.Notification> Notifications { get; set; }
     }
 }
    

@@ -31,6 +31,8 @@ namespace Exposure.Entities
 
         public virtual ICollection<UserIncidents> UserIncidents { get; set; }
 
+        public virtual ICollection<Notification> Notifications { get; set; }
+
         public Job Job { get; set; }
         
         [DefaultValue("Pending")]

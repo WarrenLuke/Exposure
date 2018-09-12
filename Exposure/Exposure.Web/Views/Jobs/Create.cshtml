@@ -201,7 +201,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/exposure/Jobs/Calculate",
+                url: "/Jobs/Calculate",
                 data: { id: id, start: sDate, end: eDate, eTime: eT, sTime: sT },
                 success: function (data) {
                     $("label[for=skill]").text(skill);

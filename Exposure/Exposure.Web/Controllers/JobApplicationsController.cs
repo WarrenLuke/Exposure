@@ -73,7 +73,7 @@ namespace Exposure.Web.Controllers
 
         // GET: JobApplications/Create
         [Authorize(Roles = ("Worker"))]
-        public ActionResult Create(int id, int skill)
+        public ActionResult Create(int id, int skill, string notification)
         {
             var userId = User.Identity.GetUserId();
             Worker worker = db.Workers.Find(userId);
@@ -109,18 +109,15 @@ namespace Exposure.Web.Controllers
                     {
                         result = true;
                     }
-
                 }
-            }
-            
-
+            }          
 
             if (result == false)
             {
                 TempData["Skill"] = "You dont have the necessary skill to apply for this job";
             }
 
-
+            ViewBag.Notification = notification;
             return View();
         }
 

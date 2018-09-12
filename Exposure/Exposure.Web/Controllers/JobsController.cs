@@ -392,9 +392,24 @@ namespace Exposure.Web.Controllers
             job.EmployerID = User.Identity.GetUserId();
             //var sDate = job.StartDate;
             job.DateAdvertised = DateTime.UtcNow;
+
+            Notification notice = new Notification();
+            var skill = job.SkillID;
+            var skillName = db.Skills.Where(x => x.SkillID == skill).Select(x => x.SkillDescription);
+            var workers = db.WorkerSkills.Where(x => x.SkillID == skill);
+            var Name = skillName.FirstOrDefault();
             var state = ModelState;
             if (ModelState.IsValid)
             {
+                foreach (var item in workers)
+                {
+                    notice.Message = "A new job for " + Name + " has been advertised";
+                    notice.User = item.WorkerID;
+                    notice.Updated = DateTime.UtcNow;
+                    notice.Job = job.JobID;
+                    db.Notifications.Add(notice);
+                }
+
                 db.Jobs.Add(job);
                 db.SaveChanges();
                 TempData["JobSuccess"] = "Job Successfully created";

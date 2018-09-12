@@ -1,9 +1,18 @@
 ﻿@model Exposure.Entities.JobApplication
 @using Exposure.Web.Models
 @{
-    ViewBag.Title = "Apply";
+    ViewBag.Title = "Job Application";
 }
-<h2>Job Application form</h2>
+@if(ViewBag.Notification != null)
+{
+    <a href="@Url.Action("Index","Notifications")">Back to Notifcations</a>
+}
+else
+{
+    <a href="@Url.Action("Search", "Jobs")">Back to Search</a>
+}
+<h2>@ViewBag.Title</h2>
+
 @if (TempData["ApplicationSuccess"] != null)
 {
     <div class="alert alert-danger alert-dismissable" role="alert">
@@ -26,6 +35,8 @@
         @TempData["Skill"]. <a href="@Url.Action("Create", "WorkerSkills", new {returnUrl = Url.Action(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString()) })">Click here</a> here to add it to your profile.
     </div>
 }
+
+
 <div class="form-group form-actions">
     <h3>Employer Details</h3>
     <div class="row">

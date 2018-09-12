@@ -255,5 +255,31 @@ namespace Exposure.Web.Controllers
             var gb = db.GeneralBusinesses.FirstOrDefault();
             return new FileContentResult(gb.Logo, "image/jpeg");
         }
+
+        [HttpGet]
+        public JsonResult GetNotifications()
+        {
+            List<Notice> notifications = new List<Notice>();
+            var Id = User.Identity.GetUserId();
+            var notice = db.Notifications.Where(x => x.User == Id).Where(x=>x.Flagged == false);
+
+            foreach(var item in notice)
+            {
+                notifications.Add(new Notice() {msg= item.Message, updated= DateTime.Now.ToString("ss")});
+            }
+
+            return Json(notifications, JsonRequestBehavior.AllowGet);
+        }
+
+       
     }
+
+    internal class Notice
+    {
+        public string msg;
+
+        public string updated;
+    }
+
+     
 }

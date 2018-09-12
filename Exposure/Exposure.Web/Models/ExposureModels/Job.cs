@@ -102,6 +102,8 @@ namespace Exposure.Entities
 
         public virtual ICollection<Review> Reviews { get; set; }
 
+        public virtual ICollection<Notification> Notifications { get; set; }
+
     }
 
    

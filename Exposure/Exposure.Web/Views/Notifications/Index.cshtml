@@ -1,0 +1,44 @@
+﻿@model IPagedList<Exposure.Entities.Notification>
+@using PagedList
+@using PagedList.Mvc;
+@using System.Web.Mvc;
+
+@{
+    ViewBag.Title = "Notifications";
+}
+
+<h2><span><i class="glyphicon glyphicon-bell" style="font-size:x-large"></i></span>@ViewBag.Title</h2>
+<hr />
+@foreach (var item in ViewBag.Notifications)
+{
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="col-md-1">
+                <span><i class="glyphicon glyphicon-bell" style="font-size:xx-large"></i></span>
+            </div>
+            <div class="col-md-10">
+                <p>@item.Message</p>
+            </div>
+            <div class="col-md-1">
+                @if (item.Job != null)
+                {
+                    <a href="@Url.Action("Create","JobApplications", new {id = item.Job, skill = item.Jobs.SkillID, notification= "notify" })" class="btn btn-default">View</a>                   
+
+                }
+                @if (item.incident != null)
+                {
+                    <input type="button" onclick="@Url.Action("Details", "Incidents", new {id = item.incident })" value="View" />
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<div class="col-md-10">
+    <div class="center">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+        Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Notifications
+    </div>
+</div>
+
+

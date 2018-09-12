@@ -75,8 +75,17 @@ namespace Exposure.Web.Controllers
             ui.UserID = User.Identity.GetUserId();
             ui.IncidentID = incident.IncidentID;
 
+            Notification notice = new Notification();
+            var offender = db.Users.Find(incident.OffenderID);
+
             if (ModelState.IsValid)
             {
+                notice.Message = "An incident has been logged against you. Our admin will be in contact with you soon.";
+                notice.User = incident.OffenderID;
+                notice.Updated = DateTime.UtcNow;
+                notice.incident = incident.IncidentID;
+
+                db.Notifications.Add(notice);
                 db.Incidents.Add(incident);
                 db.UserIncidents.Add(ui);
                 db.SaveChanges();

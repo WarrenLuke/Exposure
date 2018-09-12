@@ -66,7 +66,7 @@ namespace Exposure.Web.Models
         [Column(TypeName = "date")]
         public DateTime? RegDate { get; set; }
 
-
+        public virtual ICollection<Notification> notifications { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
