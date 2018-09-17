@@ -193,10 +193,10 @@ namespace Exposure.Web.Controllers
         {
             JobApplication ja = db.JobApplications.Find(jobApplication.JobApplicationID);
 
-            var appList = db.JobApplications.Where(j => j.JobID == jobApplication.JobID).Where(j => j.JobApplicationID != jobApplication.JobApplicationID);
+            var id = jobApplication.JobApplicationID;
 
-
-
+            var apps = db.JobApplications.Where(x => x.JobApplicationID != id).Where(x=>x.JobID== jobApplication.JobID).Select(x => x.JobApplicationID);
+            
             if (User.IsInRole("Worker"))
             {
                 ja.Motivation = jobApplication.Motivation;
@@ -204,31 +204,32 @@ namespace Exposure.Web.Controllers
             else if (User.IsInRole("Employer"))
             {
                 ja.Response = jobApplication.Response;
-                ja.Replied = true;
-
-                //foreach (var item in appList)
-                //{
-                //    item.Response = Reply.Rejected;
-                //    item.Replied = true;
-                //}
+                ja.Replied = true;   
+                if(jobApplication.Response == Reply.Hired)
+                {
+                    foreach (var item in apps)
+                    {
+                        JobApplication j = db.JobApplications.Find(item);
+                        j.Response = Reply.Rejected;
+                        j.Replied = true;
+                        db.Entry(j).State = EntityState.Modified;
+                    }
+                }                
             }
 
-            try
+            if(ModelState.IsValid)
             {
                 db.Entry(ja).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
-
-            }
-            catch { }
-
-
+            }  
+            
+            
             ViewBag.JobAppID = db.JobApplications.Where(i => i.JobApplicationID == ja.JobApplicationID);
-
             ViewBag.JobID = jobApplication.JobID;
             ViewBag.WorkerID = jobApplication.WorkerID;
 
-            return View(jobApplication);
+            return View(ja);
         }
 
         

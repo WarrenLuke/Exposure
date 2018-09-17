@@ -439,12 +439,29 @@
     <Compile Include="DataContexts\IdentityMigrations\201809121801333_NoticeIncidentNull.Designer.cs">
       <DependentUpon>201809121801333_NoticeIncidentNull.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809171306491_Inbox.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809171306491_Inbox.Designer.cs">
+      <DependentUpon>201809171306491_Inbox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809171337518_JobAppNotify.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809171337518_JobAppNotify.Designer.cs">
+      <DependentUpon>201809171337518_JobAppNotify.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809171701218_JobAppNotify1.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809171701218_JobAppNotify1.Designer.cs">
+      <DependentUpon>201809171701218_JobAppNotify1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809171818246_LastVisited.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809171818246_LastVisited.Designer.cs">
+      <DependentUpon>201809171818246_LastVisited.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\NoticeType.cs" />
     <Compile Include="Models\Enums\Role.cs" />
     <Compile Include="Models\Enums\Status.cs" />
     <Compile Include="Models\ExposureModels\Help.cs" />
+    <Compile Include="Models\ExposureModels\Inbox.cs" />
     <Compile Include="Models\ExposureModels\Notification.cs" />
     <Compile Include="Models\ExposureModels\UserIncidents.cs" />
     <Compile Include="Models\ExposureModels\UserReviews.cs" />
@@ -1036,6 +1053,18 @@
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201809121801333_NoticeIncidentNull.resx">
       <DependentUpon>201809121801333_NoticeIncidentNull.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809171306491_Inbox.resx">
+      <DependentUpon>201809171306491_Inbox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809171337518_JobAppNotify.resx">
+      <DependentUpon>201809171337518_JobAppNotify.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809171701218_JobAppNotify1.resx">
+      <DependentUpon>201809171701218_JobAppNotify1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809171818246_LastVisited.resx">
+      <DependentUpon>201809171818246_LastVisited.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -1055,7 +1084,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52983</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:52984/</IISUrl>
+          <IISUrl>http://localhost:52982/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

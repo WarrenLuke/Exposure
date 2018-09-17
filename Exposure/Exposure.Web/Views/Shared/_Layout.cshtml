@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+@using Exposure.Web.DataContexts;
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="shortcut icon" href="~/Images/Logo.png" />
@@ -35,7 +37,26 @@
                     <span class="icon-bar"></span>
                 </button>
                 <img src="~/Images/Logo.png" height="49" width="90" />
-                @Html.ActionLink("Exposure", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Worker"))
+                    {
+                        @Html.ActionLink("Exposure", "Dashboard", "Workers", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                    else if (User.IsInRole("Employer"))
+                    {
+                        @Html.ActionLink("Exposure", "Dashboard", "Employers", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Exposure", "Dashboard", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+
+                }
+                else
+                {
+                    @Html.ActionLink("Exposure", "Index", "Manage", new { area = "" }, new { @class = "navbar-brand" })
+                }
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar">
@@ -64,7 +85,7 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Help", "Help", "Home")</li>
                 </ul>
-                
+
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
@@ -160,7 +181,7 @@
                     $('#myNotifyList').append(j);
                     $('#countNotify').html("<span>" + p + "</span>");
                     $('#myAllNotifications').html("");
-                    $('#myAllNotifications').append(Q); 
+                    $('#myAllNotifications').append(Q);
                 }
             },
             failure: function (response) {

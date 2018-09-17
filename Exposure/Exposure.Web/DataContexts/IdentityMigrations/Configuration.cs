@@ -214,7 +214,7 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                     AddressLine1 = "University Way",
                     Email = "admin@exposure.com",
                     UserName = "admin",
-                    SuburbID = 2,
+                    SuburbID = 1,
                     Gender = "Male"
                 };
 

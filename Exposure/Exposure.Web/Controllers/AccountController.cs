@@ -94,8 +94,7 @@ namespace Exposure.Web.Controllers
            
             switch (result)
             {
-                case SignInStatus.Success:
-                    TempData["Notice"] = "Log In Successfull. Directing to profile ...";
+                case SignInStatus.Success:                                       
                     return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -103,7 +102,7 @@ namespace Exposure.Web.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Incorrect Email or/and Passwaord");
+                    ModelState.AddModelError("", "Incorrect Email or/and Password");
                     return View(model);
             }
         }
@@ -403,7 +402,8 @@ namespace Exposure.Web.Controllers
                     AddressLine2 = model.AddressLine2,
                     PhoneNumber = model.PhoneNumber,
                     SuburbID = model.SuburbID,
-                    RegDate = DateTime.UtcNow                    
+                    RegDate = DateTime.Now,
+                    LastVisited = DateTime.Now
                 };                                
 
                 var role = model.Role;
@@ -666,6 +666,14 @@ namespace Exposure.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            var id = User.Identity.GetUserId();
+            ApplicationUser u = db.Users.Find(id);
+            if (u != null)
+            {
+                u.LastVisited = DateTime.UtcNow;
+                db.Entry(u).State = EntityState.Modified;
+                db.SaveChanges();
+            }
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }

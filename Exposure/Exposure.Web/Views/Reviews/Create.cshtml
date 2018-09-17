@@ -1,218 +1,220 @@
 ﻿@model Exposure.Entities.Review
-
 @{
     ViewBag.Title = "Review User";
 }
-
 <h2>@ViewBag.Title</h2>
 
-
-@using (Html.BeginForm()) 
+@if (TempData["ReviewTrue"] != null)
 {
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">        
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })    
+    <div class="alert alert-danger alert-dismissable" role="alert">
         
-            <div class="form-group">
-                <h3>User Details</h3>
-                <div class="row">
-                    <div class="col-md-2 text-center">
-                        <h4>Profile Picture</h4>
-                        <hr/>
-                        @if (User.IsInRole("Employer"))
-                        {
-
-                            foreach (var work in ViewBag.WList)
-                            {
-                                ViewBag.WID = work.WorkerID;
-                            }
-                            <img src="@Url.Action("ProfilePic", "Home", new {id= ViewBag.WID })" style="width:160px; height:160px; background:
-                                 #ff6a00;
-                                 margin:auto;
-                                 -moz-border-radius:30px;
-                                 border-radius:90px;
-                                 padding:2px;
-                                 box-shadow:0px 0px 20px #888"/>
-
-
-                        }
-                        else if (User.IsInRole("Worker"))
-                        {
-                            foreach (var emp in ViewBag.JList)
-                            {
-                                ViewBag.EID = emp.EmployerID;
-                            }
-
-                            <img src="@Url.Action("ProfilePic", "Home", new {id= ViewBag.EID })" style="width:160px; height:160px; background:
-                                 #ff6a00;
-                                 margin:auto;
-                                 -moz-border-radius:30px;
-                                 border-radius:90px;
-                                 padding:2px;
-                                 box-shadow:0px 0px 20px #888"/>
-                        }
-                    </div>
-
-                    <div class="col-md-4 col-md-offset-1">
-                        @if(User.IsInRole("Employer")){ <h4>Worker Information</h4> }
-                        else
-                        {
-                            <h4>Employer Information</h4>
-                        }
-                        <hr/>
-                        @if (User.IsInRole("Employer"))
-                        {
-                            foreach (var work in ViewBag.WList)
-                            {
-                                <div class="row">
-                                    <div class="col-md-6"><strong>First Name:</strong></div>
-                                    <div class="col-md-6">@work.Worker.ApplicationUser.FirstName</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Last Name:</strong></div>
-                                    <div class="col-md-6">@work.Worker.ApplicationUser.LastName</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Email:</strong></div>
-                                    <div class="col-md-6">@work.Worker.ApplicationUser.Email</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Phone Number:</strong></div>
-                                    <div class="col-md-6">@work.Worker.ApplicationUser.PhoneNumber</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Suburb:</strong></div>
-                                    <div class="col-md-6">@work.Worker.ApplicationUser.Suburb.SubName</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Address Line 1 :</strong></div>
-                                    <div class="col-md-6">@work.Worker.ApplicationUser.AddressLine1</div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Address Line 2:</strong></div>
-                                    <div class="col-md-6">@work.Worker.ApplicationUser.AddressLine2</div>
-                                </div>
-
-                            }
-                        }
-                        else if (User.IsInRole("Worker"))
-                        {
-                            foreach (var emp in ViewBag.JList)
-                            {
-                                <div class="row">
-                                    <div class="col-md-6"><strong>First Name:</strong></div>
-                                    <div class="col-md-6">@emp.Employer.ApplicationUser.FirstName</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Last Name:</strong></div>
-                                    <div class="col-md-6">@emp.Employer.ApplicationUser.LastName</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Email:</strong></div>
-                                    <div class="col-md-6">@emp.Employer.ApplicationUser.Email</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Phone Number:</strong></div>
-                                    <div class="col-md-6">@emp.Employer.ApplicationUser.PhoneNumber</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Suburb:</strong></div>
-                                    <div class="col-md-6">@emp.Employer.ApplicationUser.Suburb.SubName</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Address Line 1 :</strong></div>
-                                    <div class="col-md-6">@emp.Employer.ApplicationUser.AddressLine1</div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Address Line 2:</strong></div>
-                                    <div class="col-md-6">@emp.Employer.ApplicationUser.AddressLine2</div>
-                                </div>                                
-                                                            
-                            }                            
-                        }
-                    </div>
-
-                    <div class="col-md-4 col-md-offset-1">
-                        <h4>Review Details</h4>
-                        <hr/>
-                        <div class="row">
-                            <div class="col-md-3">
-                                @Html.LabelFor(model => model.JobID, "Job", htmlAttributes: new { @class = "control-label col-md-2" })
-                            </div>
-                            <div class="col-md-9">
-                                @foreach(var j in ViewBag.JList)
-                                    {
-                                        @j.Title   
-                                    }
-                            </div>                                                    
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
-                                </div>
-                                <div class="col-md-9">
-                                    @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label col-md-2" })
-                                </div>
-                                <div class="col-md-9">
-                                    @Html.TextAreaFor(model => model.Comment, new { @class = "form-control", rows = 5, columns = 70 })
-                                    @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-9 col-md-2">
-                                <input type="submit" value="Create" class="btn btn-default" />
-                            </div>
-                        </div>
-                    </div>
-                             @if (User.IsInRole("Employer"))
-                            {
-
-                                foreach (var work in ViewBag.WList)
-                                {
-                                    ViewBag.WID = work.WorkerID;
-                                }
-                                    @Html.HiddenFor(model=>model.Reviewee ,new { Value = ViewBag.WID })
-
-                            }
-                            else if (User.IsInRole("Worker"))
-                            {
-                                foreach (var emp in ViewBag.JList)
-                                {
-                                  ViewBag.EID = emp.EmployerID;
-                                }
-                                  @Html.HiddenFor(model=>model.Reviewee, new { Value = ViewBag.EID })
-
-                            }
-                    
-                            @Html.HiddenFor(model => model.JobID, new { id = "JobID" } )
-            </div>          
-             
-       </div>        
-                  
-             
+        @TempData["ReviewTrue"]
     </div>
+
+
 }
 
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <h3>User Details</h3>
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <h4>Profile Picture</h4>
+                    <hr />
+                    @if (User.IsInRole("Employer"))
+                    {
+
+                        foreach (var work in ViewBag.WList)
+                        {
+                            ViewBag.WID = work.WorkerID;
+                        }
+                        <img src="@Url.Action("ProfilePic", "Home", new {id= ViewBag.WID })" style="width:160px; height:160px; background:
+                                 #ff6a00;
+                                 margin:auto;
+                                 -moz-border-radius:30px;
+                                 border-radius:90px;
+                                 padding:2px;
+                                 box-shadow:0px 0px 20px #888" />
+
+
+                    }
+                    else if (User.IsInRole("Worker"))
+                    {
+                        foreach (var emp in ViewBag.JList)
+                        {
+                            ViewBag.EID = emp.EmployerID;
+                        }
+
+                        <img src="@Url.Action("ProfilePic", "Home", new {id= ViewBag.EID })" style="width:160px; height:160px; background:
+                                 #ff6a00;
+                                 margin:auto;
+                                 -moz-border-radius:30px;
+                                 border-radius:90px;
+                                 padding:2px;
+                                 box-shadow:0px 0px 20px #888" />
+                    }
+                </div>
+                <div class="col-md-4 col-md-offset-1">
+                    @if (User.IsInRole("Employer"))
+                    {<h4>Worker Information</h4> }
+                    else
+                    {
+                        <h4>Employer Information</h4>
+                    }
+                    <hr />
+                    @if (User.IsInRole("Employer"))
+                    {
+                        foreach (var work in ViewBag.WList)
+                        {
+                            <div class="row">
+                                <div class="col-md-6"><strong>First Name:</strong></div>
+                                <div class="col-md-6">@work.Worker.ApplicationUser.FirstName</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Last Name:</strong></div>
+                                <div class="col-md-6">@work.Worker.ApplicationUser.LastName</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Email:</strong></div>
+                                <div class="col-md-6">@work.Worker.ApplicationUser.Email</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Phone Number:</strong></div>
+                                <div class="col-md-6">@work.Worker.ApplicationUser.PhoneNumber</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Suburb:</strong></div>
+                                <div class="col-md-6">@work.Worker.ApplicationUser.Suburb.SubName</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Address Line 1 :</strong></div>
+                                <div class="col-md-6">@work.Worker.ApplicationUser.AddressLine1</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6"><strong>Address Line 2:</strong></div>
+                                <div class="col-md-6">@work.Worker.ApplicationUser.AddressLine2</div>
+                            </div>
+
+                        }
+                    }
+                    else if (User.IsInRole("Worker"))
+                    {
+                        foreach (var emp in ViewBag.JList)
+                        {
+                            <div class="row">
+                                <div class="col-md-6"><strong>First Name:</strong></div>
+                                <div class="col-md-6">@emp.Employer.ApplicationUser.FirstName</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Last Name:</strong></div>
+                                <div class="col-md-6">@emp.Employer.ApplicationUser.LastName</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Email:</strong></div>
+                                <div class="col-md-6">@emp.Employer.ApplicationUser.Email</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Phone Number:</strong></div>
+                                <div class="col-md-6">@emp.Employer.ApplicationUser.PhoneNumber</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Suburb:</strong></div>
+                                <div class="col-md-6">@emp.Employer.ApplicationUser.Suburb.SubName</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Address Line 1 :</strong></div>
+                                <div class="col-md-6">@emp.Employer.ApplicationUser.AddressLine1</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6"><strong>Address Line 2:</strong></div>
+                                <div class="col-md-6">@emp.Employer.ApplicationUser.AddressLine2</div>
+                            </div>
+
+                        }
+                    }
+                </div>
+                <div class="col-md-4 col-md-offset-1">
+                    <h4>Review Details</h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.JobID, "Job", htmlAttributes: new { @class = "control-label col-md-2" })
+                        </div>
+                        <div class="col-md-9">
+                            @foreach (var j in ViewBag.JList)
+                            {
+                                @j.Title
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label col-md-2" })
+                            </div>
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.Comment, new { @class = "form-control", rows = 5, columns = 70 })
+                                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-9 col-md-2">
+                            <input type="submit" value="Create" class="btn btn-default"@(TempData["ReviewTrue"]!= null ? "disabled='disabled'" : "")  />
+                        </div>
+                    </div>
+                </div>
+                @if (User.IsInRole("Employer"))
+                {
+
+                    foreach (var work in ViewBag.WList)
+                    {
+                        ViewBag.WID = work.WorkerID;
+                    }
+                    @Html.HiddenFor(model => model.Reviewee, new { Value = ViewBag.WID })
+
+                }
+                else if (User.IsInRole("Worker"))
+                {
+                    foreach (var emp in ViewBag.JList)
+                    {
+                        ViewBag.EID = emp.EmployerID;
+                    }
+                    @Html.HiddenFor(model => model.Reviewee, new { Value = ViewBag.EID })
+
+                }
+
+                @Html.HiddenFor(model => model.JobID, new { id = "JobID" })
+            </div>
+
+        </div>
+
+
+    </div>
+}
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

@@ -21,11 +21,37 @@ namespace Exposure.Web.Controllers
         // GET: Incidents
         public ActionResult Index(int page=1, int pageSize=10)
         {
-            var incidents = db.Incidents.Include(x => x.UserIncidents).Include(x => x.Job);
-            PagedList<Incident> model = new PagedList<Incident>(incidents, page, pageSize);
-            ViewBag.Incident = model;
+            var userId = User.Identity.GetUserId();
+            //var jobApplications = db.JobApplications.Include(j => j.Job).Include(w => w.Worker).Include(e => e.Job.Employer).Include(s => s.Job.Skill).Where(f => f.Flagged.Equals(false));
+            //var userId = User.Identity.GetUserId();
+            //Worker worker = db.Workers.Find(userId);
 
-            return View(model);
+            //var jobHistory = db.JobApplications.Include(j => j.Job);
+
+            //if (User.IsInRole("Worker"))
+            //{
+            //    var userID = User.Identity.GetUserId();
+            //    jobApplications = jobApplications.Where(w => w.Worker.WorkerID.Equals(userID)).Include(j => j.Job).Include(w => w.Worker).Include(e => e.Job.Employer).Include(s => s.Job.Skill).Where(f => f.Flagged == false).Where(x => x.Job.Completed == true);
+            //}
+            //if (User.IsInRole("Employer"))
+            //{
+            //    var userID = User.Identity.GetUserId();
+            //    jobApplications = jobApplications.Where(e => e.Job.Employer.EmployerID.Equals(userID)).Include(w => w.Worker).Include(j => j.Job).Include(w => w.Worker).Include(e => e.Job.Employer).Where(f => f.Flagged == false).Where(x => x.Job.Completed == true);
+            //}
+            var jobs = db.JobApplications.Include(x => x.Job).Where(x => x.Job.Completed == true);
+
+            if (User.IsInRole("Employer"))
+            {
+                jobs = jobs.Where(x => x.Job.EmployerID == userId);
+            }
+            else if(User.IsInRole("Worker"))
+            {
+                jobs = jobs.Where(x => x.WorkerID == userId).Where(x=>x.Response == Reply.Hired);
+            }
+
+
+
+            return View(jobs);
         }
 
         // GET: Incidents/Details/5
@@ -45,17 +71,15 @@ namespace Exposure.Web.Controllers
 
         // GET: Incidents/Create
         [Authorize(Roles = "Worker, Employer")]
-        public ActionResult Create(int job)
-        {
-            var userID = User.Identity.GetUserId();
-
+        public ActionResult Create(int job, string userID)
+        {          
             
-
             var jobs = db.Jobs.Include(s => s.Suburb).Where(j => j.JobID == job);
             var jobApps = db.JobApplications.Include(w => w.Worker).Where(w => w.Response == Reply.Hired).Where(j=>j.JobID == job);
 
             Incident model = new Incident();
             model.JobID = job;
+            model.OffenderID = userID;
 
             ViewBag.Job = job;
             ViewBag.Apps = jobApps;
@@ -90,7 +114,7 @@ namespace Exposure.Web.Controllers
                 db.UserIncidents.Add(ui);
                 db.SaveChanges();
                 TempData["IncidentReport"] = "Incident reported successfully. Please allow a couple of days for admin to look into it.";
-                return RedirectToRoute("Default", new { controller = "Jobs", action="Index" });
+                return RedirectToRoute("Default", new { controller = "Incidents", action="Index" });
             }
 
             //ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);

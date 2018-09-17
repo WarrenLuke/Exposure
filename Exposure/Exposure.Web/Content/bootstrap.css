@@ -5436,7 +5436,9 @@ a.list-group-item:focus {
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-
+.panel, .panel-default, .panel-body{
+    box-shadow: 0px 0px 8px #888
+}
 .panel-group .panel {
   margin-bottom: 0;
   overflow: hidden;

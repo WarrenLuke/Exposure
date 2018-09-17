@@ -33,6 +33,12 @@
         </div>
     </div>
 }
+@if(ViewBag.Notifications.Count == 0)
+{
+    <div class="panel panel-body panel-default">
+        <p>No notifications to display</p>
+    </div>
+}
 
 <div class="col-md-10">
     <div class="center">

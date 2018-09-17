@@ -198,12 +198,12 @@ new List<Object>
                                 {
                                     if (w.JobID == item.JobID)
                                     {
-                                        <a href="@Url.Action("Create","Reviews", new {job= item.JobID, worker = w.WorkerID, employer= item.EmployerID })">Review worker</a>
+                                        <a href="@Url.Action("Create","Reviews", new {job= item.JobID, worker = w.WorkerID, employer= item.EmployerID })" class="btn btn-default">Review worker</a><br/>
                                     }
                                 }
                             }
                             <a href="@Url.Action("Details", "Jobs", new { id = item.JobID })" class="btn btn-info" data-toggle="tooltip" title="Details"><i class="glyphicon glyphicon-list-alt"></i></a>
-                            <br />
+                            
                             <a href="#" onclick="ConfirmDelete(@item.JobID)" class="btn btn-danger" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-trash"></i></a>
                         </td>
                     </tr>

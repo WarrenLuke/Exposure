@@ -63,6 +63,10 @@
         <div class="form-horizontal">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.JobApplicationID, "JobAppID")
+            @Html.HiddenFor(model => model.JobID)
+            @Html.HiddenFor(model=>model.Motivation)
+            @Html.HiddenFor(model=>model.ApplicationDate)
+            @Html.HiddenFor(model=>model.WorkerID)
             <div class="form-group">
                 @Html.LabelFor(model => model.JobID, "Job", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">

@@ -108,7 +108,7 @@
                 </form>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Rate, "Rate(Daily)" ,htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Rate, "Payment" ,htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-7">
                         @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @id = "rate" } })
                         @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
@@ -149,7 +149,7 @@
                             <h3 class="modal-title">Recommended Rate Calculation</h3>
                         </div>
                         <div class="modal-body">
-                            <h3 style="font-family:'Californian FB'">Recommended rate(per day) is - R<label for="rate"></label></h3>
+                            <h3 style="font-family:'Californian FB'">Recommended Payment for this job is - R<label for="rate"></label></h3>
                             <h4 style="font-family:'Californian FB'">The recommended rate has been calculated according to the following selections:</h4>
                             <p style="font-family:'Californian FB'">
                                 Skill: <label for="skill"></label><br />
@@ -210,9 +210,9 @@
                     $("label[for=sTime]").text(sT);
                     $("label[for=eTime]").text(eT);
                     $("label[for=hr").text(data.rate);
-                    $("label[for=rate]").text(data.payPerDay);
+                    $("label[for=rate]").text(data.JobPay);
                     $("label[for=totCost").text(data.JobPay);
-                    $("#hiddenRate").val(data.payPerDay);
+                    $("#hiddenRate").val(data.JobPay);
                     $("#myModal").modal("show");
 
                 }

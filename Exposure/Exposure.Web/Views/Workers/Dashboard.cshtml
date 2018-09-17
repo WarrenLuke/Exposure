@@ -2,6 +2,78 @@
 @{
     ViewBag.Title = "Dashboard";
 }
-
 <h2>@ViewBag.Title</h2>
+<div class="container">
+    <div class="row">
+        <div class="panel panel-default panel-body col-md-12">
+            <div class="col-md-2">
+                <img src="@Url.Action("ProfilePic", "Home")" height="120" width="120" style="background: #ff6a00;
+                    margin:auto;
+                    -moz-border-radius:60px;
+                    border-radius:90px;
+                    padding:2px;" />
+            </div>
+            <div class="col-md-8">
+                <strong>Average Rating: </strong>@ViewBag.AvgRating <br /><br />
+                <strong>Total Jobs Completed: </strong>@ViewBag.TotalJobs <br /><br />
+                <strong>Last Job Completed:</strong>
+                @if (ViewBag.LastJob == null)
+                {
+                    <text>None</text>
+                }
+                else
+                {
+                    foreach (var item in ViewBag.LastJob)
+                    {
+                        <text>Job Title:</text>@item.Job.Title<br />
+                        <text>Job Description:</text> @item.Job.Description<br />
+                        <text>Job End Date:</text>@item.Job.EndDate<br />
+                        <text>Job Payment:</text>@item.Job.Rate
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <h2>Current Job</h2>
+    <div class="row">
+        <div class="panel panel-default panel-body">
 
+        </div>
+    </div>
+    <h2>Earnings</h2>
+    <div class="row">
+        <div class="panel panel-default panel-body">
+            <canvas id="earnings"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var payments = @Html.Raw(Json.Encode(ViewBag.JobPay));
+    var dates = @Html.Raw(Json.Encode(ViewBag.JobDates));
+    var ctx = $("#earnings");
+    var earningsGraph = new Chart(ctx, {
+        type: 'bar',
+        labels: dates,
+        data: {
+            datasets: [{
+                label: 'Earnings',
+                data: payments,
+                backgroundColor: '#ff6a00',
+                borderColor: '#ffffff',
+                borderWidth: 1
+
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+        });
+</script>

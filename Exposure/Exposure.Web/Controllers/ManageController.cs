@@ -39,9 +39,9 @@ namespace Exposure.Web.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -71,9 +71,9 @@ namespace Exposure.Web.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-                        
+
             var model = new IndexViewModel
-            {                                     
+            {
                 Email = UserManager.FindById(userId).Email,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -92,11 +92,11 @@ namespace Exposure.Web.Controllers
                     WorkAddressLine2 = UserManager.FindById(userId).Employer.WorkAddress2,
                     WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
                 };
-                var empSub = db.Employers.Include(m => m.Suburb).Where(m => m.SuburbID == model.Location);               
+                var empSub = db.Employers.Include(m => m.Suburb).Where(m => m.SuburbID == model.Location);
                 ViewBag.empSub = empSub;
             }
             ApplicationUser user = UserManager.FindById(userId);
-                        
+
             user = new ApplicationUser
             {
                 FirstName = user.FirstName,
@@ -110,58 +110,64 @@ namespace Exposure.Web.Controllers
                 ProfilePic = user.ProfilePic
             };
 
-            if(user.ProfilePic==null)
+            if (user.ProfilePic == null)
             {
                 TempData["Pic"] = "Please add a picture to help other users identity you";
             }
-           
-            if(User.IsInRole("Worker"))
+
+            if (User.IsInRole("Worker"))
             {
                 var skillsLst = new List<string>();
 
                 var skillsQry = (from s in db.WorkerSkills
-                             where s.WorkerID == user.Id
-                             select s).ToList();
+                                 where s.WorkerID == user.Id
+                                 select s).ToList();
 
                 var skills = db.WorkerSkills.Include(m => m.Skill).Include(m => m.Worker).OrderBy(m => m.Skill.SkillDescription).Where(m => m.WorkerID == userId);
-                ViewBag.Skills = skills;                
-                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value != Reply.Pending).Where(w=>w.WorkerID==userId).Count();
+                ViewBag.Skills = skills;
+                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value != Reply.Pending).Where(w => w.WorkerID == userId).Count();
             }
 
-            if(User.IsInRole("Employer"))
+            var date = DateTime.UtcNow;
+            if (User.IsInRole("Employer"))
             {
-                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value == Reply.Pending).Where(j=>j.Flagged==false).Where(e=>e.Job.EmployerID== userId).Count();
+                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value == Reply.Pending).Where(j => j.Flagged == false).Where(e => e.Job.EmployerID == userId).Where(x => x.Job.Employer.ApplicationUser.LastVisited < date).Count();
+            }
+
+            if(User.IsInRole("Worker"))
+            {
+                ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value == Reply.Hired || j.Response.Value == Reply.Rejected).Where(j => j.Flagged == false).Where(e => e.WorkerID == userId).Where(x => x.Worker.ApplicationUser.LastVisited < date).Count();
             }
 
             var uSub = user.SuburbID;
-            var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID).Where(u=>u.Id.Equals(userId));
+            var userSub = db.Users.Include(m => m.Suburb).Where(m => m.SuburbID == user.SuburbID).Where(u => u.Id.Equals(userId));
             var reviews = db.UserReviews.Where(u => u.Review.Reviewee == userId).Include(u => u.Review).Include(u => u.ApplicationUser);
 
             ViewBag.Reviews = reviews;
             ViewBag.userSub = userSub;
             ViewBag.UserID = userId;
-            ViewData["user"] = user;            
-            
+            ViewData["user"] = user;
+
             return View(model);
         }
 
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult AllUsers(int page = 1, int pageSize = 10)
         {
             var userID = User.Identity.GetUserId();
-            var users = db.Users.Include(w => w.Worker).Include(e => e.Employer).Where(j => j.Id != userID).OrderBy(x=>x.FirstName + x.LastName).ToList();
+            var users = db.Users.Include(w => w.Worker).Include(e => e.Employer).Where(j => j.Id != userID).OrderBy(x => x.FirstName + x.LastName).ToList();
             PagedList<ApplicationUser> model = new PagedList<ApplicationUser>(users, page, pageSize);
             ViewBag.Users = model;
 
             return View(model);
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult GeneralBusiness()
         {
             var gb = db.GeneralBusinesses.Count();
 
-            if(gb==0)
+            if (gb == 0)
             {
                 return RedirectToRoute("Default", new { controller = "GeneralBusinesses", action = "Create" });
             }
@@ -199,7 +205,7 @@ namespace Exposure.Web.Controllers
         {
             return RedirectToRoute("Default", new { controller = "Jobs", action = "Index" });
         }
-                
+
 
         public ActionResult ManageJobs()
         {
@@ -215,7 +221,7 @@ namespace Exposure.Web.Controllers
         {
             var userID = User.Identity.GetUserId();
             ApplicationUser user = UserManager.FindById(userID);
-            return RedirectToRoute("Default", new { controller = "Employers", action = "Edit", id = userID});         
+            return RedirectToRoute("Default", new { controller = "Employers", action = "Edit", id = userID });
         }
 
         public ActionResult AddSkill()
@@ -226,13 +232,13 @@ namespace Exposure.Web.Controllers
 
         public ActionResult EditSkill(string id, int skill)
         {
-            return RedirectToRoute("Default", new { controller = "WorkerSkills", action = "Edit", id = id ,skill = skill});
+            return RedirectToRoute("Default", new { controller = "WorkerSkills", action = "Edit", id = id, skill = skill });
         }
 
         public ActionResult EditProfile()
         {
             var userId = User.Identity.GetUserId();
-            return RedirectToRoute("Default", new { controller = "Account", action = "EditProfile", id = userId});
+            return RedirectToRoute("Default", new { controller = "Account", action = "EditProfile", id = userId });
 
         }
 
@@ -241,7 +247,7 @@ namespace Exposure.Web.Controllers
             return RedirectToRoute("Default", new { controller = "JobApplications", action = "Index" });
 
         }
-      
+
 
         //
         // POST: /Manage/RemoveLogin
@@ -265,7 +271,7 @@ namespace Exposure.Web.Controllers
                 message = ManageMessageId.Error;
             }
             return RedirectToAction("ManageLogins", new { Message = message });
-        }      
+        }
 
 
         //
@@ -393,7 +399,7 @@ namespace Exposure.Web.Controllers
         //
         // POST: /Manage/ChangePassword
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -503,7 +509,7 @@ namespace Exposure.Web.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -554,6 +560,6 @@ namespace Exposure.Web.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

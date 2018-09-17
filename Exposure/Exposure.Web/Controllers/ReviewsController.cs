@@ -14,7 +14,7 @@ namespace Exposure.Web.Controllers
 {
     public class ReviewsController : Controller
     {
-        
+
         private IdentityDb db = new IdentityDb();
 
         // GET: Reviews
@@ -41,25 +41,44 @@ namespace Exposure.Web.Controllers
 
         // GET: Reviews/Create
         [Authorize(Roles = "Worker, Employer")]
-        public ActionResult Create(int job, string employer)
+        public ActionResult Create(int job, string employer, string worker)
         {
             var userID = User.Identity.GetUserId();
-            if(employer != null)
+            if (employer != null)
             {
                 var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser).Where(e => e.EmployerID == employer);
                 ViewBag.JList = jobs;
             }
             else
             {
-                var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser).Where(e => e.EmployerID==userID);
+                var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser).Where(e => e.EmployerID == userID);
                 ViewBag.JList = jobs;
 
             }
-            var workers = db.JobApplications.Include(j => j.Job).Include(j => j.Worker).Include(j => j.Worker.ApplicationUser).Include(w=>w.Worker).Where(j=>j.JobID==job).Where(w=>w.Response== Reply.Hired);
+            var workers = db.JobApplications.Include(j => j.Job).Include(j => j.Worker).Include(j => j.Worker.ApplicationUser).Include(w => w.Worker).Where(j => j.JobID == job).Where(w => w.Response == Reply.Hired);
 
-                        
+            var reviews = db.Reviews.Include(x => x.UserReviews);
+
+            foreach (var item in reviews)
+            {
+                var revID = item.UserReviews.Select(x => x.UserID).First();
+                if (User.IsInRole("Employer"))
+                {
+                    if (revID == userID && item.JobID == job && item.Reviewee == worker)
+                    {
+                        TempData["ReviewTrue"] = "You have already reviewed this job";
+                    }
+                }
+                else
+                {
+                    if (revID == userID && item.JobID == job && item.Reviewee == employer)
+                    {
+                        TempData["ReviewTrue"] = "You have already reviewed this job";
+                    }
+                }
+            }
+
             ViewBag.JobID = job;
-            
             ViewBag.WList = workers;
 
             Review model = new Review();
@@ -73,9 +92,9 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Exclude ="ReportDate, ", Include = "ReviewID,Rating,Comment, JobID, Reviewee")] Review review,int? job, string employer)
+        public ActionResult Create([Bind(Exclude = "ReportDate, ", Include = "ReviewID,Rating,Comment, JobID, Reviewee")] Review review, int? job, string employer)
         {
-            
+
             review.ReportDate = DateTime.UtcNow;
             //review.Reviewee = Reviewee;
             UserReviews rv = new UserReviews();
@@ -84,7 +103,7 @@ namespace Exposure.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Reviews.Add(review);                             
+                db.Reviews.Add(review);
                 db.UserReviews.Add(rv);
                 db.SaveChanges();
                 TempData["ReviewSuccess"] = "Review successfully submitted";
@@ -109,7 +128,7 @@ namespace Exposure.Web.Controllers
             return View(review);
         }
 
-        
+
         // GET: Reviews/Edit/5
         public ActionResult Edit(int? id)
         {
