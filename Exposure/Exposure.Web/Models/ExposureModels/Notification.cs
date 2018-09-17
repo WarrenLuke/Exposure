@@ -25,6 +25,9 @@ namespace Exposure.Entities
         [ForeignKey("Incident")]
         public int? incident { get; set; }
 
+        [ForeignKey("JobApplication")]
+        public int JobApp { get; set; }
+
         [ForeignKey("ApplicationUser")]
         public string User { get; set; }
 
@@ -33,6 +36,7 @@ namespace Exposure.Entities
 
         public virtual Incident Incident { get; set; }
         public virtual Job Jobs { get; set; }
+        public virtual JobApplication JobApplication { get; set; }
 
         public virtual  ApplicationUser ApplicationUser { get; set; }
     }

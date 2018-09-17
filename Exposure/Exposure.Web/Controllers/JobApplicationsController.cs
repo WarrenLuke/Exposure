@@ -193,10 +193,9 @@ namespace Exposure.Web.Controllers
         {
             JobApplication ja = db.JobApplications.Find(jobApplication.JobApplicationID);
 
-            var appList = db.JobApplications.Where(j => j.JobID == jobApplication.JobID).Where(j => j.JobApplicationID != jobApplication.JobApplicationID);
+            var appList = db.JobApplications.Where(j => j.JobID == jobApplication.JobID).Where(j => j.JobApplicationID != jobApplication.JobApplicationID);         
 
-
-
+            
             if (User.IsInRole("Worker"))
             {
                 ja.Motivation = jobApplication.Motivation;
@@ -204,25 +203,18 @@ namespace Exposure.Web.Controllers
             else if (User.IsInRole("Employer"))
             {
                 ja.Response = jobApplication.Response;
-                ja.Replied = true;
+                ja.Replied = true;               
 
-                //foreach (var item in appList)
-                //{
-                //    item.Response = Reply.Rejected;
-                //    item.Replied = true;
-                //}
             }
 
-            try
+            if(ModelState.IsValid)
             {
                 db.Entry(ja).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
-
-            }
-            catch { }
-
-
+            }  
+            
+            
             ViewBag.JobAppID = db.JobApplications.Where(i => i.JobApplicationID == ja.JobApplicationID);
 
             ViewBag.JobID = jobApplication.JobID;

@@ -59,6 +59,8 @@ namespace Exposure.Web.Models
         public virtual ICollection<Incident> Incidents { get; set; }    
         public virtual ICollection<UserIncidents> UserIncidents { get; set; }
 
+        public virtual ICollection<Inbox> Inboxes { get; set; }
+
         public virtual Employer Employer { get; set; }
 
         public virtual Worker Worker { get; set; }
