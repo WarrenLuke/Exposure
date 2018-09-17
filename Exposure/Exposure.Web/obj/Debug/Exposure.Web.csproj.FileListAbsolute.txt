@@ -1862,7 +1862,10 @@ C:\Users\s215047370\Downloads\Project\Exposure\Exposure.Web\bin\Microsoft.AI.Win
 C:\Users\s215047370\Downloads\Project\Exposure\Exposure.Web\bin\Microsoft.AI.Web.xml
 C:\Users\s215047370\Downloads\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.Inbox.resources
 C:\Users\s215047370\Downloads\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.JobAppNotify.resources
+<<<<<<< HEAD
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.Inbox.resources
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.JobAppNotify.resources
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.JobAppNotify1.resources
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.LastVisited.resources
+=======
+>>>>>>> ed0ecc974a988ca7f056ca26534ea403948b856b

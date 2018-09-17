@@ -447,6 +447,7 @@
     <Compile Include="DataContexts\IdentityMigrations\201809171337518_JobAppNotify.Designer.cs">
       <DependentUpon>201809171337518_JobAppNotify.cs</DependentUpon>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="DataContexts\IdentityMigrations\201809171701218_JobAppNotify1.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201809171701218_JobAppNotify1.Designer.cs">
       <DependentUpon>201809171701218_JobAppNotify1.cs</DependentUpon>
@@ -455,6 +456,8 @@
     <Compile Include="DataContexts\IdentityMigrations\201809171818246_LastVisited.Designer.cs">
       <DependentUpon>201809171818246_LastVisited.cs</DependentUpon>
     </Compile>
+=======
+>>>>>>> ed0ecc974a988ca7f056ca26534ea403948b856b
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\NoticeType.cs" />
@@ -1059,12 +1062,15 @@
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201809171337518_JobAppNotify.resx">
       <DependentUpon>201809171337518_JobAppNotify.cs</DependentUpon>
     </EmbeddedResource>
+<<<<<<< HEAD
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201809171701218_JobAppNotify1.resx">
       <DependentUpon>201809171701218_JobAppNotify1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201809171818246_LastVisited.resx">
       <DependentUpon>201809171818246_LastVisited.cs</DependentUpon>
     </EmbeddedResource>
+=======
+>>>>>>> ed0ecc974a988ca7f056ca26534ea403948b856b
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
