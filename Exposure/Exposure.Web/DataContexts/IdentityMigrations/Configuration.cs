@@ -215,7 +215,8 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                     Email = "admin@exposure.com",
                     UserName = "admin",
                     SuburbID = 1,
-                    Gender = "Male"
+                    Gender = "Male",
+                    LastVisited = DateTime.Now
                 };
 
                 manager.Create(user, "ChangeItAsap!");

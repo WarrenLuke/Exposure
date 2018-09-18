@@ -183,3 +183,4 @@ C:\Users\s215047370\Downloads\Project\Exposure\Exposure.Web\obj\Debug\Exposure.W
 C:\Users\s215047370\Downloads\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.csproj.CopyComplete
 C:\Users\s215047370\Downloads\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.dll
 C:\Users\s215047370\Downloads\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.pdb
+C:\Users\s215047370\Downloads\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.csprojAssemblyReference.cache
