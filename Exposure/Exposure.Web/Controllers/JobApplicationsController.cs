@@ -84,7 +84,7 @@ namespace Exposure.Web.Controllers
             ViewBag.JobID = id;
             var Appcheck = 0;
             var check = skills.Count();
-            var apps = db.JobApplications.Where(w => w.WorkerID == userId).Where(j => j.JobID == id).Count();
+            var apps = db.JobApplications.Where(w => w.WorkerID == userId).Where(j => j.JobID == id).Where(x=>x.Flagged==false).Count();
             var totApps = db.JobApplications.Where(j => j.JobID == id).Count();
 
             ViewBag.totApps = totApps;

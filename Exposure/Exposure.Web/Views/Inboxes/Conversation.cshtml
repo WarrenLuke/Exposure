@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Message Inbox";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="container" style="height:150px">
+    @foreach (var item in Model)
+    {
+        if (item.Receiver == ViewBag.CurrentUser)
+        {
+            @{ 
+                var date = item.Date.ToShortDateTime();
+            }
+            <div class="container">
+                <img src="/w3images/bandmember.jpg" alt="Avatar">
+                <p>Hello. How are you today?</p>
+                @
+                <span class="time-right">11:00</span>
+            </div>
+        }
+        else
+        {
+            <div class="container darker">
+                <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
+                <p>Hey! I'm fine. Thanks for asking!</p>
+                <span class="time-left">11:01</span>
+            </div>
+        }
+
+
+    }
+    <div class="row">
+        <div class="col-md-10">
+            @Html.TextArea("", new { @class = "form-control", id = "message", style = "width:60px; width:auto" })
+        </div>
+        <div class="col-md-2">
+            <a href="#" onclick="SendMessage()" class="btn btn-default"></a>
+        </div>
+    </div>
+</div>
+
+
+

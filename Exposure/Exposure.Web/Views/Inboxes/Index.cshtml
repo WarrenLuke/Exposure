@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Message Inbox";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var item in ViewBag.Users)
+{
+    <button type="submit" formaction="@Url.Action("Conversations", "Inboxes", new {id= item.Id })" class="btn panel panel-default panel-body col-md-12">
+        <div class="col-md-2">
+            <img src="@Url.Action("ProfilePic", "Home", new {id=item.Id })" height="60" width="60" />
+        </div>
+        <div class="col-md-8" style="text-align:left">
+            <h2>@item.FirstName @item.LastName</h2>
+        </div>
+    </button>
+}
+
+

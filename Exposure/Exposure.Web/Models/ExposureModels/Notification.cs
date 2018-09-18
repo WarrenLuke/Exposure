@@ -23,7 +23,7 @@ namespace Exposure.Entities
         public int? Job { get; set; }
 
         [ForeignKey("Incident")]
-        public int? incident { get; set; }
+        public int? inc { get; set; }
 
         [ForeignKey("JobApplication")]
         public int? JobApp { get; set; }

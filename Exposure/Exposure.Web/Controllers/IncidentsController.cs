@@ -42,7 +42,7 @@ namespace Exposure.Web.Controllers
 
             if (User.IsInRole("Employer"))
             {
-                jobs = jobs.Where(x => x.Job.EmployerID == userId);
+                jobs = jobs.Where(x => x.Job.EmployerID == userId).Where(x=>x.Flagged==false);
             }
             else if(User.IsInRole("Worker"))
             {
@@ -107,7 +107,7 @@ namespace Exposure.Web.Controllers
                 notice.Message = "An incident has been logged against you. Our admin will be in contact with you soon.";
                 notice.User = incident.OffenderID;
                 notice.Updated = DateTime.UtcNow;
-                notice.incident = incident.IncidentID;
+                notice.inc = incident.IncidentID;
 
                 db.Notifications.Add(notice);
                 db.Incidents.Add(incident);
