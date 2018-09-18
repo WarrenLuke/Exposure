@@ -7,11 +7,8 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
     {
         public override void Up()
         {
-<<<<<<< HEAD
-            AddColumn("dbo.Notifications", "JobApp", c => c.Int(nullable: true));
-=======
-            AddColumn("dbo.Notifications", "JobApp", c => c.Int(nullable: false));
->>>>>>> ed0ecc974a988ca7f056ca26534ea403948b856b
+            AddColumn("dbo.Notifications", "JobApp", c => c.Int(nullable: true));           
+
             CreateIndex("dbo.Notifications", "JobApp");
             AddForeignKey("dbo.Notifications", "JobApp", "dbo.JobApplications", "JobApplicationID", cascadeDelete: false);
         }

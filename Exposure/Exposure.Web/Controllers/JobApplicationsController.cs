@@ -193,14 +193,14 @@ namespace Exposure.Web.Controllers
         {
             JobApplication ja = db.JobApplications.Find(jobApplication.JobApplicationID);
 
-<<<<<<< HEAD
+
             var id = jobApplication.JobApplicationID;
 
             var apps = db.JobApplications.Where(x => x.JobApplicationID != id).Where(x=>x.JobID== jobApplication.JobID).Select(x => x.JobApplicationID);
-=======
+
             var appList = db.JobApplications.Where(j => j.JobID == jobApplication.JobID).Where(j => j.JobApplicationID != jobApplication.JobApplicationID);         
 
->>>>>>> ed0ecc974a988ca7f056ca26534ea403948b856b
+
             
             if (User.IsInRole("Worker"))
             {
@@ -209,7 +209,7 @@ namespace Exposure.Web.Controllers
             else if (User.IsInRole("Employer"))
             {
                 ja.Response = jobApplication.Response;
-<<<<<<< HEAD
+
                 ja.Replied = true;   
                 if(jobApplication.Response == Reply.Hired)
                 {
@@ -221,10 +221,7 @@ namespace Exposure.Web.Controllers
                         db.Entry(j).State = EntityState.Modified;
                     }
                 }                
-=======
-                ja.Replied = true;               
 
->>>>>>> ed0ecc974a988ca7f056ca26534ea403948b856b
             }
 
             if(ModelState.IsValid)

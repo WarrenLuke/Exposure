@@ -26,11 +26,7 @@ namespace Exposure.Entities
         public int? incident { get; set; }
 
         [ForeignKey("JobApplication")]
-<<<<<<< HEAD
         public int? JobApp { get; set; }
-=======
-        public int JobApp { get; set; }
->>>>>>> ed0ecc974a988ca7f056ca26534ea403948b856b
 
         [ForeignKey("ApplicationUser")]
         public string User { get; set; }
