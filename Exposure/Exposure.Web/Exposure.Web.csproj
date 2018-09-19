@@ -236,7 +236,6 @@
     <Compile Include="Controllers\GeneralBusinessesController.cs" />
     <Compile Include="Controllers\HelpsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InboxesController.cs" />
     <Compile Include="Controllers\IncidentsController.cs" />
     <Compile Include="Controllers\JobApplicationsController.cs" />
     <Compile Include="Controllers\JobsController.cs" />
@@ -496,13 +495,16 @@
     <Compile Include="DataContexts\IdentityMigrations\201809181129440_inc.Designer.cs">
       <DependentUpon>201809181129440_inc.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201809190331137_InboxRemoved.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201809190331137_InboxRemoved.Designer.cs">
+      <DependentUpon>201809190331137_InboxRemoved.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Models\Enums\Gender.cs" />
     <Compile Include="Models\Enums\NoticeType.cs" />
     <Compile Include="Models\Enums\Role.cs" />
     <Compile Include="Models\Enums\Status.cs" />
     <Compile Include="Models\ExposureModels\Help.cs" />
-    <Compile Include="Models\ExposureModels\Inbox.cs" />
     <Compile Include="Models\ExposureModels\Notification.cs" />
     <Compile Include="Models\ExposureModels\UserIncidents.cs" />
     <Compile Include="Models\ExposureModels\UserReviews.cs" />
@@ -908,12 +910,6 @@
     <Content Include="Views\Notifications\Details.cshtml" />
     <Content Include="Views\Notifications\Edit.cshtml" />
     <Content Include="Views\Notifications\Index.cshtml" />
-    <Content Include="Views\Inboxes\Create.cshtml" />
-    <Content Include="Views\Inboxes\Delete.cshtml" />
-    <Content Include="Views\Inboxes\Details.cshtml" />
-    <Content Include="Views\Inboxes\Edit.cshtml" />
-    <Content Include="Views\Inboxes\Index.cshtml" />
-    <Content Include="Views\Inboxes\Conversation.cshtml" />
     <Content Include="Views\Home\Email.cshtml" />
     <Content Include="Views\Account\VerifyEmail.cshtml" />
   </ItemGroup>
@@ -1118,6 +1114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201809181129440_inc.resx">
       <DependentUpon>201809181129440_inc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201809190331137_InboxRemoved.resx">
+      <DependentUpon>201809190331137_InboxRemoved.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

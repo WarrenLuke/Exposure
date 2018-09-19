@@ -82,9 +82,19 @@ namespace Exposure.Web.Controllers
             }
 
             var user = await UserManager.FindByEmailAsync(model.Email);
+            if(user != null)
+            {
+                if(!await UserManager.IsEmailConfirmedAsync(user.Id))
+                {
+                    string callBackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account- resend");
+                    TempData["errorMessage"] = "You must have a confirmed email to log on. The confirmation token has been resent to your email account.";
+                    return View(model);
+                }
+            }
+
 
             if (user == null)
-            {
+            {                
                 ModelState.AddModelError("", "Incorrect Email or/and Password");
                 return View(model);
             }
@@ -428,19 +438,18 @@ namespace Exposure.Web.Controllers
                         db.Workers.Add(worker);
                         db.SaveChanges();
                     }
-                    ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
-                     + "before you can log in.";
+                    
                     //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    var callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm Your Account");
+
+                    ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
+                     + "before you can log in.";
 
                     return View("VerifyEmail");
 
-                    //return RedirectToRoute("Default", new { controller = "Manage", action = "Index", id = User.Identity.GetUserId() });
                 }
                 AddErrors(result);
             }
@@ -688,6 +697,17 @@ namespace Exposure.Web.Controllers
         public ActionResult ExternalLoginFailure()
         {
             return View();
+        }
+
+        private async Task<string> SendEmailConfirmationTokenAsync(string userID, string subject)
+        {
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                new { userId = userID, code = code }, protocol: Request.Url.Scheme);
+            await UserManager.SendEmailAsync(userID, subject,
+                "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+            return callbackUrl;
         }
 
         protected override void Dispose(bool disposing)

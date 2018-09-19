@@ -53,7 +53,6 @@ namespace Exposure.Web.DataContexts
 
         public System.Data.Entity.DbSet<Exposure.Entities.Notification> Notifications { get; set; }
 
-        public System.Data.Entity.DbSet<Exposure.Entities.Inbox> Inboxes { get; set; }
     }
 }
    
