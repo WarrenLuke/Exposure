@@ -12,15 +12,45 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Exposure.Web.Models;
 using Exposure.Web.DataContexts;
+using SendGrid;
+using System.Net;
+using System.Diagnostics;
+using System.Configuration;
+using SendGrid.Helpers.Mail;
+using System.Net.Mail;
 
 namespace Exposure.Web
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            await configSendGridasync(message);
+        }
+
+        public async Task configSendGridasync(IdentityMessage message)
+        {
+            var apiKey = ConfigurationManager.AppSettings["ExposureKey"];
+            var client = new SendGridClient(apiKey);
+            var body = message.Body;
+            var subject = message.Subject;
+            var from = new EmailAddress("admin@exposure.com", "Admin(Exposure)");
+            var to = new EmailAddress(message.Destination);
+            var plainTextContent = body;
+            var htmlContent = body;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+
+            if (client != null)
+            {
+                await client.SendEmailAsync(msg);
+            }
+            else
+            {
+                Trace.TraceError("Failed to create web transport");
+                await Task.FromResult(0);
+            }
         }
     }
 
@@ -41,7 +71,7 @@ namespace Exposure.Web
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<IdentityDb>()));
             // Configure validation logic for usernames
@@ -59,10 +89,10 @@ namespace Exposure.Web
                 RequireDigit = true,
                 RequireLowercase = true,
                 RequireUppercase = true,
-                
+
             };
 
-            
+
 
             // Configure user lockout defaults
             manager.UserLockoutEnabledByDefault = true;
@@ -85,7 +115,7 @@ namespace Exposure.Web
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;

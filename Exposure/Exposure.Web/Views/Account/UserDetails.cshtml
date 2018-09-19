@@ -4,6 +4,7 @@
 }
 
 <h2>User Profile</h2>
+
 @if (User.IsInRole("Admin"))
 {
     <a href="@Url.Action("AllUsers", "Manage")">Back to Users</a>
@@ -22,7 +23,8 @@
                             -moz-border-radius:30px;
                             border-radius:90px;
                             padding:2px;
-                            box-shadow:0px 0px 20px #888" />
+                            box-shadow:0px 0px 20px #888" /><br/><br/>
+            <a href="@Url.Action("Email", "Home", new {id= user.Id })" class="btn btn-default" style="border-radius:60px"><span><i class="glyphicon glyphicon-envelope"></i></span>&nbsp;Contact</a>
 
         </div>
 

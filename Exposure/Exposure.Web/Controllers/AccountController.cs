@@ -30,7 +30,7 @@ namespace Exposure.Web.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -42,9 +42,9 @@ namespace Exposure.Web.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -83,7 +83,7 @@ namespace Exposure.Web.Controllers
 
             var user = await UserManager.FindByEmailAsync(model.Email);
 
-            if(user==null)
+            if (user == null)
             {
                 ModelState.AddModelError("", "Incorrect Email or/and Password");
                 return View(model);
@@ -91,10 +91,10 @@ namespace Exposure.Web.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
-           
+
             switch (result)
             {
-                case SignInStatus.Success:                                       
+                case SignInStatus.Success:
                     return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -117,7 +117,7 @@ namespace Exposure.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AccountStatus([Bind(Include ="Id")]ApplicationUser user)
+        public async Task<ActionResult> AccountStatus([Bind(Include = "Id")]ApplicationUser user)
         {
             ApplicationUser u = await UserManager.FindByIdAsync(user.Id);
 
@@ -130,7 +130,7 @@ namespace Exposure.Web.Controllers
                 return RedirectToAction("LogOff");
 
             }
-            else 
+            else
             {
                 user.Status = Models.Enums.Status.AdminBlock;
                 db.Entry(user).State = EntityState.Modified;
@@ -144,14 +144,14 @@ namespace Exposure.Web.Controllers
         //GET: /Account/UpdatePicture
         public ActionResult UpdatePicture(string id)
         {
-            if(id==null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             ApplicationUser user = UserManager.FindById(id);
 
-            if(user==null)
+            if (user == null)
             {
                 return HttpNotFound();
             }
@@ -163,7 +163,7 @@ namespace Exposure.Web.Controllers
         //POST: /Account/UpdatePicture
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UpdatePicture([Bind(Exclude ="ProfilePic")]ApplicationUser user)
+        public async Task<ActionResult> UpdatePicture([Bind(Exclude = "ProfilePic")]ApplicationUser user)
         {
             var userId = User.Identity.GetUserId();
 
@@ -184,7 +184,7 @@ namespace Exposure.Web.Controllers
             u.ProfilePic = imageData;
             var result = await UserManager.UpdateAsync(u);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 try
                 {
@@ -198,8 +198,8 @@ namespace Exposure.Web.Controllers
                     db.SaveChanges();
                     TempData["PicUpdate"] = "Profile Picture Changed Successfully";
                     return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
-                }                  
-                 
+                }
+
             }
             return View(user);
         }
@@ -225,7 +225,7 @@ namespace Exposure.Web.Controllers
 
             var result = await UserManager.UpdateAsync(u);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 try
                 {
@@ -241,10 +241,10 @@ namespace Exposure.Web.Controllers
                     TempData["PicUpdate"] = "Profile Picture Removed Successfully";
                     return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
                 }
-                
+
             }
 
-            return RedirectToRoute("Default",new {controler="Account", action="UpdatePicture", id= user.Id } );
+            return RedirectToRoute("Default", new { controler = "Account", action = "UpdatePicture", id = user.Id });
         }
 
         //GET: /Account/EditProfile
@@ -258,14 +258,14 @@ namespace Exposure.Web.Controllers
 
             ApplicationUser user = UserManager.FindById(id);
 
-            if(user==null)
+            if (user == null)
             {
                 return HttpNotFound();
-            }          
-            
+            }
+
             //var user = db.Users.Include(m => m.Suburb).Where(m => m.Id == userId);
             ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName", user.SuburbID);
-            
+
 
             return View(user);
 
@@ -273,11 +273,11 @@ namespace Exposure.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditProfile ([Bind(Exclude="ProfilePic, PasswordHash, UserName, Email")]ApplicationUser model)
+        public async Task<ActionResult> EditProfile([Bind(Exclude = "ProfilePic, PasswordHash, UserName, Email")]ApplicationUser model)
         {
             var userId = User.Identity.GetUserId();
             ApplicationUser user = await UserManager.FindByIdAsync(userId);
-            
+
 
             user.AddressLine1 = model.AddressLine1;
             user.FirstName = model.FirstName;
@@ -287,23 +287,24 @@ namespace Exposure.Web.Controllers
 
             var result = await UserManager.UpdateAsync(user);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 try
                 {
                     db.Entry(user).State = user.Id == null ? EntityState.Added : EntityState.Modified;
-                }catch
+                }
+                catch
                 {
                     db.SaveChanges();
                 }
 
                 TempData["EditProfile"] = "Personal Details Successfully changed";
                 return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
-           }
-            
-            
+            }
+
+
             ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName", user.SuburbID);
-            
+
             ViewBag.user = user;
             TempData["EditProfile"] = "Failed updating Details. Please Try Again";
             return View(model);
@@ -357,7 +358,7 @@ namespace Exposure.Web.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -375,8 +376,8 @@ namespace Exposure.Web.Controllers
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
-        {                                       
-            ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(x=>x.SubName), "SuburbID", "SubName");
+        {
+            ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(x => x.SubName), "SuburbID", "SubName");
             return View();
         }
 
@@ -389,7 +390,7 @@ namespace Exposure.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(x=>x.SubName), "SuburbID", "SubName");
+                ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(x => x.SubName), "SuburbID", "SubName");
 
                 var user = new ApplicationUser
                 {
@@ -404,31 +405,32 @@ namespace Exposure.Web.Controllers
                     SuburbID = model.SuburbID,
                     RegDate = DateTime.Now,
                     LastVisited = DateTime.Now
-                };                                
+                };
 
                 var role = model.Role;
                 var result = await UserManager.CreateAsync(user, model.Password);
-                
+
                 if (result.Succeeded)
                 {
-                        //Binding user to selected role by using the UserManager class
-                        UserManager.AddToRole(user.Id, role);
+                    //Binding user to selected role by using the UserManager class
+                    UserManager.AddToRole(user.Id, role);
 
-                        //If statement used to determine which table user should be added to
-                        if (role == "Employer")
-                        {
-                            var employer = new Employer { EmployerID = user.Id };
-                            db.Employers.Add(employer);
-                            db.SaveChanges();
-                        }
-                        else if (role == "Worker")
-                        {
-                            var worker = new Worker { WorkerID = user.Id };
-                            db.Workers.Add(worker);
-                            db.SaveChanges();
-                        }
-
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    //If statement used to determine which table user should be added to
+                    if (role == "Employer")
+                    {
+                        var employer = new Employer { EmployerID = user.Id };
+                        db.Employers.Add(employer);
+                        db.SaveChanges();
+                    }
+                    else if (role == "Worker")
+                    {
+                        var worker = new Worker { WorkerID = user.Id };
+                        db.Workers.Add(worker);
+                        db.SaveChanges();
+                    }
+                    ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
+                     + "before you can log in.";
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -436,16 +438,18 @@ namespace Exposure.Web.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToRoute("Default", new { controller = "Manage", action = "Index", id = User.Identity.GetUserId() });
+                    return View("VerifyEmail");
+
+                    //return RedirectToRoute("Default", new { controller = "Manage", action = "Index", id = User.Identity.GetUserId() });
                 }
-                    AddErrors(result);
-                }
+                AddErrors(result);
+            }
             ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(x => x.SubName), "SuburbID", "SubName");
 
             // If we got this far, something failed, redisplay form
             return View(model);
-            }
-        
+        }
+
 
         //
         // GET: /Account/ConfirmEmail

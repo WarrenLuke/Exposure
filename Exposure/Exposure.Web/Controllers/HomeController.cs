@@ -8,18 +8,26 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net;
+using System.Net.Mail;
 using Exposure.Web.Controllers;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Exposure.Entities;
+using Twilio.Jwt.AccessToken;
+using System.Threading.Tasks;
+using Exposure.Web.Models.ViewModels;
+using System.Configuration;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using System.Diagnostics;
 
 namespace Exposure.Web.Controllers
 {
     public class HomeController : Controller
     {
         private IdentityDb db = new IdentityDb();
-
 
         public ActionResult Index()
         {
@@ -177,6 +185,44 @@ namespace Exposure.Web.Controllers
             return View();
         }
 
+
+        public ActionResult Email(string email)
+        {
+            EmailFormModel model = new EmailFormModel();
+            model.ToEmail = email;            
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Email(EmailFormModel model)
+        {
+            model.FromEmail = "admin@exposure.com";
+            var apiKey = ConfigurationManager.AppSettings["ExposureKey"];
+            var client = new SendGridClient(apiKey);
+            var body = model.Message;
+            var subject = model.Subject;
+            var from = new EmailAddress(model.FromEmail, "Admin(Exposure)");
+            var to = new EmailAddress(model.ToEmail);
+            var plainTextContent = body;
+            var htmlContent = body;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+
+            if (client != null)
+            {
+                await client.SendEmailAsync(msg);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Trace.TraceError("Failed to create web transport");
+                await Task.FromResult(0);
+                return View(model);
+            }
+            
+        }
+
         public ActionResult Help()
         {
             var faq = db.Helps;
@@ -261,17 +307,17 @@ namespace Exposure.Web.Controllers
         {
             List<Notice> notifications = new List<Notice>();
             var Id = User.Identity.GetUserId();
-            var notice = db.Notifications.Where(x => x.User == Id).Where(x=>x.Flagged == false);
+            var notice = db.Notifications.Where(x => x.User == Id).Where(x => x.Flagged == false);
 
-            foreach(var item in notice)
+            foreach (var item in notice)
             {
-                notifications.Add(new Notice() {msg= item.Message, updated= DateTime.Now.ToString("ss")});
+                notifications.Add(new Notice() { msg = item.Message, updated = DateTime.Now.ToString("ss") });
             }
 
             return Json(notifications, JsonRequestBehavior.AllowGet);
         }
 
-       
+
     }
 
     internal class Notice
@@ -281,5 +327,7 @@ namespace Exposure.Web.Controllers
         public string updated;
     }
 
-     
+
+
+
 }
