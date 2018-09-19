@@ -203,31 +203,25 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
                 new Skill() { SkillDescription = "Carpentry", Recom_Rate = 40 }
                 );
 
-            if (!context.Users.Any(u => u.UserName == "Admin"))
-            {
-                var store = new UserStore<ApplicationUser>(context);
-                var manager = new UserManager<ApplicationUser>(store);
-                var user = new ApplicationUser
-                {
-                    FirstName = "Exposure",
-                    LastName = "Admin",
-                    AddressLine1 = "University Way",
-                    Email = "admin@exposure.com",
-                    UserName = "admin",
-                    SuburbID = 1,
-                    Gender = "Male",
-                    LastVisited = DateTime.Now
-                };
+            //if (!context.Users.Any(u => u.UserName == "Admin"))
+            //{
+            //    var store = new UserStore<ApplicationUser>(context);
+            //    var manager = new UserManager<ApplicationUser>(store);
+            //    var user = new ApplicationUser
+            //    {
+            //        FirstName = "Exposure",
+            //        LastName = "Admin",
+            //        AddressLine1 = "University Way",
+            //        Email = "admin@exposure.com",
+            //        UserName = "admin",
+            //        SuburbID = 1,
+            //        Gender = "Male",
+            //        LastVisited = DateTime.Now
+            //    };
 
-                manager.Create(user, "ChangeItAsap!");
-                manager.AddToRole(user.Id, "Admin");
-            }
-
-
-
-
-
-
+            //    manager.Create(user, "ChangeItAsap!");
+            //    manager.AddToRole(user.Id, "Admin");
+            //}
 
 
             //  This method will be called after migrating to the latest version.

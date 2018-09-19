@@ -7,7 +7,7 @@ namespace Exposure.Web.DataContexts.IdentityMigrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Jobs", "DateAdvertised", c => c.DateTime(nullable: false));
+            AddColumn("dbo.Jobs", "DateAdvertised", c => c.DateTime(nullable: true, defaultValue:null));
         }
         
         public override void Down()
