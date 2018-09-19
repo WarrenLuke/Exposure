@@ -82,15 +82,16 @@ namespace Exposure.Web.Controllers
             }
 
             var user = await UserManager.FindByEmailAsync(model.Email);
-            if(user != null)
-            {
-                if(!await UserManager.IsEmailConfirmedAsync(user.Id))
-                {
-                    string callBackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account- resend");
-                    TempData["errorMessage"] = "You must have a confirmed email to log on. The confirmation token has been resent to your email account.";
-                    return View(model);
-                }
-            }
+
+            //if(user != null)
+            //{
+            //    if(!await UserManager.IsEmailConfirmedAsync(user.Id))
+            //    {
+            //        string callBackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account- resend");
+            //        TempData["errorMessage"] = "You must have a confirmed email to log on. The confirmation token has been resent to your email account.";
+            //        return View(model);
+            //    }
+            //}
 
 
             if (user == null)

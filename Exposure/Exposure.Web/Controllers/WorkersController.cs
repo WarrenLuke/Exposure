@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace Exposure.Web.Controllers
 {
@@ -17,51 +18,51 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Workers
-        public ActionResult Dashboard(DateTime? startDate, DateTime? endDate)
+        public ActionResult Dashboard(int page =1, int pageSize= 5)
         {
             var userID = User.Identity.GetUserId();
-
+            var currentDate = DateTime.UtcNow;
             var averageRating = db.Reviews.Where(x => x.Reviewee == userID).Average(x => x.Rating);
             var totalJobs = db.JobApplications.Where(x => x.WorkerID == userID).Where(x => x.Response == Reply.Hired).Where(x => x.Job.Completed == true).Count();
-            var lastJob = db.JobApplications.Where(x => x.WorkerID == userID).Where(x => x.Response == Reply.Hired).Where(x => x.Job.Completed == true).OrderByDescending(x => x.Job.EndDate).FirstOrDefault(); ;
+            var lastJob = db.JobApplications.Include(x => x.Job).Where(x => x.WorkerID == userID).Where(x => x.Response == Reply.Hired).Where(x => x.Job.Completed == true).OrderByDescending(x => x.Job.EndDate).FirstOrDefault(); ;
+            var currentJob = db.JobApplications.Include(x => x.Job).Where(x => x.WorkerID == userID).Where(x => x.Job.StartDate <= currentDate && x.Job.EndDate >= currentDate).Where(x => x.Response == Reply.Hired).Where(x => x.Job.Completed == false);
+            var reviews = db.UserReviews.Where(u => u.Review.Reviewee == userID).Include(u => u.Review).Include(u => u.ApplicationUser).OrderByDescending(x=>x.Review.ReportDate);
+            PagedList<UserReviews> model = new PagedList<UserReviews>(reviews, page, pageSize);            
+            var ETD = db.JobApplications.Where(x => x.WorkerID == userID).Where(x => x.Job.Completed == true).Where(x => x.Response == Reply.Hired).Sum(x => x.Job.Rate);
+            var avg = db.JobApplications.Where(x => x.WorkerID == userID).Where(x => x.Job.Completed == true).Where(x => x.Response == Reply.Hired).Average(x => x.Job.Rate);
 
-            #region EarningChart
-
-            List<string> dates = new List<string>();
-            List<double> payments = new List<double>();
-            var jobs = db.JobApplications.Include(x => x.Job).Where(x => x.WorkerID == userID);
-
-            if (startDate == null || endDate == null)
+            if (ETD == 0)
             {
-                startDate = DateTime.UtcNow.AddDays(-30);
-                endDate = DateTime.UtcNow;
+                ViewBag.ETD = 0;
+            }
+            else
+            {
+                ViewBag.ETD = ETD;
             }
 
-            while (startDate <= endDate)
+            if (avg == 0)
             {
-                var dateString = startDate.Value.ToShortDateString();
-                dates.Add(dateString);
-                startDate = startDate.Value.AddDays(1);
+                ViewBag.AVG = 0;
             }
+            else
+            {
+                ViewBag.AVG = avg;
+            }
+
+            if (currentJob.Count() == 0)
+            {
+                TempData["currentJob"] = "You currently dont have any active job";
+            }
+
             
-
-            //foreach(var item in dates)
-            //{
-            //    var d = Convert.ToDateTime(item);
-            //    payments.Add(jobs.Where(x => x.Job.EndDate == d).Select(x=>x.Job.Rate).First());
-            //}
-
-            var jobPay = payments;
-            var jobDates = dates;
-            ViewBag.JobPay = jobPay;
-            ViewBag.JobDates = jobDates;
-            #endregion
-
             ViewBag.AvgRating = averageRating;
             ViewBag.TotalJobs = totalJobs;
-            ViewBag.LastJob = lastJob;
+            ViewData["lastJob"] = lastJob;
+            ViewData["currentJob"] = currentJob;
+            ViewBag.CurrentJob = currentJob;
+            ViewBag.Reviews = reviews;
 
-            return View();
+            return View(model);
         }
     }
 }

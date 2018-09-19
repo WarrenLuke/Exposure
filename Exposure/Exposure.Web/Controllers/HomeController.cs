@@ -307,7 +307,7 @@ namespace Exposure.Web.Controllers
         {
             List<Notice> notifications = new List<Notice>();
             var Id = User.Identity.GetUserId();
-            var notice = db.Notifications.Where(x => x.User == Id).Where(x => x.Flagged == false);
+            var notice = db.Notifications.Where(x => x.User == Id).Where(x => x.Flagged == false).OrderByDescending(x=>x.Updated);
 
             foreach (var item in notice)
             {

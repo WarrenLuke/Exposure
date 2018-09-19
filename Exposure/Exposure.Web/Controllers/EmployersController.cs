@@ -10,6 +10,7 @@ using Exposure.Entities;
 using Exposure.Web.DataContexts;
 using Exposure.Web.Controllers;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace Exposure.Web.Controllers
 {
@@ -25,9 +26,49 @@ namespace Exposure.Web.Controllers
             return View(employers.ToList());
         }
 
-        public ActionResult Dashboard()
+        public ActionResult Dashboard(int page=1, int pageSize = 5)
         {
-            return View();
+            var userID = User.Identity.GetUserId();
+            var currentDate = DateTime.UtcNow;
+            var averageRating = db.Reviews.Where(x => x.Reviewee == userID).Average(x => x.Rating);
+            var totalJobs = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Count();
+            var upcomingJob = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == false).OrderByDescending(x => x.StartDate).First();
+            var reviews = db.UserReviews.Where(u => u.Review.Reviewee == userID).Include(u => u.Review).Include(u => u.ApplicationUser).OrderByDescending(x => x.Review.ReportDate);
+            var currentJob = db.JobApplications.Include(x => x.Job).Where(x => x.Job.EmployerID == userID).Where(x => x.Job.StartDate <= currentDate && x.Job.EndDate >= currentDate).Where(x => x.Response == Reply.Hired).Where(x => x.Job.Completed == false);
+            var TotalSpent = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Sum(x => x.Rate);
+            var monthAvg = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Average(x => x.Rate);
+            PagedList<UserReviews> model = new PagedList<UserReviews>(reviews, page, pageSize);
+
+            if (TotalSpent == 0)
+            {
+                ViewBag.TotalSpent = 0;
+            }
+            else
+            {
+                ViewBag.TotalSpent = TotalSpent;
+            }
+
+            if (monthAvg == 0)
+            {
+                ViewBag.AVG = 0;
+            }
+            else
+            {
+                ViewBag.AVG = monthAvg;
+            }
+
+            if(totalJobs== 0)
+            {
+                TempData["totalJobs"] = "You have not advertised any Job.";
+            }
+
+            ViewBag.TotalJobs = totalJobs;
+            ViewData["upcomingJob"] = upcomingJob;
+            ViewBag.UpcomingJob = upcomingJob;
+            ViewBag.Reviews = reviews;
+            ViewBag.AvgRating = averageRating;
+
+            return View(model);
         }
 
         // GET: Employers/Details/5

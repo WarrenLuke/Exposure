@@ -25,7 +25,7 @@
                     <a href="@Url.Action("Create","JobApplications", new {id = item.Job, skill = item.Jobs.SkillID, notification= "notify" })" class="btn btn-default">View</a>                   
 
                 }
-                @if (item.incident != null)
+                @if (item.inc != null)
                 {
                     <input type="button" onclick="@Url.Action("Details", "Incidents", new {id = item.incident })" value="View" />
                 }

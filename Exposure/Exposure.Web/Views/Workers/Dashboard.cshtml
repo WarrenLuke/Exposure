@@ -1,9 +1,56 @@
-﻿
+﻿@model IPagedList<Exposure.Entities.UserReviews>
+@using PagedList;
+@using PagedList.Mvc;
+@using Exposure.Web.Models
+@using Exposure.Entities
+@using Microsoft.AspNet.Identity
+@using System.Web.Mvc
+
+
 @{
     ViewBag.Title = "Dashboard";
+    var job = (JobApplication)ViewData["lastJob"];
+    //var currentJob = (JobApplication)ViewData["currentJob"];
+    var rating = 5;
+    var i = 1;
+    var x = 1;
 }
+<style>
+    .btn {
+        color: #ff6a00;
+    }
+
+    .glyphicon:hover,
+    i:hover {
+        color: #ffffff;
+    }
+
+    .panel, .panel-default {
+        border-color: #ff6a00;
+    }
+
+    .btn:hover {
+        color: #ffffff;
+        background-color: #ff6a00;
+    }
+</style>
 <h2>@ViewBag.Title</h2>
+<hr/>
 <div class="container">
+    @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="row" style="text-align:center">
+            <button type="submit" class="btn panel panel-default panel-body col-md-3" formaction="@Url.Action("Index", "Jobs", new { id= User.Identity.GetUserId()})">
+                <h3><span><i class="glyphicon glyphicon-briefcase"></i></span>&nbsp;&nbsp;Job History</h3>
+            </button>
+            <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-4" formaction="@Url.Action("Index", "Jobs", new { id= User.Identity.GetUserId()})">
+                <h3><span><i class="glyphicon glyphicon-exclamation-sign"></i></span>&nbsp;Report Incident</h3>
+            </button>
+            <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-3" formaction="@Url.Action("Index", "Jobs", new { id= User.Identity.GetUserId()})">
+                <h3><span><i class="glyphicon glyphicon-th-list"></i></span>&nbsp;Job Applications<span class="badge" style="color:white"></span></h3>
+            </button>
+        </div>
+    }
     <div class="row">
         <div class="panel panel-default panel-body col-md-12">
             <div class="col-md-2">
@@ -11,69 +58,267 @@
                     margin:auto;
                     -moz-border-radius:60px;
                     border-radius:90px;
-                    padding:2px;" />
+                    padding:2px;" /><br /><br />
+                <a href="@Url.Action("Index", "Manage")" class="btn btn-default">Manage Profile</a>
             </div>
             <div class="col-md-8">
-                <strong>Average Rating: </strong>@ViewBag.AvgRating <br /><br />
-                <strong>Total Jobs Completed: </strong>@ViewBag.TotalJobs <br /><br />
-                <strong>Last Job Completed:</strong>
-                @if (ViewBag.LastJob == null)
-                {
-                    <text>None</text>
-                }
-                else
-                {
-                    foreach (var item in ViewBag.LastJob)
+                <div class="panel panel-default" style="box-shadow:none; padding:6px">
+                    <h4>Average Rating: </h4>
+                    @while (i <= rating)
                     {
-                        <text>Job Title:</text>@item.Job.Title<br />
-                        <text>Job Description:</text> @item.Job.Description<br />
-                        <text>Job End Date:</text>@item.Job.EndDate<br />
-                        <text>Job Payment:</text>@item.Job.Rate
+                        if (ViewBag.AvgRating >= i)
+                        {
+                            <span class="glyphicon glyphicon-star" style="color:#ff6a00; border-color:#ff6a00; font-size:x-large"></span>
+                        }
+                        else
+                        {
+                            <span class="glyphicon glyphicon-star-empty" style="color:#ff6a00; font-size:x-large"></span>
+                        }
+                        i++;
                     }
-                }
+
+                </div>
+                <div class="panel panel-default" style="box-shadow:none; padding:6px">
+                    <h4>Total Jobs Completed: </h4>@ViewBag.TotalJobs
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default col-md-12" style="box-shadow:none; padding:6px">
+                        <h4>Last Job Completed:</h4>
+                        @if (job == null)
+                        {
+                            <text>None</text>
+                        }
+                        else
+                        {
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong><span><i class="glyphicon glyphicon-pencil"></i></span>&nbsp;Job Title:</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    @job.Job.Title
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong><span><i class="glyphicon glyphicon-list-alt"></i></span>&nbsp;Job Description:</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    @job.Job.Description
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong><span><i class="glyphicon glyphicon-calendar"></i></span>&nbsp;Job End Date:</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    @job.Job.EndDate.Value.ToShortDateString()
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong><span><i class="glyphicon glyphicon-usd"></i></span>&nbsp;Job Payment:</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    <text>R</text>@job.Job.Rate
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default col-md-12" style="box-shadow:none">
+                        <h4>Earnings</h4>                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                <strong><span><i class="glyphicon glyphicon-usd"></i></span>&nbsp;ETD:</strong>
+                            </div>
+                            <div class="col-md-4">
+                                <text>R</text>@ViewBag.ETD
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <strong><span><i class="glyphicon glyphicon-usd"></i></span>&nbsp;Monthly Average</strong>
+                            </div>
+                            <div class="col-md-4">
+                                <text>R</text>@ViewBag.AVG
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
     <h2>Current Job</h2>
     <div class="row">
         <div class="panel panel-default panel-body">
+            @if (TempData["currentJob"] != null)
+            {
+                <div class="alert alert-info alert-dismissable" role="alert" style="font-size:large">
+                    @TempData["currentJob"]
+                </div>
+            }
+            else
+            {
+                foreach (var item in ViewBag.CurrentJob)
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Employer</h4>
+                            <hr />
+                            <br /><br />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="@Url.Action("ProfilePic", "Home", new { id=item.Job.EmployerID})" height="120" width="120" style="background: #ff6a00;
+                                        margin:auto;
+                                        -moz-border-radius:60px;
+                                        border-radius:90px;
+                                        padding:2px;" />
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-6"><strong>Employer Name:</strong> </div>  <div class="col-md-6">@item.Job.Employer.ApplicationUser.FirstName @job.Job.Employer.ApplicationUser.LastName</div>
+                                    </div>
 
+                                    <div class="row">
+                                        <div class="col-md-6"><strong>Employer Email:</strong></div> <div class="col-md-6">@item.Job.Employer.ApplicationUser.Email</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6"><strong>Employer Contact No.:</strong></div> <div class="col-md-6">@item.Job.Employer.ApplicationUser.PhoneNumber</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Job Overview</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong><span><i class="glyphicon glyphicon-pencil"></i></span>&nbsp;Title</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    @item.Job.Title
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong><span><i class="glyphicon glyphicon-list-alt"></i></span>&nbsp;Description</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    @item.Job.Description
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong><span><i class="glyphicon glyphicon-calendar"></i></span>&nbsp;Duration</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    @item.Job.StartDate.ToShortDateString() till @item.Job.EndDate.ToShortDateString()
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong><span><i class="glyphicon glyphicon-time"></i></span>&nbsp;Hours</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    @item.Job.StartTime.ToShortTimeString() till @item.Job.EndTime.ToShortTimeString()
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong><span><i class="glyphicon glyphicon-usd"></i></span>&nbsp;Payment</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    <text>R</text>@item.Job.Rate
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <hr/>
+                }
+            }
         </div>
     </div>
-    <h2>Earnings</h2>
-    <div class="row">
-        <div class="panel panel-default panel-body">
-            <canvas id="earnings"></canvas>
+    <h2>Reviews</h2>
+    @using (Html.BeginForm("Dashboard", "Workers"))
+    {
+        <div class="row">
+            <div class="panel panel-default panel-body" style="padding:6px">
+                @foreach (var rev in ViewBag.Reviews)
+                {
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="@Url.Action("ProfilePic","Home", new {id= rev.UserID } )" style="width:70px; height:70px; background:
+                                        #ff6a00;
+                                        margin:auto;
+                                        -moz-border-radius:30px;
+                                        border-radius:90px;
+                                        padding:2px;
+                                        box-shadow:0px 0px 20px #888" />
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    User Name
+                                </div>
+                                <div class="col-md-4">
+                                    @rev.ApplicationUser.FirstName&nbsp;@rev.ApplicationUser.LastName
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    Rating
+                                </div>
+                                <div class="col-md-4">
+                                    @while (x <= rating)
+                                    {
+                                        if (rev.Review.Rating >= x)
+                                        {
+                                            <span class="glyphicon glyphicon-star" style="color:#ff6a00; border-color:#ff6a00; font-size:large"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-star-empty" style="color:#ff6a00; font-size:large"></span>
+                                        }
+                                        x++;
+                                    }
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    Comment
+                                </div>
+                                <div class="col-md-4">
+                                    @rev.Review.Comment
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                <div class="row">
+                    <div class="col-md-1">
+
+                    </div>
+                    <div class="col-md-11">
+                        @Html.PagedListPager(Model, page => Url.Action("Dashboard", new { page, pageSize = Model.PageSize }))
+                        Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Reviews
+                    </div>
+
+
+                </div>
+
+            </div>
         </div>
-    </div>
+
+    }
+
+
+
 </div>
 
 
-<script>
-    var payments = @Html.Raw(Json.Encode(ViewBag.JobPay));
-    var dates = @Html.Raw(Json.Encode(ViewBag.JobDates));
-    var ctx = $("#earnings");
-    var earningsGraph = new Chart(ctx, {
-        type: 'bar',
-        labels: dates,
-        data: {
-            datasets: [{
-                label: 'Earnings',
-                data: payments,
-                backgroundColor: '#ff6a00',
-                borderColor: '#ffffff',
-                borderWidth: 1
-
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-        });
-</script>
