@@ -1,11 +1,16 @@
 ﻿@model Exposure.Entities.Incident
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Report Incident";
 }
 
-<h2>Create</h2>
-
+<h2>@ViewBag.Title</h2>
+@if (TempData["Incident"] != null)
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        @TempData["Incident"] 
+    </div>
+}
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -26,10 +31,10 @@
             <div class="col-md-6">
                 @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 5, columns = 100 })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model=>model.JobID)
-                @Html.HiddenFor(model=>model.OffenderID)
+                @Html.HiddenFor(model => model.JobID)
+                @Html.HiddenFor(model => model.OffenderID)
                 <br />
-                <input type="submit" value="Report User" class="btn btn-default" />
+                <input type="submit" value="Report User" class="btn btn-default" @(TempData["Incident"]!=null? "disabled='disabled'":"") />
             </div>
             <div class="col-md-4"><img src="~/images/Report.png" alt="REPORT USER" width="200" height="200"></div>
 

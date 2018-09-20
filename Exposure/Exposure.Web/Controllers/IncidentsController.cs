@@ -72,10 +72,27 @@ namespace Exposure.Web.Controllers
         // GET: Incidents/Create
         [Authorize(Roles = "Worker, Employer")]
         public ActionResult Create(int job, string userID)
-        {          
+        {
+            var user = User.Identity.GetUserId();
             
             var jobs = db.Jobs.Include(s => s.Suburb).Where(j => j.JobID == job);
             var jobApps = db.JobApplications.Include(w => w.Worker).Where(w => w.Response == Reply.Hired).Where(j=>j.JobID == job);
+            var incidents = db.UserIncidents.Include(x => x.Incident).Where(x => x.UserID == user);
+            var result = false;
+
+            foreach(var item in incidents)
+            {
+                if(item.Incident.OffenderID==userID && item.Incident.JobID==job)
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            if (result == true)
+            {
+                TempData["Incident"] = "You have already reported an incident for this job. Out Admin will contact you if there is any updates.";
+            }
 
             Incident model = new Incident();
             model.JobID = job;

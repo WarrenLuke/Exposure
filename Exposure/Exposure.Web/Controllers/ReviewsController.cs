@@ -57,25 +57,29 @@ namespace Exposure.Web.Controllers
             }
             var workers = db.JobApplications.Include(j => j.Job).Include(j => j.Worker).Include(j => j.Worker.ApplicationUser).Include(w => w.Worker).Where(j => j.JobID == job).Where(w => w.Response == Reply.Hired);
 
-            var reviews = db.Reviews.Include(x => x.UserReviews);
-
+            var reviews = db.UserReviews.Include(x => x.Review).Where(x=>x.UserID == userID);
+            var result = false;
             foreach (var item in reviews)
             {
-                var revID = item.UserReviews.Select(x => x.UserID).First();
-                if (User.IsInRole("Employer"))
+                if (employer != null)
                 {
-                    if (revID == userID && item.JobID == job && item.Reviewee == worker)
+                    if(item.Review.Reviewee == worker && item.Review.JobID==job)
                     {
-                        TempData["ReviewTrue"] = "You have already reviewed this job";
+                        result = true;
                     }
                 }
                 else
                 {
-                    if (revID == userID && item.JobID == job && item.Reviewee == employer)
+                    if (item.Review.Reviewee == employer && item.Review.JobID == job)
                     {
-                        TempData["ReviewTrue"] = "You have already reviewed this job";
+                        result = true;
                     }
                 }
+            }
+
+            if(result== true)
+            {
+                TempData["ReviewTrue"] = "You have already reviewed this job.";
             }
 
             ViewBag.JobID = job;
