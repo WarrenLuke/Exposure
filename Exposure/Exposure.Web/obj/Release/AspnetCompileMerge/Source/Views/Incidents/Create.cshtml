@@ -1,0 +1,48 @@
+﻿@model Exposure.Entities.Incident
+
+@{
+    ViewBag.Title = "Report Incident";
+}
+
+<h2>@ViewBag.Title</h2>
+@if (TempData["Incident"] != null)
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        @TempData["Incident"] 
+    </div>
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class=" table form-horizontal">
+        <h4>Incident</h4>
+        <hr />
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <p>
+            Please report your incident on the box below. Action will be taken against the offender once an investigation has been done.
+            Please be patient while waiting for feedback on the matter. Thank you
+        </p>
+
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = 5, columns = 100 })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.JobID)
+                @Html.HiddenFor(model => model.OffenderID)
+                <br />
+                <input type="submit" value="Report User" class="btn btn-default" @(TempData["Incident"]!=null? "disabled='disabled'":"") />
+            </div>
+            <div class="col-md-4"><img src="~/images/Report.png" alt="REPORT USER" width="200" height="200"></div>
+
+        </div>
+
+    </div>
+
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

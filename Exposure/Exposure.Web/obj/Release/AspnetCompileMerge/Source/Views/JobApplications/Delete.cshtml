@@ -1,0 +1,47 @@
+﻿@model Exposure.Entities.JobApplication
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<h3>Are you sure you want to retract this application?</h3>
+<div>    
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Employer:
+            @Html.HiddenFor(model=>model.JobApplicationID,"JobApplicationID")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.Employer.ApplicationUser.FirstName)&nbsp;@Html.DisplayFor(model => model.Job.Employer.ApplicationUser.LastName)
+        </dd>              
+        
+        <dt>
+            Job:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Motivation):
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Motivation)
+        </dd>        
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

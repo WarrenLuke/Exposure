@@ -1,0 +1,279 @@
+﻿@model Exposure.Entities.Job
+
+@{
+    ViewBag.Title = "Create Job";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@if (TempData["JobSuccess"] != null)
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["JobSuccess"]
+    </div>
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h3>Job Details</h3>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SkillID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SkillID", null, htmlAttributes: new { @class = "form-control", @id = "Skill" })
+                        @Html.ValidationMessageFor(model => model.SkillID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextArea("Description", new { @class = "form-control", rows = 5, columns = 70 })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SuburbID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SuburbID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SuburbID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AddressLine1, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AddressLine1, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AddressLine2, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AddressLine2, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <form id="myForm">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10" id="demo">
+                            @*<input type="text" id="startDate" class="form-control ui-datepicker-current ui-datepicker"  />*@
+                            @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control datepicker", onkeydown = "return false", onpaste = "return false", @id = "sDate", placeholder = "Select Start Date" })
+                            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger ", @id="sError",  })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker", onkeydown = "return false", onpaste = "return false", @id = "eDate", placeholder ="Select End Date" })
+                            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger", @id = "end" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10 bfh-timepicker">
+                            @Html.TextBoxFor(model => model.StartTime,null ,new { @class = " form-control timepicker", @id = "sTime" } )
+                            @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.EndTime, null ,new { @class = "form-control timepicker", @id = "eTime" } )
+                            @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </form>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Rate, "Payment" ,htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @id = "rate" } })
+                        @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-2" style="justify-content:center">
+                        <a href="#" class="btn btn-default" onclick="calculate()" id="calc">Calculate <i class="glyphicon glyphicon-c"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+            <br /><br />
+            <div class=" col-md-offset-1 col-md-3 content">
+                <h3>Recommended Rate for Different Skills</h3>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6"><strong>Skill</strong> </div><div class="col-md-6"><strong>Hourly Rate(R)</strong></div>
+                </div>
+
+                @foreach (var skill in ViewBag.Skills)
+                {
+                    <div class="row" style="text-align:left">
+                        <div class="col-md-6">@skill.SkillDescription</div><div class="col-md-6">@skill.Recom_Rate</div>
+                    </div>
+                }
+            </div>
+            <input type="hidden" id="hiddenRate" />
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a href="#" class="close" data-dismiss="modal">&times;</a>
+                            <h3 class="modal-title">Recommended Rate Calculation</h3>
+                        </div>
+                        <div class="modal-body">
+                            <h3 style="font-family:'Californian FB'">Recommended Payment for this job is - R<label for="rate"></label></h3>
+                            <h4 style="font-family:'Californian FB'">The recommended rate has been calculated according to the following selections:</h4>
+                            <p style="font-family:'Californian FB'">
+                                Skill: <label for="skill"></label><br />
+                                Start Date: <label for="sDate"></label> <br />
+                                End Date: <label for="eDate"></label> <br />
+                                Start Time: <label for="sTime"></label> <br />
+                                End Time: <label for="eTime"></label><br />
+                                Hourly Rate:R <label for="hr"></label><br />
+                                Total Cost for Job: R<label for="totCost"></label>
+                                <br />
+                                To use this rate, please click apply below.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-danger" data-dismiss="modal">Cancel</a>
+                            <a href="#" class="btn btn-success" onclick="ApplyRate()">Apply</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Profile", "Index")
+</div>
+
+@section Scripts {
+
+    <script>
+
+        var ApplyRate = function () {
+            $("#rate").val($("#hiddenRate").val());
+            $("#myModal").modal("hide");
+            $("#rate").focus();
+            $("#rate").$this
+        }
+
+        
+        var calculate = function () {
+            
+            var id = $("#Skill").val();
+            var skill = $("#Skill :selected").text();
+            var eT = $("#eTime").val();
+            var sT = $("#sTime").val();
+            var sDate = $("#sDate").val();
+            var eDate = $("#eDate").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Jobs/Calculate",
+                data: { id: id, start: sDate, end: eDate, eTime: eT, sTime: sT },
+                success: function (data) {
+                    $("label[for=skill]").text(skill);
+                    $("label[for=sDate]").text(sDate);
+                    $("label[for=eDate]").text(eDate);
+                    $("label[for=sTime]").text(sT);
+                    $("label[for=eTime]").text(eT);
+                    $("label[for=hr").text(data.rate);
+                    $("label[for=rate]").text(data.JobPay);
+                    $("label[for=totCost").text(data.JobPay);
+                    $("#hiddenRate").val(data.JobPay);
+                    $("#myModal").modal("show");
+
+                }
+            })
+        }
+
+
+        var mDay = @Html.Raw(Json.Encode(ViewBag.minDay))
+        var mYear = @Html.Raw(Json.Encode(ViewBag.minYear))
+        var mMonth = @Html.Raw(Json.Encode(ViewBag.minMonth));
+        var stringDate = @Html.Raw(Json.Encode(ViewBag.stringDate));
+
+
+        $(function () {
+            $("#sDate").datepicker({
+                numberOfMonths: 1,
+                minDate: new Date(mYear, mMonth -1, mDay),             
+                onSelect: function (selected) {
+                    $("#eDate").datepicker("option", "minDate", selected)
+                }
+
+
+            })
+
+            $("#eDate").datepicker({
+                numberOfMonths: 1,
+                minDate: new Date(mYear, mMonth - 1, mDay),
+                onSelect: function (selected) {
+                    $("#sDate").datepicker("option", "maxDate", selected)
+                }
+            })
+            })
+        $(function () {
+            
+            $("#sTime").timepicker({
+                timeFormat: 'HH:mm p',
+                durationTime: true,
+                minTime: '8:00am',
+                maxTime: '12:00pm',
+                defaultTime: '8:00am',
+                dropdown: true,
+                scrollbar: true,
+                change: function (selected) {
+                $("#eTime").timepicker("option", "minTime", selected)
+                }
+            })
+            
+            $("#eTime").timepicker({
+                durationTime: true,
+                timeFormat: 'HH:mm p',
+                maxTime: '4:00pm',                
+                dropdown: true,
+                scrollbar:true
+            })
+        })
+            
+        
+
+
+
+
+
+    </script>
+}

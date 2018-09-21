@@ -1,0 +1,95 @@
+﻿@model IPagedList<Exposure.Entities.Skill>
+@using PagedList;
+@using PagedList.Mvc;
+@using System.Web.Mvc;
+@using System.Web.Mvc;
+
+@{
+    ViewBag.Title = "Skills";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Skill Description
+        </th>
+        <th>
+            Recommended Rate
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in ViewBag.Skills)
+    {
+        <tr id="row_@item.SkillID">
+            <td>
+                @item.SkillDescription
+            </td>
+            <td>
+                <text>R</text>@item.Recom_Rate
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", new { id = item.SkillID})" class="btn btn-info" data-toggle="tooltip" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                &nbsp;
+                @*<a href="#" class="btn btn-danger" data-toggle="tooltip" title="Delete" onclick="ConfirmDelete(@item.SkillID)"><i class="glyphicon glyphicon-trash"></i></a>*@
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="col-md-10">
+    <div class="center">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+        Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Skills
+    </div>
+</div><br /><br /><br /> <br />
+<input type="hidden" id="hiddenSkillID" />
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Delete Skill?</h3>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to delete this skill? </h4>
+                <div style="text-align:center; display:none" id="loaderDiv">
+                    <img src="~/Images/InternetSlowdown_Day.gif" width="150" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success" onclick="DeleteSkill()">Confirm</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function ConfirmDelete(SkillID) {
+        $("#hiddenSkillID").val(SkillID);
+        $("#myModal").modal('show');
+    }
+
+    var DeleteSkill = function () {
+
+        $("#myLoaderDiv").show();
+
+        var SkillID = $("#hiddenSkillID").val();
+        $.ajax({
+            type: "POST",
+            url: "/Skills/Delete",
+            data: { id: SkillID },
+            success: function () {
+                $("#loaderDiv").hide();
+                $("#myModal").modal("hide");
+                $("#row_" + SkillID).remove();
+            }
+        });
+    }
+</script>

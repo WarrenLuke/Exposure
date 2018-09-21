@@ -1,0 +1,79 @@
+﻿@model Exposure.Entities.GeneralBusiness
+
+@{
+    ViewBag.Title = "Company Inforamtion";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        @foreach (var item in ViewBag.gb)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Company Banner</strong>
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Company Logo</strong>
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Company Name</strong>
+                </div>
+                <div class="col-md-6">
+                    @item.CompanyName
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Slogan</strong>
+                </div>
+                <div class="col-md-6">
+                    @item.Slogan
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Location</strong>
+                </div>
+                <div class="col-md-6">
+                    @item.Suburb.SubName
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    Telephone No.
+                </div>
+                <div class="col-md-6">
+                    @item.TelNo
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    Fax No:
+                </div>
+                <div class="col-md-6">
+                    @item.FaxNo
+                </div>
+            </div>
+            
+        }
+    </div>
+
+    <div class="col-md-2"></div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

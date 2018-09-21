@@ -30,11 +30,25 @@ namespace Exposure.Web.Controllers
         {
             var userID = User.Identity.GetUserId();
             var currentDate = DateTime.UtcNow;
-            var averageRating = db.Reviews.Where(x => x.Reviewee == userID).Average(x => x.Rating);
+            var ratingCount = db.Reviews.Where(x => x.Reviewee == userID).Count();
+            double avgRating = 0;
+            if (ratingCount != 0)
+            {
+                 avgRating = db.Reviews.Where(x => x.Reviewee == userID).Average(x => x.Rating);                 
+            }          
+
             var totalJobs = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Count();
             var upcomingJob = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == false).OrderByDescending(x => x.StartDate).First();
             var reviews = db.UserReviews.Where(u => u.Review.Reviewee == userID).Include(u => u.Review).Include(u => u.ApplicationUser).OrderByDescending(x => x.Review.ReportDate);
+            if(reviews.Count() == 0)
+            {
+                TempData["Reviews"] = "There are currently no reviews to display";
+            }
             var currentJob = db.JobApplications.Include(x => x.Job).Where(x => x.Job.EmployerID == userID).Where(x => x.Job.StartDate <= currentDate && x.Job.EndDate >= currentDate).Where(x => x.Response == Reply.Hired).Where(x => x.Job.Completed == false);
+            if (currentJob.Count() == 0)
+            {
+                TempData["currentJob"] = "You dont have any active jobs";
+            }
             var TotalSpent = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Sum(x => x.Rate);
             var monthAvg = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Average(x => x.Rate);
             PagedList<UserReviews> model = new PagedList<UserReviews>(reviews, page, pageSize);
@@ -59,14 +73,15 @@ namespace Exposure.Web.Controllers
 
             if(totalJobs== 0)
             {
-                TempData["totalJobs"] = "You have not advertised any Job.";
+                TempData["totalJobs"] = "You have not advertised any Jobs yet.";
             }
 
             ViewBag.TotalJobs = totalJobs;
             ViewData["upcomingJob"] = upcomingJob;
             ViewBag.UpcomingJob = upcomingJob;
             ViewBag.Reviews = reviews;
-            ViewBag.AvgRating = averageRating;
+            ViewBag.AvgRating = avgRating;
+            ViewBag.CurrentJob = currentJob;
 
             return View(model);
         }

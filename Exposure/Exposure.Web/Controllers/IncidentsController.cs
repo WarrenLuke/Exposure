@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
 using Microsoft.AspNet.Identity;
 using PagedList;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace Exposure.Web.Controllers
 {
@@ -49,6 +54,10 @@ namespace Exposure.Web.Controllers
                 jobs = jobs.Where(x => x.WorkerID == userId).Where(x=>x.Response == Reply.Hired);
             }
 
+
+            var incident = db.UserIncidents.Include(x => x.Incident);
+
+            ViewBag.Incidents = incident;
 
 
             return View(jobs);
@@ -109,7 +118,7 @@ namespace Exposure.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Exclude="ReportDate",Include = "IncidentID,JobID,Description,OffenderID,Progress")] Incident incident)
+        public async Task<ActionResult> Create([Bind(Exclude="ReportDate",Include = "IncidentID,JobID,Description,OffenderID,Progress")] Incident incident)
         {
             incident.ReportDate = DateTime.UtcNow;
             UserIncidents ui = new UserIncidents();
@@ -130,8 +139,12 @@ namespace Exposure.Web.Controllers
                 db.Incidents.Add(incident);
                 db.UserIncidents.Add(ui);
                 db.SaveChanges();
+
                 TempData["IncidentReport"] = "Incident reported successfully. Please allow a couple of days for admin to look into it.";
-                return RedirectToRoute("Default", new { controller = "Incidents", action="Index" });
+
+                await EmailIncidentReport(incident.OffenderID);
+
+                //return RedirectToRoute("Default", new { controller = "Incidents", action="Index" });
             }
 
             //ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);
@@ -204,6 +217,38 @@ namespace Exposure.Web.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public async Task<ActionResult> EmailIncidentReport(string ID)
+        {
+            var user = db.Users.Find(ID);
+            var FromEmail = "admin@exposure.com";
+            var apiKey = ConfigurationManager.AppSettings["Exposure"];
+            var client = new SendGridClient(apiKey);
+            var body = "Dear " + user.FirstName + "&nbsp;" + user.LastName +
+                ",<br/> Please be advised that an incident has been reported against you regarding a recent job that you have performed.<br/>" +
+                "One of our assistants will contact you over the next couple of days with more details.";
+            var subject = "Incident Reported";
+            var from = new EmailAddress(FromEmail, "Admin(Exposure)");
+            var to = new EmailAddress(user.Email);
+            var plainTextContent = body;
+            var htmlContent = body;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+
+            if (client != null)
+            {
+                await client.SendEmailAsync(msg);
+
+            }
+            else
+            {
+                Trace.TraceError("Failed to create web transport");
+                await Task.FromResult(0);
+
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

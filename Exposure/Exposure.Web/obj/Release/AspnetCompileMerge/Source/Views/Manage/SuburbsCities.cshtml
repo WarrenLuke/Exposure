@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Manage Suburbs & Cities";
+}
+<style>
+    .btn {
+        color: #ff6a00;
+    }
+
+    .glyphicon:hover,
+    i:hover {
+        color: #ffffff;
+    }
+
+    .panel, .panel-default {
+        border-color: #ff6a00;
+    }
+
+    .btn:hover {
+        color: #ffffff;
+        background-color: #ff6a00;
+    }
+</style>
+<h2>@ViewBag.Title</h2>
+<a href="@Url.Action("Index", "Manage")">Back to Management</a>
+<hr/>
+@using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="col-md-12">
+        <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-5" formaction="@Url.Action("Index", "Cities")">
+            <i class="glyphicon glyphicon-globe" style="font-size:xx-large"></i><br />
+            <h3>Manage Cities</h3>
+        </button>
+        <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-5" formaction="@Url.Action("Index", "Suburbs")">
+            <i class="glyphicon glyphicon-globe" style="font-size:xx-large"></i><br />
+            <h3>Manage Suburbs</h3>
+        </button>
+    </div>
+}
+

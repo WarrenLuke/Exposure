@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Exposure.Entities.City>
+
+@{
+    ViewBag.Title = "City Management";
+}
+
+<h2>@ViewBag.Title</h2>
+<p>
+    <a href="@Url.Action("Create", "Cities")" class="btn btn-default">Create New</a>
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CityAbbrev);
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CityAbbrev)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", "Cities", new { id = item.CityID})" class="btn btn-info"><i class="glyphicon glyphicon-pencil"></i></a>
+                            
+            </td>
+        </tr>
+    }
+
+</table>
+<p>
+    <a href="@Url.Action("SuburbsCities", "Manage")">Back to Management</a>
+
+</p>

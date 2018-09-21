@@ -762,6 +762,7 @@
     <Content Include="Images\logo.png" />
     <Content Include="Images\Male.jpg" />
     <Content Include="Images\noImg.png" />
+    <Content Include="Images\Report.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">

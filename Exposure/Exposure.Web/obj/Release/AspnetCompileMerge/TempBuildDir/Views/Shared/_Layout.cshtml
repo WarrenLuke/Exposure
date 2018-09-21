@@ -1,0 +1,192 @@
+﻿@using Microsoft.AspNet.Identity
+@using Exposure.Web.DataContexts;
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="~/Images/Logo.png" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title-Exposure</title>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <link href="~/Content/daterangepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/daterangepicker.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/bootstrap.css")
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <div class="container">
+        <div class="row hidden-md hidden-sm hidden-xs">
+            <div class="col-md-4"></div>
+            <div class="col-md-4" style="align-items:center">
+                <img src="~/Images/expo.png" class="img-thumbnail" alt="Exposure Logo" style=" max-width: inherit; height: 150px;" />
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img src="~/Images/Logo.png" height="49" width="90" />
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Worker"))
+                    {
+                        @Html.ActionLink("Exposure", "Dashboard", "Workers", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                    else if (User.IsInRole("Employer"))
+                    {
+                        @Html.ActionLink("Exposure", "Dashboard", "Employers", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Exposure", "Dashboard", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+
+                }
+                else
+                {
+                    @Html.ActionLink("Exposure", "Index", "Manage", new { area = "" }, new { @class = "navbar-brand" })
+                }
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar">
+                    @if (Request.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink("Dashboard", "Dashboard", "Home")</li>
+                        }
+                        else if (User.IsInRole("Worker"))
+                        {
+                            <li>@Html.ActionLink("Dashboard", "Dashboard", "Workers")</li>
+                        }
+                        else if (User.IsInRole("Employer"))
+                        {
+                            <li>@Html.ActionLink("Dashboard", "Dashboard", "Employers")</li>
+                        }
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+
+                    }
+                    <li>@Html.ActionLink("Jobs", "Search", "Jobs")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Help", "Help", "Home")</li>
+                </ul>
+
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="container" style="background-image=">
+            <div class="modal fade" id="notifications" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">
+                                <span><i class="glyphicon glyphicon-bell"></i> </span>Notifications
+                            </h4>
+                        </div>
+                        <div class="modal-body" id="myAllNotifications">
+                        </div>
+                        <div class="modal-footer">
+                            <a href="@Url.Action("Index", "Notifications")" class="btn btn-default">Go to Notifications</a>&nbsp;
+                            <a href="#" type="button" data-dismiss="modal">
+                                Close
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @RenderBody()
+        </div>
+        <div>
+            <hr />
+            <footer style="background-color:#ff6a00" class="footer wrapper fixed">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-1">
+                        <p style="text-align:left">
+                            Exposure <br />
+                            Nelson Mandela University- North Campus<br />
+                            Port Elizabeth<br />
+                            6059
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p style="text-align:left">
+                            Contact Details:<br />
+                            Tel.:041-487 5478<br />
+                            Fax: 041-487 5479<br />
+                            Email: admin@exposure.com
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p style="text-align:center">
+                            <br /><br /><br />
+                            &copy;Exposure - @DateTime.Now.Year
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        setInterval(function () {
+            UpdateNotifications();
+        }, 3000);
+    });
+
+    function UpdateNotifications() {
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetNotifications",
+            data: '{}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                if (response != null) {
+                    var j = ""; var p = 0; var Q = "";
+                    $.each(response, function (k, v) {
+                        p++;
+                        if (p < 6) {
+                            j += "<li><a><span><i class='glyphicon glyphicon-bell'></i></span> <strong>" + v.msg.toString() +
+                                "</strong> <br/> <div style='text-size:smaller;font-size:smaller; font-style:italic>' <i style='font-size:smaller'> updated " + v.updated.toString() + " seconds ago</i></div></a></li><hr/>";
+
+                        }
+                        Q += "<li style='list-style:none'><span><i class='glyphicon glyphicon-bell'></i></span> <strong>" + v.msg.toString() +
+                            "</strong> <br/> <div style='text-align:right; font-size:smaller; font-style:italic'><i style='font-size:smaller'> Updated " + v.updated.toString() + " seconds ago...</i></div><hr/>";
+                    });
+                    $("#myNotifyList").html("");
+                    j += "<li><a data-toggle='modal' data-target='#notifications'> <div style='text-align:center'><strong> Show more</strong></div></li>";
+
+                    $('#myNotifyList').append(j);
+                    $('#countNotify').html("<span>" + p + "</span>");
+                    $('#myAllNotifications').html("");
+                    $('#myAllNotifications').append(Q);
+                }
+            },
+            failure: function (response) {
+                alert(response.d);
+            }
+        })
+    }
+</script>

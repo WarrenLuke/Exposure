@@ -347,14 +347,22 @@ namespace Exposure.Web.Controllers
 
             var st = Convert.ToDouble(sTime.Hour);
             var et = Convert.ToDouble(eTime.Hour);
+            double totDays =0 ;
+            if (end != start)
+            {
+                var days = end - start;
+                totDays = Convert.ToDouble(days.Days);
 
-            var days = end - start;
-            var totDays = Convert.ToDouble(days.Days);
+            }
+            else
+            {
+                totDays = 1;
+            }
 
             var hours = et - st;
 
             var PayPerDay = sk.Recom_Rate * hours;
-            var jobPay = PayPerDay * totDays;
+            double jobPay = PayPerDay * totDays;
             var skill = sk.SkillDescription;
             var result = new { rate = sk.Recom_Rate, payPerDay = PayPerDay, JobPay = jobPay };
 

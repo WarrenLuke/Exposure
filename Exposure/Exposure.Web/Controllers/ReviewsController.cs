@@ -61,14 +61,14 @@ namespace Exposure.Web.Controllers
             var result = false;
             foreach (var item in reviews)
             {
-                if (employer != null)
+                if (worker != null)
                 {
                     if(item.Review.Reviewee == worker && item.Review.JobID==job)
                     {
                         result = true;
                     }
                 }
-                else
+                else if(employer != null)
                 {
                     if (item.Review.Reviewee == employer && item.Review.JobID == job)
                     {

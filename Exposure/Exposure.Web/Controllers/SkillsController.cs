@@ -88,9 +88,12 @@ namespace Exposure.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "SkillID,SkillDescription,Recom_Rate")] Skill skill)
         {
+            Skill sk = db.Skills.Find(skill.SkillID);
+            sk.Recom_Rate = skill.Recom_Rate;
+            sk.SkillDescription = skill.SkillDescription;
             if (ModelState.IsValid)
             {
-                db.Entry(skill).State = EntityState.Modified;
+                db.Entry(sk).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

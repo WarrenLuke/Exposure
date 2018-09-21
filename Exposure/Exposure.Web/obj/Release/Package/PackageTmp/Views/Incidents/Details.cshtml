@@ -1,0 +1,41 @@
+﻿@model Exposure.Entities.Incident
+@{
+    ViewBag.Title = "Details";
+}
+<h2>Details</h2>
+<div>
+    <h4>Incident</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.Title)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.AddressLine1)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.AddressLine2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job.StartDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Job.Rate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Offender)
+        </dt>
+
+        <dt>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Create", "REPORT", new { id = Model.IncidentID }) |
+    @Html.ActionLink("Back", "Index")
+</p>

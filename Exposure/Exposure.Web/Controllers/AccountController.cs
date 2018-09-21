@@ -294,7 +294,7 @@ namespace Exposure.Web.Controllers
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.AddressLine2 = model.AddressLine2;
-            user.Suburb.SuburbID = model.SuburbID;
+            user.SuburbID = model.SuburbID;
 
             var result = await UserManager.UpdateAsync(user);
 

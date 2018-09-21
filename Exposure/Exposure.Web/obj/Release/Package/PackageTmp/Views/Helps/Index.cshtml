@@ -1,0 +1,99 @@
+﻿@model IPagedList<Exposure.Entities.Help>
+@using PagedList;
+@using PagedList.Mvc;
+@using System.Web.Mvc;
+@{
+    ViewBag.Title = "Help Questions";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        <a href="@Url.Action("Index","Manage")">Back to Management</a>
+    </div>
+    <div class="col-md-push-7 col-md-2">
+        <a href="@Url.Action("Create","Helps")" class="btn btn-default">Add Question</a>
+    </div>
+</div>
+<br />
+<table class="table table-striped">
+    <tr>
+        <th width="350">
+            Question
+        </th>
+        <th>
+            Answer
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="row_@item.HelpID">
+            <td>
+                @Html.DisplayFor(modelItem => item.HelpQuestion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HelpAnswer)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit","Helps", new { id = item.HelpID })" class="btn btn-info" data-toggle="tooltip" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+
+                <a href="#" onclick="ConfirmDelete(@item.HelpID)" class="btn btn-danger" data-toggle="tooltip" title="Edit"><i class="glyphicon glyphicon-trash"></i></a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="col-md-10">
+    <div class="center">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+        Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount FAQs
+    </div>
+</div>
+<input type="hidden" id="hiddenHelpID" />
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Delete Job?</h3>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to delete this FAQ? </h4>
+                <div style="text-align:center; display:none" id="loaderDiv">
+                    <img src="~/Images/InternetSlowdown_Day.gif" width="150" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success" onclick="DeleteFAQ()">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function ConfirmDelete(HelpID) {
+        $("#hiddenHelpID").val(HelpID);
+        $("#myModal").modal('show');
+    }
+
+    var DeleteFAQ = function () {
+
+        $("#loaderDiv").show();
+
+        var HelpID = $("#hiddenHelpID").val();
+        $.ajax({
+            type: "POST",
+            url: "/Helps/Delete",
+            data: { id: HelpID },
+            success: function () {
+                $("#loaderDiv").hide();
+                $("#myModal").modal("hide");
+                $("#row_" + jobID).remove();
+            }
+        });
+    }
+</script>
