@@ -95,7 +95,7 @@ namespace Exposure.Web.Controllers
 
 
             if (user == null)
-            {                
+            {
                 ModelState.AddModelError("", "Incorrect Email or/and Password");
                 return View(model);
             }
@@ -333,6 +333,10 @@ namespace Exposure.Web.Controllers
             {
                 ViewBag.Skills = db.WorkerSkills.Include(w => w.Worker).Include(ws => ws.Worker.WorkerSkills).Where(w => w.WorkerID == Id);
             }
+            else if (userRole == "Employer")
+            {
+                ViewData["Employer"] = db.Employers.Find(Id);
+            }
             ViewBag.User = userDetails;
             ViewBag.Role = userRole;
             ViewBag.Reviews = reviews;
@@ -439,7 +443,7 @@ namespace Exposure.Web.Controllers
                         db.Workers.Add(worker);
                         db.SaveChanges();
                     }
-                    
+
                     //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

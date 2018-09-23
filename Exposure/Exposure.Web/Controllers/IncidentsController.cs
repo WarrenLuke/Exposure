@@ -54,8 +54,8 @@ namespace Exposure.Web.Controllers
                 jobs = jobs.Where(x => x.WorkerID == userId).Where(x=>x.Response == Reply.Hired);
             }
 
-
-            var incident = db.UserIncidents.Include(x => x.Incident);
+            
+            var incident = db.UserIncidents.Include(x => x.Incident).Include(x=>x.Incident.Job);
 
             ViewBag.Incidents = incident;
 
@@ -144,44 +144,30 @@ namespace Exposure.Web.Controllers
 
                 await EmailIncidentReport(incident.OffenderID);
 
-                //return RedirectToRoute("Default", new { controller = "Incidents", action="Index" });
+                return RedirectToRoute("Default", new { controller = "Incidents", action = "Index" });
             }
 
             //ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);
             return View(incident);
         }
 
-        // GET: Incidents/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Incident incident = db.Incidents.Find(id);
-            if (incident == null)
-            {
-                return HttpNotFound();
-            }
-            //ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);
-            return View(incident);
-        }
 
-        // POST: Incidents/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IncidentID,JobApplicationID,Description,Reporter,Offender,Progress")] Incident incident)
+
+        public JsonResult Update(int incidentID, Prog progress)
         {
-            if (ModelState.IsValid)
+            Incident incident = db.Incidents.Find(incidentID);
+            incident.Progress = progress;
+
+            bool result = false;
+
+            if (incident != null)
             {
                 db.Entry(incident).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                result = true;
             }
             //ViewBag.JobApplicationID = new SelectList(db.JobApplications, "JobApplicationID", "Motivation", incident.JobApplicationID);
-            return View(incident);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Incidents/Delete/5

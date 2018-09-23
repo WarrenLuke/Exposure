@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Exposure.Entities;
 using Exposure.Web.DataContexts;
+using Exposure.Web.Models;
 using Microsoft.AspNet.Identity;
 using PagedList;
 
@@ -19,7 +20,7 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: Jobs
-        public ActionResult Index(string id, int? skill, DateTime? frmDate, DateTime? toDate, string search, string sortOrder, int? location, int page=1, int pageSize = 10)
+        public ActionResult Index(string id, int? skill, DateTime? frmDate, DateTime? toDate, string search, string sortOrder, int? location, int page = 1, int pageSize = 10)
         {
 
             var jobs = db.Jobs.Include(j => j.Employer);
@@ -68,7 +69,7 @@ namespace Exposure.Web.Controllers
             }
             else if (User.IsInRole("Worker"))
             {
-                jobHistory = jobHistory.Where(j => j.WorkerID == id).Where(x=>x.Flagged!=true).Where(x=>x.Response == Reply.Hired);
+                jobHistory = jobHistory.Where(j => j.WorkerID == id).Where(x => x.Flagged != true).Where(x => x.Response == Reply.Hired);
             }
             #endregion
 
@@ -80,7 +81,7 @@ namespace Exposure.Web.Controllers
             }
             else if (frmDate != null)
             {
-                jobs = jobs.Where(x => x.StartDate >=  frmDate);
+                jobs = jobs.Where(x => x.StartDate >= frmDate);
                 jobHistory = jobHistory.Where(x => x.Job.StartDate >= frmDate);
 
             }
@@ -91,14 +92,14 @@ namespace Exposure.Web.Controllers
 
             }
             #endregion
-            
+
 
             if (!String.IsNullOrEmpty(id))
             {
                 jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.EmployerID.Equals(id));
             }
 
-            if(location != null)
+            if (location != null)
             {
                 jobs = jobs.Where(x => x.SuburbID == location);
             }
@@ -107,7 +108,7 @@ namespace Exposure.Web.Controllers
             {
                 jobs = jobs.Where(j => j.SkillID == skill);
             }
-            
+
 
             if (!String.IsNullOrEmpty(search))
             {
@@ -135,7 +136,7 @@ namespace Exposure.Web.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Search(string currentFilter, string sortOrder, int? skill, string search, int? location, DateTime? frmDate, DateTime? toDate, int page = 1, int pageSize=10)
+        public ActionResult Search(string currentFilter, string sortOrder, int? skill, string search, int? location, DateTime? frmDate, DateTime? toDate, int page = 1, int pageSize = 10)
         {
 
             if (search != null)
@@ -153,7 +154,8 @@ namespace Exposure.Web.Controllers
             ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.location = new SelectList(db.Suburbs, "SuburbID", "SubName");
-            var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(c => c.Completed == false);
+            var currentDate = DateTime.UtcNow;
+            var jobs = db.Jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(c => c.Completed == false).Where(x => x.ExpiryDate > currentDate);
 
             #region Sorting
             switch (sortOrder)
@@ -174,13 +176,13 @@ namespace Exposure.Web.Controllers
                     jobs = jobs.OrderBy(j => j.Rate);
                     break;
                 default:
-                    jobs = jobs.OrderBy(j => j.DateAdvertised);
+                    jobs = jobs.OrderByDescending(j => j.DateAdvertised);
                     break;
             }
             #endregion
 
             #region DateParams
-            if (frmDate != null && toDate != null) 
+            if (frmDate != null && toDate != null)
             {
                 jobs = jobs.Where(x => x.StartDate > frmDate && x.StartDate < toDate);
             }
@@ -197,7 +199,6 @@ namespace Exposure.Web.Controllers
             if (skill != null)
             {
                 jobs = jobs.Where(j => j.SkillID == skill);
-
             }
 
             if (location != null)
@@ -212,14 +213,13 @@ namespace Exposure.Web.Controllers
 
             var jobsList = jobs.ToList();
             PagedList<Job> model = new PagedList<Job>(jobsList, page, pageSize);
-            
+
             var rows = jobs.Count();
             if (rows == 0)
             {
                 TempData["Empty"] = "No jobs available. Please edit your search criteria or check back later";
-
             }
-            
+
             ViewBag.Jobs = model;
 
             return View(model);
@@ -308,7 +308,7 @@ namespace Exposure.Web.Controllers
             Job a = db.Jobs.Find(job.JobID);
 
             a.Completed = job.Completed;
-                       
+
 
             if (ModelState.IsValid)
             {
@@ -347,7 +347,7 @@ namespace Exposure.Web.Controllers
 
             var st = Convert.ToDouble(sTime.Hour);
             var et = Convert.ToDouble(eTime.Hour);
-            double totDays =0 ;
+            double totDays = 0;
             if (end != start)
             {
                 var days = end - start;
@@ -376,16 +376,22 @@ namespace Exposure.Web.Controllers
         {
             var skills = db.Skills.ToList().OrderBy(s => s.SkillDescription);
             ViewBag.Skills = skills;
-
+            var id = User.Identity.GetUserId();
+            ApplicationUser user = db.Users.Find(id);
             var minDate = DateTime.Now.AddDays(3);
             ViewBag.minMonth = minDate.Month;
             ViewBag.minDay = minDate.Day;
             ViewBag.minYear = minDate.Year;
             ViewBag.stringDate = minDate.ToString();
 
+            ViewData["User"] = user;
             ViewBag.EmployerName = User.Identity.Name;
             ViewBag.SkillID = new SelectList(db.Skills.OrderBy(x => x.SkillDescription), "SkillID", "SkillDescription");
-            ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(s => s.SubName), "SuburbID", "SubName");
+            ViewBag.SuburbID = new SelectList(db.Suburbs.OrderBy(s => s.SubName), "SuburbID", "SubName", user.SuburbID );
+            Job job = new Job();
+            job.AddressLine1 = user.AddressLine1;
+            job.AddressLine2 = user.AddressLine2;
+            ViewData["Job"] = job;
             return View();
         }
 
@@ -398,8 +404,10 @@ namespace Exposure.Web.Controllers
         public ActionResult Create([Bind(Exclude = "EmployerID, DateAdvertised", Include = "JobID,Title,StartDate, EndDate,SkillID,Description,StartTime,EndTime,Rate,SuburbID, AddressLine1,AddressLine2")] Job job)
         {
             job.EmployerID = User.Identity.GetUserId();
+
             //var sDate = job.StartDate;
             job.DateAdvertised = DateTime.UtcNow;
+            job.ExpiryDate = job.StartDate.AddDays(-1);
 
             Notification notice = new Notification();
             var skill = job.SkillID;
@@ -407,6 +415,7 @@ namespace Exposure.Web.Controllers
             var workers = db.WorkerSkills.Where(x => x.SkillID == skill);
             var Name = skillName.FirstOrDefault();
             var state = ModelState;
+
             if (ModelState.IsValid)
             {
                 foreach (var item in workers)
@@ -455,7 +464,7 @@ namespace Exposure.Web.Controllers
             ViewBag.minDay = minDate.Day;
             ViewBag.minYear = minDate.Year;
             #endregion
-            
+
             #region defaultDate
             var endDate = Convert.ToDateTime(job.EndDate);
             ViewBag.eMonth = endDate.Month.ToString();
@@ -479,7 +488,7 @@ namespace Exposure.Web.Controllers
             #endregion
 
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", job.SuburbID);
-            ViewBag.JobID = id;         
+            ViewBag.JobID = id;
 
             return View(job);
 

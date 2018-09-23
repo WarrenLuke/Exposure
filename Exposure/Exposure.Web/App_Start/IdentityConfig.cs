@@ -31,7 +31,7 @@ namespace Exposure.Web
 
         public async Task configSendGridasync(IdentityMessage message)
         {
-            var apiKey = ConfigurationManager.AppSettings["ExposureKey"];
+            var apiKey = ConfigurationManager.AppSettings["Exposure"];
             var client = new SendGridClient(apiKey);
             var body = message.Body;
             var subject = message.Subject;

@@ -1,79 +1,101 @@
 ﻿@model Exposure.Entities.GeneralBusiness
+@using Exposure.Entities
 
 @{
-    ViewBag.Title = "Company Inforamtion";
+    ViewBag.Title = "Company Information";
+    var gb = (GeneralBusiness)ViewData["General"];
 }
 
 <h2>@ViewBag.Title</h2>
+<a href="@Url.Action("Index", "Manage")">Back to Management</a>
 <hr />
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        @foreach (var item in ViewBag.gb)
-        {
+@using (Html.BeginForm("Edit", "GeneralBusinesses", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+{
+    
+    <div class="row ">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default" style="padding:4em">
             <div class="row">
-                <div class="col-md-6">
-                    <strong>Company Banner</strong>
-                </div>
-                <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
 
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <strong>Company Logo</strong>
-                </div>
-                <div class="col-md-6">
+                        <h4><strong>Company Banner</strong></h4>
+                        <div class="col-md-12">
+                            <img src="@Url.Action("Banner", "Home")" class="col-md-12" style="width:220px;height:220px; background: #FFFFFF; border:double;
+                    border-radius: 0px;
+                    width:inherit;
+                    margin: auto;
+                    padding: 6px;
+                    " />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Company Logo</h4>
 
+                        <div class="col-md-6">
+                            <img src="@Url.Action("Logo", "Home")" class="col-md-12" style="width:220px;height:220px; align-content:center; background: #FFFFFF;border:double;
+                        margin: auto;
+                        border-radius: 50px;
+                        padding: 6px;
+                        " />
+                        </div>
+                    </div>
                 </div>
+
             </div>
+            <br />
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <strong>Company Name</strong>
                 </div>
                 <div class="col-md-6">
-                    @item.CompanyName
+                    @gb.CompanyName
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <strong>Slogan</strong>
                 </div>
                 <div class="col-md-6">
-                    @item.Slogan
+                    @gb.Slogan
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <strong>Location</strong>
                 </div>
                 <div class="col-md-6">
-                    @item.Suburb.SubName
+                    @gb.Suburb.SubName
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    Telephone No.
+                <div class="col-md-4">
+                    <strong>Telephone No.</strong>
                 </div>
                 <div class="col-md-6">
-                    @item.TelNo
+                    @gb.TelNo
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    Fax No:
+                <div class="col-md-4">
+                    <strong>Fax No:</strong>
                 </div>
-                <div class="col-md-6">
-                    @item.FaxNo
+                <div class="col-md-4">
+                    @gb.FaxNo
                 </div>
             </div>
-            
-        }
+            <input type="hidden" id="id" value="@gb.ID" />
+            <br />
+            <div class="row">
+                <div class="col-md-12" style="text-align:right">
+                    <a href="@Url.Action("Edit", "GeneralBusinesses", new { id= gb.ID })" class="btn btn-default">Edit</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2"></div>
     </div>
 
-    <div class="col-md-2"></div>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+}
+
+

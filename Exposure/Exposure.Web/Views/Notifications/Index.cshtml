@@ -12,6 +12,7 @@
 @foreach (var item in ViewBag.Notifications)
 {
     <div class="panel panel-default">
+        <span></span>
         <div class="panel-body">
             <div class="col-md-1">
                 <span><i class="glyphicon glyphicon-bell" style="font-size:xx-large"></i></span>
@@ -27,7 +28,7 @@
                 }
                 @if (item.inc != null)
                 {
-                    <input type="button" onclick="@Url.Action("Details", "Incidents", new {id = item.incident })" value="View" />
+                    <a href="@Url.Action("Details", "Incidents", new {id = item.inc })" class="btn btn-default">View </a>
                 }
             </div>
         </div>

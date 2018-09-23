@@ -35,7 +35,8 @@ namespace Exposure.Web
                       "~/Content/bootstrap.css",
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery.timepicker.css",
-                      "~/Content/daterangepicker.css"
+                      "~/Content/daterangepicker.css",
+                      "~/Content/DataTables/css/"
                       ));
         }
     }

@@ -38,7 +38,7 @@ namespace Exposure.Web.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.gb = generalBusiness;
+            ViewData["General"] = generalBusiness;
             return View(generalBusiness);
         }
         
@@ -98,15 +98,23 @@ namespace Exposure.Web.Controllers
         }
 
         // GET: GeneralBusinesses/Edit/5
-        public ActionResult Edit()
+        public ActionResult Edit(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             
-            GeneralBusiness generalBusiness = db.GeneralBusinesses.FirstOrDefault();
+            GeneralBusiness generalBusiness = db.GeneralBusinesses.Find(id);
 
             if (generalBusiness == null)
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Suburbs = new SelectList(db.Suburbs, "SuburbID", "SubName", generalBusiness.SuburbID);
+
+
             return View(generalBusiness);
         }
 

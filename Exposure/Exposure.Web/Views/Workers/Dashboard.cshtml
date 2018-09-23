@@ -43,10 +43,10 @@
             <button type="submit" class="btn panel panel-default panel-body col-md-3" formaction="@Url.Action("Index", "Jobs", new { id= User.Identity.GetUserId()})">
                 <h3><span><i class="glyphicon glyphicon-briefcase"></i></span>&nbsp;&nbsp;Job History</h3>
             </button>
-            <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-4" formaction="@Url.Action("Index", "Jobs", new { id= User.Identity.GetUserId()})">
+            <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-4" formaction="@Url.Action("Index", "Incidents", new { id= User.Identity.GetUserId()})">
                 <h3><span><i class="glyphicon glyphicon-exclamation-sign"></i></span>&nbsp;Report Incident</h3>
             </button>
-            <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-3" formaction="@Url.Action("Index", "Jobs", new { id= User.Identity.GetUserId()})">
+            <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-3" formaction="@Url.Action("Index", "JobApplications", new { id= User.Identity.GetUserId()})">
                 <h3><span><i class="glyphicon glyphicon-th-list"></i></span>&nbsp;Job Applications<span class="badge" style="color:white"></span></h3>
             </button>
         </div>

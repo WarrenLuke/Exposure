@@ -21,7 +21,7 @@ namespace Exposure.Web.Controllers
         public ActionResult Index(int page =1, int pageSize=10)
         {
             var user = User.Identity.GetUserId();
-            var notifications = db.Notifications.Where(x => x.User == user).OrderBy(x => x.Updated).Include(x=>x.Jobs);
+            var notifications = db.Notifications.Where(x => x.User == user).OrderBy(x => x.Updated).Include(x=>x.Jobs).Include(x=>x.Incident);
             PagedList<Notification> model = new PagedList<Notification>(notifications, page, pageSize);
             ViewBag.Notifications = model;
             

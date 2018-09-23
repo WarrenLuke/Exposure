@@ -19,10 +19,50 @@ namespace Exposure.Web.Controllers
         private IdentityDb db = new IdentityDb();
 
         // GET: JobApplications
-        public ActionResult Index(int? skill)
+        public ActionResult Index(string currentFilter, string sortOrder, int? skill, string search, int? location, DateTime? frmDate, DateTime? toDate, int page = 1, int pageSize = 10)
         {
 
             var jobApplications = db.JobApplications.Include(j => j.Job).Include(w => w.Worker).Include(e => e.Job.Employer).Include(s => s.Job.Skill).Where(f => f.Flagged.Equals(false));
+
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    jobApplications = jobApplications.OrderBy(j => j.Job.Title);
+                    break;
+                case "date":
+                    jobApplications = jobApplications.OrderByDescending(j => j.Job.DateAdvertised);
+                    break;
+                case "date_desc":
+                    jobApplications = jobApplications.OrderBy(j => j.Job.DateAdvertised);
+                    break;
+                case "rate_desc":
+                    jobApplications = jobApplications.OrderByDescending(j => j.Job.Rate);
+                    break;
+                case "rate":
+                    jobApplications = jobApplications.OrderBy(j => j.Job.Rate);
+                    break;
+                default:
+                    jobApplications = jobApplications.OrderByDescending(j => j.Job.DateAdvertised);
+                    break;
+            }
+
+            if (frmDate != null && toDate != null)
+            {
+                jobApplications = jobApplications.Where(x => x.Job.StartDate > frmDate && x.Job.StartDate < toDate);
+            }
+            else if (frmDate != null)
+            {
+                jobApplications = jobApplications.Where(x => x.Job.StartDate == frmDate);
+            }
+            else if (toDate != null)
+            {
+                jobApplications = jobApplications.Where(x => x.Job.StartDate == toDate);
+            }
+
+            if (location != null)
+            {
+                jobApplications = jobApplications.Where(j => j.Job.Suburb.SuburbID == location);
+            }
 
             if (User.IsInRole("Worker"))
             {
@@ -51,6 +91,7 @@ namespace Exposure.Web.Controllers
             ViewBag.Hired = Reply.Hired;
             ViewBag.Completed = true;
             ViewBag.Applications = jobApplications;
+            ViewBag.location = new SelectList(db.Suburbs, "SuburbID", "SubName");
             ViewBag.skill = new SelectList(db.Skills.OrderBy(x => x.SkillDescription), "SkillID", "SkillDescription");
 
             return View();
@@ -77,15 +118,23 @@ namespace Exposure.Web.Controllers
         {
             var userId = User.Identity.GetUserId();
             Worker worker = db.Workers.Find(userId);
+            var currentDate = DateTime.UtcNow;
 
             var skills = db.WorkerSkills.Include(a => a.Worker).Include(q => q.Skill).Where(w => w.Worker.WorkerID == userId);
-            var job = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID.Equals(id));
+            var job = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID==id);
+            var jobExpiry = db.Jobs.Include(s => s.Employer).Include(s => s.Employer.ApplicationUser).Include(s => s.Suburb).Where(s => s.JobID == id).Where(x => x.ExpiryDate > currentDate);
+
             ViewBag.Job = job;
             ViewBag.JobID = id;
             var Appcheck = 0;
             var check = skills.Count();
             var apps = db.JobApplications.Where(w => w.WorkerID == userId).Where(j => j.JobID == id).Where(x=>x.Flagged==false).Count();
             var totApps = db.JobApplications.Where(j => j.JobID == id).Count();
+
+            if(jobExpiry.Count() == 0)
+            {
+                TempData["AppClose"] = "Applications for this job has closed.";
+            }
 
             ViewBag.totApps = totApps;
             if (apps > 0)

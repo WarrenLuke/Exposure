@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Job Application";
 }
-@if(ViewBag.Notification != null)
+@if (ViewBag.Notification != null)
 {
     <a href="@Url.Action("Index","Notifications")">Back to Notifcations</a>
 }
@@ -12,6 +12,14 @@ else
     <a href="@Url.Action("Search", "Jobs")">Back to Search</a>
 }
 <h2>@ViewBag.Title</h2>
+
+@if (TempData["AppClose"] != null)
+{
+<div class="alert alert-danger alert-dismissable" role="alert">
+
+    @TempData["AppClose"] Please <a href=@Url.Action("Search", "Jobs")> click here</a> to browse other available jobs.
+</div>
+}
 
 @if (TempData["ApplicationSuccess"] != null)
 {
@@ -24,14 +32,14 @@ else
 }
 @if (TempData["ApplicationTrue"] != null)
 {
-    <div class="alert alert-danger alert-dismissable" role="alert">        
+    <div class="alert alert-danger alert-dismissable" role="alert">
         @TempData["ApplicationTrue"] <a href="@Url.Action("Search", "Jobs")">Click here</a> to select a different job.
     </div>
 }
 
 @if (TempData["Skill"] != null)
-{    
-    <div class="alert alert-danger alert-dismissable" role="alert">        
+{
+    <div class="alert alert-danger alert-dismissable" role="alert">
         @TempData["Skill"]. <a href="@Url.Action("Create", "WorkerSkills", new {returnUrl = Url.Action(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString()) })">Click here</a> here to add it to your profile.
     </div>
 }
@@ -94,52 +102,52 @@ else
             {
                 @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @foreach (var job in ViewBag.Job)
-                {
-                    <div class="row">
-                        <div class="col-md-3"><strong>Job:</strong></div>
-                        <div class="col-md-5">@job.Title   </div>
-                        @Html.Hidden("JobID")
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3"><strong>Job Description:</strong></div>
-                        <div class="col-md-5">@job.Description</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3"><strong>Job Location:</strong></div>
-                        <div class="col-md-5">
-                            @job.AddressLine1 <br />
-                            @if (job.AddressLine2 != null)
-                            {
-                                @job.AddressLine2; <br />
-                            }
-                            @job.Suburb.SubName <br />
-                            @job.Suburb.City.CityName
+                <div class="form-horizontal">
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @foreach (var job in ViewBag.Job)
+                    {
+                        <div class="row">
+                            <div class="col-md-3"><strong>Job:</strong></div>
+                            <div class="col-md-5">@job.Title   </div>
+                            @Html.Hidden("JobID")
                         </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-3"><strong>@Html.LabelFor(model => model.Motivation, htmlAttributes: new { @class = "control-label col-md-2" })</strong></div>
-                            <div class="col-md-8">
-                                @Html.TextAreaFor(model => model.Motivation, new { @class = "form-control", rows = 5, columns = 70 })
-                                @Html.ValidationMessageFor(model => model.Motivation, "", new { @class = "text-danger" })
+
+                        <div class="row">
+                            <div class="col-md-3"><strong>Job Description:</strong></div>
+                            <div class="col-md-5">@job.Description</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3"><strong>Job Location:</strong></div>
+                            <div class="col-md-5">
+                                @job.AddressLine1 <br />
+                                @if (job.AddressLine2 != null)
+                                {
+                                    @job.AddressLine2; <br />
+                                }
+                                @job.Suburb.SubName <br />
+                                @job.Suburb.City.CityName
                             </div>
                         </div>
-                    </div>                     
-                           
-                    <div class="form-actions">
-                        <div class="col-md-offset-9 col-md-6">
-                            <input type="submit" value="Apply" class="btn btn-default" @(TempData["Skill"]!= null ? "disabled='disabled'" : "")  @(TempData["ApplicationTrue"]!=null? "disabled='disabled'":"")/>
+                        <br />
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-3"><strong>@Html.LabelFor(model => model.Motivation, htmlAttributes: new { @class = "control-label col-md-2" })</strong></div>
+                                <div class="col-md-8">
+                                    @Html.TextAreaFor(model => model.Motivation, new { @class = "form-control", rows = 5, columns = 70 })
+                                    @Html.ValidationMessageFor(model => model.Motivation, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                }
-            </div>
+
+                        <div class="form-actions">
+                            <div class="col-md-offset-9 col-md-6">
+                                <input type="submit" value="Apply" class="btn btn-default" @(TempData["Skill"] != null ? "disabled='disabled'" : "") @(TempData["ApplicationTrue"] != null ? "disabled='disabled'" : "") @(TempData["AppClose"] != null ? "disabled='disabled'" : "")  />
+                            </div>
+                        </div>
+                    }
+                </div>
             }
         </div>
     </div>

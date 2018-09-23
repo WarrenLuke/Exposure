@@ -2,3 +2,5 @@
 *.ldf
 storage.ide-shm
 storage.ide-wal
+Web.config
+Exposure.Web.dll.config

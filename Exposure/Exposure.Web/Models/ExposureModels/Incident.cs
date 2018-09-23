@@ -36,7 +36,7 @@ namespace Exposure.Entities
         public Job Job { get; set; }
         
         [DefaultValue("Pending")]
-        public Progress Progress { get; set; }        
+        public Prog Progress { get; set; }        
 
         public DateTime? ReportDate { get; set; }
     }

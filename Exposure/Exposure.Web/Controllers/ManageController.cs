@@ -13,6 +13,7 @@ using Exposure.Web.DataContexts;
 using System.Data;
 using System.Data.Entity;
 using PagedList;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Exposure.Web.Controllers
 {
@@ -134,7 +135,7 @@ namespace Exposure.Web.Controllers
                 ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value == Reply.Pending).Where(j => j.Flagged == false).Where(e => e.Job.EmployerID == userId).Where(x => x.Job.Employer.ApplicationUser.LastVisited < date).Count();
             }
 
-            if(User.IsInRole("Worker"))
+            if (User.IsInRole("Worker"))
             {
                 ViewBag.JobApp = db.JobApplications.Where(j => j.Response.Value == Reply.Hired || j.Response.Value == Reply.Rejected).Where(j => j.Flagged == false).Where(e => e.WorkerID == userId).Where(x => x.Worker.ApplicationUser.LastVisited < date).Count();
             }
@@ -152,11 +153,28 @@ namespace Exposure.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult AllUsers(int page = 1, int pageSize = 10)
+        public ActionResult AllUsers(string search, string userType, int page = 1, int pageSize = 10)
         {
             var userID = User.Identity.GetUserId();
+            IdentityRole role;
+            string RID = "00as";
             var users = db.Users.Include(w => w.Worker).Include(e => e.Employer).Where(j => j.Id != userID).OrderBy(x => x.FirstName + x.LastName).ToList();
-            PagedList<ApplicationUser> model = new PagedList<ApplicationUser>(users, page, pageSize);
+            PagedList<ApplicationUser> model;
+
+            if (!String.IsNullOrWhiteSpace(userType))
+            {
+                role = db.Roles.First(r => r.Name == userType);
+                RID = role.Id;
+                users = users.Where(x => x.Roles.FirstOrDefault().RoleId == RID).ToList();
+            }
+            
+
+            if (search != null)
+            {
+                users = users.Where(x => x.FirstName.Contains(search) || x.LastName.Contains(search)).ToList();
+            }
+
+            model = new PagedList<ApplicationUser>(users, page, pageSize);
             ViewBag.Users = model;
 
             return View(model);
@@ -166,6 +184,7 @@ namespace Exposure.Web.Controllers
         public ActionResult GeneralBusiness()
         {
             var gb = db.GeneralBusinesses.Count();
+            var gbID = db.GeneralBusinesses.FirstOrDefault();
 
             if (gb == 0)
             {
@@ -173,7 +192,7 @@ namespace Exposure.Web.Controllers
             }
             else
             {
-                return RedirectToRoute("Default", new { controller = "GeneralBusinesses", action = "Details", id = 1 });
+                return RedirectToRoute("Default", new { controller = "GeneralBusinesses", action = "Details", id = gbID.ID });
             }
         }
 

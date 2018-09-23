@@ -188,7 +188,9 @@ namespace Exposure.Web.Controllers
 
         public ActionResult Email(string email)
         {
+            
             EmailFormModel model = new EmailFormModel();
+
             model.ToEmail = email;            
             return View();
         }
@@ -197,8 +199,9 @@ namespace Exposure.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Email(EmailFormModel model)
         {
+            
             model.FromEmail = "admin@exposure.com";
-            var apiKey = ConfigurationManager.AppSettings["ExposureKey"];
+            var apiKey = ConfigurationManager.AppSettings["Exposure"];
             var client = new SendGridClient(apiKey);
             var body = model.Message;
             var subject = model.Subject;
@@ -307,7 +310,13 @@ namespace Exposure.Web.Controllers
         {
             List<Notice> notifications = new List<Notice>();
             var Id = User.Identity.GetUserId();
-            var notice = db.Notifications.Where(x => x.User == Id).Where(x => x.Flagged == false).OrderByDescending(x=>x.Updated);
+            var user = db.Users.Find(Id);
+            var notice = db.Notifications.Where(x => x.User == Id).Where(x => x.Flagged == false).OrderByDescending(x => x.Updated);
+
+            if (user != null)
+            {
+                notice = notice.Where(x => x.Updated > user.LastVisited).OrderByDescending(x => x.Updated);
+            }
 
             foreach (var item in notice)
             {
