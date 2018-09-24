@@ -607,8 +607,10 @@
     <Content Include="Images\noImg.png" />
     <Content Include="Images\Report.png" />
     <Content Include="Images\Reported.jpg" />
+    <Content Include="Images\subtle.jpg" />
     <Content Include="Images\Success.jpg" />
     <Content Include="Images\wall7.jpg" />
+    <Content Include="Images\Working men.jfif" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
