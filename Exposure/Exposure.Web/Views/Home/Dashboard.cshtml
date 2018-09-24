@@ -2,7 +2,23 @@
     ViewBag.Title = "Dashboard";
 }
 <script src="~/Scripts/Chart.min.js"></script>
-<h1>@ViewBag.Title</h1>
+<div class="row">
+    <div class="col-md-4">
+        <h1>@ViewBag.Title</h1>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="col-md-4">
+            <button type="submit" class="btn panel panel-default panel-body col-md-12" formaction="@Url.Action("Index", "Manage")">
+                <i class="glyphicon glyphicon-wrench" style="font-size:xx-large"></i><br />
+                <h3>Manage Site</h3>
+            </button>
+        </div>
+    }
+
+</div>
+
+
 <hr />
 <style>
 
@@ -44,7 +60,7 @@
 
                 </div>
             </div>
-            
+
         </div>
     </div>
     <hr />
@@ -92,7 +108,8 @@
         <div class="panel panel-heading" style="background-color:antiquewhite">
             <h2 style="text-align:center">Site Activity</h2><p>(Users)</p>
         </div>
-        <div class="panel-body">
+        <br />
+        <div>
             @using (Html.BeginForm("Dashboard", "Home", FormMethod.Get))
             {
                 <div class="col-md-8">
@@ -100,13 +117,13 @@
                         <text>Between:<br /><i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear Dates">&times;</a></i> </text>
                     </div>
                     <div class="col-md-offset-1 col-md-4">
-                        @Html.TextBox("frmDate", null, new { @class = "form-control datepicker", @id = "frmDate", onpaste = "return false", onkeydown = "return false", placeholder = "Select begin date" })
+                        @Html.TextBox("sitefrmDate", null, new { @class = "form-control datepicker", @id = "sitefrmDate", onpaste = "return false", onkeydown = "return false", placeholder = "Select begin date" })
                     </div>
                     <div class="col-md-1">
                         <text>And:<br /><i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear Dates">&times;</a></i></text>
                     </div>
                     <div class="col-md-offset-1 col-md-4">
-                        @Html.TextBox("toDate", null, new { @class = "form-control datepicker", @id = "toDate", onpaste = "return false", onkeydown = "return false", placeholder = "Select end date" })
+                        @Html.TextBox("sitetoDate", null, new { @class = "form-control datepicker", @id = "sitetoDate", onpaste = "return false", onkeydown = "return false", placeholder = "Select end date" })
 
                     </div>
 
@@ -116,12 +133,13 @@
                 </div>
             }
         </div>
+        <br />
         <div class="row">
             <canvas id="siteActivity" class="col-md-12"></canvas>
         </div>
     </div>
 
-    
+
 }
 
 
@@ -129,14 +147,7 @@
 
 <script>
 
-    $(".daterangepicker-field").daterangepicker({
-        forceUpdate: true,
-        opens: 'left',
-        callback: function (startDate, endDate, period) {
-            $("#siteStartDate").val(startDate);
-            $("#siteEndDate").val(endDate);
-        }
-    })
+
     var doughTextPlugin = {
         beforeDraw: function (chart) {
             if (chart.config.options.elements.center) {
@@ -310,8 +321,10 @@
             datasets: [{
                 label: '# of Jobs',
                 data: jobReps,
-                backgroundColor: 'rgba(255,99,132,0.2)',
+                backgroundColor: '#ff6a00',
                 borderColor: '#ffffff',
+                color: '#ff6a00',
+                backgroundFill: '#ff6a00'
 
 
             }]
@@ -321,7 +334,7 @@
             maxBarThickness: 1,
             responsive: false,
             scales: {
-                
+
                 yAxes: [{
                     ticks: {
                         beginAtZero: true
@@ -384,6 +397,9 @@
     var Dates = function () {
         $("#frmDate").datepicker('setDate', null);
         $("#toDate").datepicker('setDate', null);
+        $("#sitefrmDate").datepicker('setDate', null);
+        $("#sitetoDate").datepicker('setDate', null);
+
     };
     $(function () {
         $("#frmDate").datepicker({
@@ -399,6 +415,18 @@
 
         })
 
+        $("#sitefrmDate").datepicker({
+            onSelect: function (selected) {
+                $("#sitetoDate").datepicker("option", "minDate", selected)
+            }
+        })
+
+        $("#sitetoDate").datepicker({
+            onSelect: function (selected) {
+                $("#sitefrmDate").datepicker("option", "maxDate", selected)
+            }
+
+        })
 
     });
 </script>

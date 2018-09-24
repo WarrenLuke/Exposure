@@ -6,9 +6,9 @@
 @using Microsoft.AspNet.Identity
 @using System.Web.Mvc
 @{
-    ViewBag.Title = "Dashboard";
+    ViewBag.Title = "Employer Dashboard";
     var rating = 5;
-    var job = (Job)ViewData["upcomingJob"];
+    var job = ViewBag.UpcomingJob;
     var i = 1;
     var x = 1;
 }
@@ -31,7 +31,7 @@
         background-color: #ff6a00;
     }
 </style>
-<h2>@ViewBag.Title</h2>
+    <h2>@ViewBag.Title</h2>
 <hr />
 <div class="container">
     @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -40,10 +40,10 @@
             <button type="submit" class="btn panel panel-default panel-body col-md-3" formaction="@Url.Action("Index", "Jobs", new { id= User.Identity.GetUserId()})">
                 <h3><span><i class="glyphicon glyphicon-briefcase"></i></span>&nbsp;&nbsp;Job Management</h3>
             </button>
-            <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-4" formaction="@Url.Action("Index", "Jobs", new { id= User.Identity.GetUserId()})">
+            <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-4" formaction="@Url.Action("Index", "Incidents", new { id= User.Identity.GetUserId()})">
                 <h3><span><i class="glyphicon glyphicon-exclamation-sign"></i></span>&nbsp;Report Incident</h3>
             </button>
-            <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-3" formaction="@Url.Action("Index", "Jobs", new { id= User.Identity.GetUserId()})">
+            <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-3" formaction="@Url.Action("Index", "JobApplications", new { id= User.Identity.GetUserId()})">
                 <h3><span><i class="glyphicon glyphicon-th-list"></i></span>&nbsp;Job Applications<span class="badge" style="color:white"></span></h3>
             </button>
         </div>
@@ -90,7 +90,7 @@
                 <div class="col-md-6">
                     <div class="panel panel-default col-md-12" style="box-shadow:none; padding:6px">
                         <h4>Upcoming Job:</h4>
-                        @if (job == null)
+                        @if (ViewBag.UpcomingJobCount == 0)
                         {
                             <text>None</text>
                         }
@@ -174,8 +174,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h4><span><i class="glyphicon glyphicon-user"></i></span>Worker</h4>
-                            <hr />
-                            <br /><br />
+                            <hr />                            
                             <div class="row">
                                 <div class="col-md-4">
                                     <img src="@Url.Action("ProfilePic", "Home", new { id=item.WorkerID})" height="120" width="120" style="background: #ff6a00;
@@ -184,7 +183,7 @@
                                         border-radius:90px;
                                         padding:2px;" />
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-6"><strong>Worker Name:</strong> </div>  <div class="col-md-6">@item.Worker.ApplicationUser.FirstName @item.Worker.ApplicationUser.LastName</div>
                                     </div>
@@ -200,7 +199,8 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h4><span><i class="glyphicon glyphicon-briefcase"></i></span>Job Overview</h4>
+                            <h4><span><i class="glyphicon glyphicon-briefcase"></i></span>&nbsp;Job Overview</h4>
+                            <hr/>
                             <div class="row">
                                 <div class="col-md-6">
                                     <strong><span><i class="glyphicon glyphicon-pencil"></i></span>&nbsp;Title</strong>
@@ -235,7 +235,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <strong><span><i class="glyphicon glyphicon-usd"</span>&nbsp;Payment</strong>
+                                    <strong><span><i class="glyphicon glyphicon-usd"></i></span>&nbsp;Payment</strong>
                                 </div>
                                 <div class="col-md-6">
                                     <text>R</text>@item.Job.Rate
@@ -254,7 +254,8 @@
         <div class="row">
             <div class="panel panel-default panel-body" style="padding:6px">
                 @foreach (var rev in ViewBag.Reviews)
-                {
+                {                     
+                    x = 1;                    
                     <hr />
                     <div class="row">
                         <div class="col-md-2">

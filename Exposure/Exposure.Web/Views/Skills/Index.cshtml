@@ -7,11 +7,11 @@
 @{
     ViewBag.Title = "Skills";
 }
-
+<a href="@Url.Action("Index","Mange")">Back to Management</a>
 <h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a href="@Url.Action("Create","Skill")" classs="btn btn-default">Create Skill</a>
 </p>
 <table class="table">
     <tr>

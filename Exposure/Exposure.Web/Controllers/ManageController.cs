@@ -80,22 +80,25 @@ namespace Exposure.Web.Controllers
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+
             };
 
             if (User.IsInRole("Employer"))
             {
                 model = new IndexViewModel
                 {
-                    Location = UserManager.FindById(userId).Employer.SuburbID,
                     WorkName = UserManager.FindById(userId).Employer.WorkName,
                     WorkAddressLine1 = UserManager.FindById(userId).Employer.WorkAddress1,
                     WorkAddressLine2 = UserManager.FindById(userId).Employer.WorkAddress2,
-                    WorkNumber = UserManager.FindById(userId).Employer.WorkNumber,
+                    WorkNumber = UserManager.FindById(userId).Employer.WorkNumber
                 };
-                var empSub = db.Employers.Include(m => m.Suburb).Where(m => m.SuburbID == model.Location);
-                ViewBag.empSub = empSub;
+                var empSub = db.Employers.Where(x => x.EmployerID == userId).Select(x => x.Suburb.SubName).Distinct();
+                ViewBag.empSub = empSub.FirstOrDefault();
             }
+
+
+
             ApplicationUser user = UserManager.FindById(userId);
 
             user = new ApplicationUser
@@ -167,7 +170,7 @@ namespace Exposure.Web.Controllers
                 RID = role.Id;
                 users = users.Where(x => x.Roles.FirstOrDefault().RoleId == RID).ToList();
             }
-            
+
 
             if (search != null)
             {

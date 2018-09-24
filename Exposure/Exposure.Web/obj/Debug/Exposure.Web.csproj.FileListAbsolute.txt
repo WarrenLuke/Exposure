@@ -389,6 +389,12 @@ C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Ex
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\bin\SendGrid.pdb
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\bin\SendGrid.xml
 C:\Users\Warren Jonas\Documents\warren\NMMU\3rd year\ONT3660\Exposure\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.InboxRemoved.resources
+H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.CodeAnalysis.dll
+H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+H:\Project\Exposure\Exposure.Web\bin\roslyn\System.IO.Compression.dll
+H:\Project\Exposure\Exposure.Web\bin\roslyn\VBCSCompiler.exe
 H:\Project\Exposure\Exposure.Web\bin\ApplicationInsights.config
 H:\Project\Exposure\Exposure.Web\bin\Exposure.Web.dll.config
 H:\Project\Exposure\Exposure.Web\bin\Exposure.Web.dll
@@ -400,13 +406,9 @@ H:\Project\Exposure\Exposure.Web\bin\roslyn\csi.exe
 H:\Project\Exposure\Exposure.Web\bin\roslyn\csi.exe.config
 H:\Project\Exposure\Exposure.Web\bin\roslyn\csi.rsp
 H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
-H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.CodeAnalysis.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
-H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.CSharp.Core.targets
-H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.VisualBasic.Core.targets
 H:\Project\Exposure\Exposure.Web\bin\roslyn\Microsoft.Win32.Primitives.dll
@@ -416,7 +418,6 @@ H:\Project\Exposure\Exposure.Web\bin\roslyn\System.Console.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\System.Diagnostics.Process.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\System.Diagnostics.StackTrace.dll
-H:\Project\Exposure\Exposure.Web\bin\roslyn\System.IO.Compression.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\System.IO.FileSystem.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\System.IO.FileSystem.DriveInfo.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\System.IO.FileSystem.Primitives.dll
@@ -439,7 +440,6 @@ H:\Project\Exposure\Exposure.Web\bin\roslyn\System.Xml.XPath.XDocument.dll
 H:\Project\Exposure\Exposure.Web\bin\roslyn\vbc.exe
 H:\Project\Exposure\Exposure.Web\bin\roslyn\vbc.exe.config
 H:\Project\Exposure\Exposure.Web\bin\roslyn\vbc.rsp
-H:\Project\Exposure\Exposure.Web\bin\roslyn\VBCSCompiler.exe
 H:\Project\Exposure\Exposure.Web\bin\roslyn\VBCSCompiler.exe.config
 H:\Project\Exposure\Exposure.Web\bin\Antlr3.Runtime.dll
 H:\Project\Exposure\Exposure.Web\bin\EntityFramework.dll
@@ -525,7 +525,6 @@ H:\Project\Exposure\Exposure.Web\bin\Microsoft.AI.DependencyCollector.xml
 H:\Project\Exposure\Exposure.Web\bin\Microsoft.AI.ServerTelemetryChannel.xml
 H:\Project\Exposure\Exposure.Web\bin\Microsoft.AI.WindowsServer.xml
 H:\Project\Exposure\Exposure.Web\bin\Microsoft.AI.Web.xml
-H:\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.csprojResolveAssemblyReference.cache
 H:\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.Initial.resources
 H:\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.YearsOfExperience.resources
 H:\Project\Exposure\Exposure.Web\obj\Debug\Exposure.Web.DataContexts.IdentityMigrations.WorkerFK.resources

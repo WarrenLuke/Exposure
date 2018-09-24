@@ -28,7 +28,8 @@ namespace Exposure.Web.Controllers
     public class HomeController : Controller
     {
         private IdentityDb db = new IdentityDb();
-
+           
+        
         public ActionResult Index()
         {
             IdentityRole adRole = db.Roles.First(r => r.Name == "Admin");
@@ -41,7 +42,7 @@ namespace Exposure.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Dashboard(DateTime? toDate, DateTime? frmDate, string viewBy, DateTime? startDate, DateTime? endDate)
+        public ActionResult Dashboard(DateTime? sitefrmDate, DateTime? sitetoDate,DateTime? toDate, DateTime? frmDate, string viewBy)
         {
             #region jobs
             var jlist = db.Jobs.Include(x => x.Skill);
@@ -128,20 +129,18 @@ namespace Exposure.Web.Controllers
 
             #region SiteActivity  
 
-
-
             List<string> regDateReps = new List<string>();
-            if (startDate == null || endDate == null)
+            if (sitefrmDate == null || sitetoDate == null)
             {
-                startDate = DateTime.UtcNow.AddDays(-30);
-                endDate = DateTime.UtcNow;
+                sitefrmDate = DateTime.UtcNow.AddDays(-30);
+                sitetoDate = DateTime.UtcNow;
             }
 
-            while (startDate <= endDate)
+            while (sitefrmDate <= sitetoDate)
             {
-                var dateString = startDate.Value.ToShortDateString();
+                var dateString = sitefrmDate.Value.ToShortDateString();
                 regDateReps.Add(dateString);
-                startDate = startDate.Value.AddDays(1);
+                sitefrmDate = sitefrmDate.Value.AddDays(1);
             }
 
 
@@ -195,42 +194,14 @@ namespace Exposure.Web.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Email(EmailFormModel model)
-        {
-            
-            model.FromEmail = "admin@exposure.com";
-            var apiKey = ConfigurationManager.AppSettings["Exposure"];
-            var client = new SendGridClient(apiKey);
-            var body = model.Message;
-            var subject = model.Subject;
-            var from = new EmailAddress(model.FromEmail, "Admin(Exposure)");
-            var to = new EmailAddress(model.ToEmail);
-            var plainTextContent = body;
-            var htmlContent = body;
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-            var response = await client.SendEmailAsync(msg);
-
-            if (client != null)
-            {
-                await client.SendEmailAsync(msg);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                Trace.TraceError("Failed to create web transport");
-                await Task.FromResult(0);
-                return View(model);
-            }
-            
-        }
+        
+        
 
         public ActionResult Help()
         {
             var faq = db.Helps;
             ViewBag.FAQ = faq;
-            return View(faq);
+            return View();
         }
 
         public ActionResult Search()

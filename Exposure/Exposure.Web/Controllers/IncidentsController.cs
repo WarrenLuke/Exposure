@@ -43,15 +43,15 @@ namespace Exposure.Web.Controllers
             //    var userID = User.Identity.GetUserId();
             //    jobApplications = jobApplications.Where(e => e.Job.Employer.EmployerID.Equals(userID)).Include(w => w.Worker).Include(j => j.Job).Include(w => w.Worker).Include(e => e.Job.Employer).Where(f => f.Flagged == false).Where(x => x.Job.Completed == true);
             //}
-            var jobs = db.JobApplications.Include(x => x.Job).Where(x => x.Job.Completed == true);
+            var jobs = db.JobApplications.Include(x => x.Job).Where(x => x.Job.Completed == true).OrderByDescending(x=>x.Job.EndDate);
 
             if (User.IsInRole("Employer"))
             {
-                jobs = jobs.Where(x => x.Job.EmployerID == userId).Where(x=>x.Flagged==false);
+                jobs = jobs.Where(x => x.Job.EmployerID == userId).Where(x=>x.Flagged==false).OrderByDescending(x => x.Job.EndDate);
             }
             else if(User.IsInRole("Worker"))
             {
-                jobs = jobs.Where(x => x.WorkerID == userId).Where(x=>x.Response == Reply.Hired);
+                jobs = jobs.Where(x => x.WorkerID == userId).Where(x=>x.Response == Reply.Hired).OrderByDescending(x => x.Job.EndDate);
             }
 
             
@@ -70,12 +70,13 @@ namespace Exposure.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Incident incident = db.Incidents.Find(id);
+            var incident = db.UserIncidents.Where(x => x.IncidentID == id).Include(x => x.Incident.Job);
             if (incident == null)
             {
                 return HttpNotFound();
             }
-            return View(incident);
+            ViewBag.Incident = incident;
+            return View();
         }
 
         // GET: Incidents/Create

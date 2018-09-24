@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 @using Exposure.Web.DataContexts;
+@using Exposure.Web.Models.ViewModels
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +11,9 @@
     <title>@ViewBag.Title-Exposure</title>
     <script src="~/Scripts/jquery-3.3.1.js"></script>
     <link href="~/Content/daterangepicker.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" "    />
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
     <script src="~/Scripts/daterangepicker.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -17,13 +22,18 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Styles.Render("~/Content/bootstrap.css")
     @RenderSection("scripts", required: false)
+    <style>
+        .bgimg {
+            background-image: url('../../Images/subtle.jpg');
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="row hidden-md hidden-sm hidden-xs">
             <div class="col-md-4"></div>
             <div class="col-md-4" style="align-items:center">
-                <img src="~/Images/expo.png" class="img-thumbnail" alt="Exposure Logo" style=" max-width: inherit; height: 150px;" />
+                <img src="~/Images/expo.png" class="img-thumbnail" alt="Exposure Logo" style=" max-width: inherit; height: 150px; border-style:none" />
             </div>
             <div class="col-md-4"></div>
         </div>
@@ -36,7 +46,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img src="~/Images/Logo.png" height="49" width="90" />
+                <img src="~/Images/Logo.png" height="48" width="90" />
                 @if (User.Identity.IsAuthenticated)
                 {
                     if (User.IsInRole("Worker"))
@@ -90,8 +100,8 @@
             </div>
         </div>
     </div>
-    <div>
-        <div class="container" style="background-image=">
+    <div class="bgimg">
+        <div class="container ">
             <div class="modal fade" id="notifications" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -112,39 +122,74 @@
                     </div>
                 </div>
             </div>
-            @RenderBody()
-        </div>
-        <div>
-            <hr />
-            <footer style="background-color:#ff6a00" class="footer wrapper fixed">
-                <div class="row">
-                    <div class="col-md-4 col-md-offset-1">
-                        <p style="text-align:left">
-                            Exposure <br />
-                            Nelson Mandela University- North Campus<br />
-                            Port Elizabeth<br />
-                            6059
-                        </p>
-                    </div>
-                    <div class="col-md-4">
-                        <p style="text-align:left">
-                            Contact Details:<br />
-                            Tel.:041-487 5478<br />
-                            Fax: 041-487 5479<br />
-                            Email: admin@exposure.com
-                        </p>
-                    </div>
-                    <div class="col-md-3">
-                        <p style="text-align:center">
-                            <br /><br /><br />
-                            &copy;Exposure - @DateTime.Now.Year
-                        </p>
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a href="#" class="close" data-dismiss="modal">&times;</a>
+                            <h3 class="modal-title">Recommended Rate Calculation</h3>
+                        </div>
+                        <div class="modal-body">
+                            <h3 style="font-family:'Californian FB'">Recommended Payment for this job is - R<label for="rate"></label></h3>
+                            <h4 style="font-family:'Californian FB'">The recommended rate has been calculated according to the following selections:</h4>
+                            <p style="font-family:'Californian FB'">
+                                Skill: <label for="skill"></label><br />
+                                Start Date: <label for="sDate"></label> <br />
+                                End Date: <label for="eDate"></label> <br />
+                                Start Time: <label for="sTime"></label> <br />
+                                End Time: <label for="eTime"></label><br />
+                                Hourly Rate:R <label for="hr"></label><br />
+                                Total Cost for Job: R<label for="totCost"></label>
+                                <br />
+                                To use this rate, please click apply below.
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-danger" data-dismiss="modal">Cancel</a>
+                            <a href="#" class="btn btn-success" onclick="ApplyRate()">Apply</a>
+                        </div>
                     </div>
                 </div>
-            </footer>
+            </div>
+            @RenderBody()
+
         </div>
     </div>
+
+
+
+    <div>
+        
+
+        <footer style="background-color:#ff6a00; color:white" class="footer wrapper fixed">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-1">
+                    <p style="text-align:left">
+                        Exposure <br />
+                        Summerstrand<br />
+                        Port Elizabeth<br />
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p style="text-align:left">
+                        Contact Details:<br />
+                        Tel.:041-487 5478<br />
+                        Fax: 041-487 5479<br />
+                        Email: admin@exposure.com
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    <p style="text-align:center">
+                        <br /><br /><br />
+                        &copy;Exposure - @DateTime.Now.Year
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
 </body>
+
+
 </html>
 
 <script>

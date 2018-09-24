@@ -19,23 +19,22 @@
 
 }
 <style>
+
     .btn {
         color: #ff6a00;
-        
     }
 
     .glyphicon:hover,
-    i:hover{
-
+    i:hover {
         color: #ffffff;
     }
 
     .panel, .panel-default {
-        border-color: #ff6a00;
+        border-color: #ffffff;
     }
 
     .btn:hover {
-        color: #ffffff;       
+        color: #ffffff;
         background-color: #ff6a00;
     }
 </style>
@@ -48,7 +47,6 @@
     {
         <div class="form-group form-actions container">
             <div class="col-md-2">
-
             </div>
             <div class="col-md-8" style="align-content:center">
                 <div class="row" style="align-content:center">
@@ -56,19 +54,16 @@
                         <i class="glyphicon glyphicon-user" style="font-size:xx-large"></i><br />
                         <h3>Manage Users</h3>
                     </button>
-
-                    <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-5" formaction="@Url.Action("Index","Incidents")">
+                    <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-5" formaction="@Url.Action("Index", "Incidents")">
                         <i class="glyphicon glyphicon-warning-sign" style="font-size:xx-large"></i><br />
                         <h3>Manage Incidents</h3>
                     </button>
                 </div>
                 <div class="row" style="text-align:center">
-
                     <button type="submit" class="btn panel panel-default panel-body  col-md-5" formaction="@Url.Action("Index", "Skills")">
                         <i class="glyphicon glyphicon-wrench" style="font-size:xx-large"></i><br />
                         <h3>Manage Skills</h3>
                     </button>
-
                     <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-5" formaction="@Url.Action("SuburbsCities", "Manage")">
                         <i class="glyphicon glyphicon-globe" style="font-size:xx-large"></i><br />
                         <h3>Manage Suburbs & Cities</h3>
@@ -79,7 +74,6 @@
                         <i class="glyphicon glyphicon-briefcase" style="font-size:xx-large"></i><br />
                         <h3>Manage Jobs</h3>
                     </button>
-
                     <button type="submit" class="btn panel panel-default panel-body col-md-offset-1 col-md-5" formaction="@Url.Action("GeneralBusiness")">
                         <i class="glyphicon glyphicon-list" style="font-size:xx-large"></i><br />
                         <h3>Manage Company Information</h3>
@@ -92,12 +86,9 @@
                         <h3>Manage FAQs</h3>
                     </button>
 
-                    
                 </div>
-
             </div>
             <div class="col-md-2">
-
             </div>
         </div>
     }
@@ -156,9 +147,9 @@
 
         <div class="form-group form-actions">
             <div class="row">
-                <div class="col-md-4 text-center">
+                <div class="text-center panel panel-default">
                     <div class="col-md-12">
-                        <h3>PROFILE PICTURE</h3>
+                        <h3 style="font-family:Arial">PROFILE PICTURE</h3>
                         <img src="@Url.Action("ProfilePic", "Home")" style="width:160px; height:160px; background:
                         #ff6a00;
                         margin:auto;
@@ -172,240 +163,256 @@
                     <a href="@Url.Action("UpdatePicture", "Account", new { id = User.Identity.GetUserId() })">Update Profile Picture</a>
                     <br />
                     <br />
-                    <div class="col-md-2"></div>
-                    
-                    <div class="col-md-2"></div>
+
                 </div>
-
-                <div class="col-md-4">
-                    <h3>PERSONAL DETAILS</h3>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <strong>@Html.DisplayNameFor(model => model.FirstName):</strong>
-                        </div>
-                        <div class="col-md-6">
-                            @user.FirstName
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-5">
-                            <strong>@Html.DisplayNameFor(Model => Model.LastName):</strong>
-                        </div>
-                        <div class="col-md-6">
-                            @user.LastName
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-5">
-                            <strong>@Html.DisplayNameFor(Model => Model.Gender):</strong>
-                        </div>
-                        <div class="col-md-6">
-                            @user.Gender
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-5">
-                            <strong>@Html.DisplayNameFor(model => model.Suburb):</strong>
-                        </div>
-                        <div class="col-md-6">
-                            @foreach (var item in ViewBag.userSub)
-                            {
-                                @item.Suburb.SubName
-                            }
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-5">
-                            <strong>@Html.DisplayNameFor(model => model.AddressLine1):</strong>
-                        </div>
-                        <div class="col-md-6">
-                            @user.AddressLine1
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-5">
-                            <strong>@Html.DisplayNameFor(model => model.AddressLine2):</strong>
-                        </div>
-                        <div class="col-md-6">
-                            @if (user.AddressLine2 == null)
-                            {
-                                <p>None</p>
-                            }
-                            else
-                            {
-                                @user.AddressLine2
-                            }
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <strong>@Html.DisplayNameFor(model => model.Email):</strong>
-                        </div>
-                        <div class="col-md-6">
-                            @user.Email
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-5">
-                            <strong>@Html.DisplayNameFor(model => model.PhoneNumber):</strong>
-                        </div>
-                        <div class="col-md-6">
-                            @if (@Html.DisplayFor(model => model.PhoneNumber) == null)
-                            {
-                                @Html.ActionLink("Add Phone Number", "AddPhoneNumber")
-                            }
-                            else
-                            {
-                                @user.PhoneNumber
-
-                            }
-                        </div>
-                    </div>
-                    <br /><br />
-                    <input type="submit" class="btn btn-default" value="Update Personal Details" formaction=@Url.Action("EditProfile") /><br />
-                </div>
-                @if (User.IsInRole("Employer"))
-                {
-                    <div class=" col-md-4">
-                        <h3>WORK DETAILS</h3>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <strong>@Html.DisplayNameFor(model => model.WorkName):</strong>
-                                </div>
-                                <div class="col-md-6">
-                                    @if (Model.WorkName == null)
-                                    {
-                                        <p>None</p>
-                                    }
-                                    else
-                                    {
-                                        @Html.DisplayFor(model => model.WorkName)
-                                    }
-                                </div>
+                <br />
+                <div>
+                    <div class="col-md-6 panel panel-default" style="padding:2em">
+                        <h3>PERSONAL DETAILS</h3>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <strong>@Html.DisplayNameFor(model => model.FirstName):</strong>
                             </div>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <strong>@Html.DisplayNameFor(model => model.WorkAddressLine1):</strong>
-                                </div>
-                                <div class="col-md-6">
-                                    @if (Model.WorkAddressLine1 == null)
-                                    {
-                                        <p>None</p>
-                                    }
-                                    else
-                                    {
-                                        @Html.DisplayFor(model => model.WorkAddressLine1)
-                                    }
-                                </div>
+                            <div class="col-md-6">
+                                @user.FirstName
                             </div>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <strong>@Html.DisplayNameFor(model => model.WorkAddressLine2):</strong>
-                                </div>
-                                <div class="col-md-6">
-                                    @if (Model.WorkAddressLine2 == null)
-                                    {
-                                        <p>None</p>
-                                    }
-                                    else
-                                    {
-                                        @Html.DisplayFor(model => model.WorkAddressLine2)
-                                    }
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <strong>@Html.DisplayNameFor(model => model.Location):</strong>
-                                </div>
-                                <div class="col-md-6">
-                                    @if (Model.Location == null)
-                                    {
-                                        <p>None</p>
-                                    }
-                                    else
-                                    {
-                                        foreach (var item in ViewBag.empSub)
-                                        {
-                                            @item.Suburb.SubName
-                                        }
-                                    }
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <strong>@Html.DisplayNameFor(model => model.WorkNumber):</strong>
-                                </div>
-                                <div class="col-md-6">
-                                    @if (Model.WorkNumber == null)
-                                    {
-                                        <p>None</p>
-                                    }
-                                    else
-                                    {
-                                        @Html.DisplayFor(model => model.WorkNumber)
-                                    }
-                                </div>
-                            </div>
-
                         </div>
-                        <input type="submit" class="btn btn-default" value="Update Work Details" formaction=@Url.Action("UpdateWorkDetails") />
-
-                    </div>
-                }
-                else
-                {
-                    <div class="col-md-4">
-                        @if (TempData["Skill"] != null)
-                        {
-                            <div class="alert alert-success alert-dismissable" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                @TempData["Skill"]
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <strong>@Html.DisplayNameFor(Model => Model.LastName):</strong>
                             </div>
-                        }
-                        <h3>SKILLS</h3>
-                        <div class="row col-md-12" style="height: 250px; overflow:auto">
-                            <table class="table ">
-                                <tr>
-                                    <th>Skill</th>
-                                    <th>Years of Experience</th>
-                                    <th></th>
-                                </tr>
-                                @foreach (var ws in ViewBag.Skills)
+                            <div class="col-md-6">
+                                @user.LastName
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <strong>@Html.DisplayNameFor(Model => Model.Gender):</strong>
+                            </div>
+                            <div class="col-md-6">
+                                @user.Gender
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <strong>@Html.DisplayNameFor(model => model.Suburb):</strong>
+                            </div>
+                            <div class="col-md-6">
+                                @foreach (var item in ViewBag.userSub)
                                 {
-                                    <tr>
-                                        <td>
-                                            @ws.Skill.SkillDescription
-                                        </td>
-                                        <td>
-                                            @ws.YearsOfExperience
-                                        </td>
-                                        <td>
-                                            @Html.ActionLink("Edit", "EditSkill", new { id = User.Identity.GetUserId(), skill = ws.Skill.SkillID })
-                                        </td>
-                                    </tr>
+                                    @item.Suburb.SubName
                                 }
-                            </table>
+                            </div>
                         </div>
-                        <input type="submit" class=" btn btn-default" value="Add Skill" formaction=@Url.Action("AddSkill") />
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <strong>@Html.DisplayNameFor(model => model.AddressLine1):</strong>
+                            </div>
+                            <div class="col-md-6">
+                                @user.AddressLine1
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <strong>@Html.DisplayNameFor(model => model.AddressLine2):</strong>
+                            </div>
+                            <div class="col-md-6">
+                                @if (user.AddressLine2 == null)
+                                {
+                                    <p>None</p>
+                                }
+                                else
+                                {
+                                    @user.AddressLine2
+                                }
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <strong>@Html.DisplayNameFor(model => model.Email):</strong>
+                            </div>
+                            <div class="col-md-6">
+                                @user.Email
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-5">
+                                <strong>@Html.DisplayNameFor(model => model.PhoneNumber):</strong>
+                            </div>
+                            <div class="col-md-6">
+                                @if (@Html.DisplayFor(model => model.PhoneNumber) == null)
+                                {
+                                    @Html.ActionLink("Add Phone Number", "AddPhoneNumber")
+                                }
+                                else
+                                {
+                                    @user.PhoneNumber
+
+                                }
+                            </div>
+                        </div>
+                        <br />
+
+                        <input type="submit" class="btn btn-default" value="Update Personal Details" formaction=@Url.Action("EditProfile") /><br />
                     </div>
 
 
-                }
+
+                    @if (User.IsInRole("Employer"))
+                    {
+                        <div class="col-md-offset-1 col-md-5 panel panel-default" style="padding:2em">
+                            <h3>WORK DETAILS</h3>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <strong>@Html.DisplayNameFor(model => model.WorkName):</strong>
+                                    </div>
+                                    <div class="col-md-6">
+                                        @if (Model.WorkName == null)
+                                        {
+                                            <p>None</p>
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(model => model.WorkName)
+                                        }
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <strong>@Html.DisplayNameFor(model => model.WorkAddressLine1):</strong>
+                                    </div>
+                                    <div class="col-md-6">
+                                        @if (Model.WorkAddressLine1 == null)
+                                        {
+                                            <p>None</p>
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(model => model.WorkAddressLine1)
+                                        }
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <strong>@Html.DisplayNameFor(model => model.WorkAddressLine2):</strong>
+                                    </div>
+                                    <div class="col-md-6">
+                                        @if (Model.WorkAddressLine2 == null)
+                                        {
+                                            <p>None</p>
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(model => model.WorkAddressLine2)
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <strong>@Html.DisplayNameFor(model => model.Location):</strong>
+                                    </div>
+                                    <div class="col-md-6">
+                                        @if (ViewBag.empSub == null)
+                                        {
+                                            <p>None</p>
+                                        }
+                                        else
+                                        {
+                                            @ViewBag.empSub
+                                        }
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <strong>@Html.DisplayNameFor(model => model.WorkNumber):</strong>
+                                    </div>
+                                    <div class="col-md-6">
+                                        @if (Model.WorkNumber == null)
+                                        {
+                                            <p>None</p>
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(model => model.WorkNumber)
+                                        }
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+
+                            <input type="submit" class="btn btn-default" value="Update Work Details" formaction=@Url.Action("UpdateWorkDetails") />
+
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="col-md-offset-1 col-md-5">
+                            @if (TempData["Skill"] != null)
+                            {
+                                <div class="alert alert-success alert-dismissable" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    @TempData["Skill"]
+                                </div>
+                            }
+
+                            <div class="row col-md-12 panel panel-default" style="height: inherit; padding:2em; overflow:auto">
+                                <h3>SKILLS</h3>
+                                <table class="table ">
+                                    <tr>
+                                        <th>Skill</th>
+                                        <th>Years of Experience</th>
+
+                                    </tr>
+                                    @foreach (var ws in ViewBag.Skills)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @ws.Skill.SkillDescription
+                                            </td>
+                                            <td>
+                                                @ws.YearsOfExperience
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Edit", "EditSkill", new { id = User.Identity.GetUserId(), skill = ws.Skill.SkillID })
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                                <p style="text-align:end"><input type="submit" class=" btn btn-default" value="Add Skill" formaction=@Url.Action("AddSkill") /></p>
+
+                            </div>
+                        </div>
+
+
+                    }
+                </div>
             </div>
             <br />
-            
         </div>
+
+
     }
 }
+
 
 @*<p class="text-success">@ViewBag.StatusMessage</p>
     <div>

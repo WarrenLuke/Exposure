@@ -4,6 +4,9 @@
     ViewBag.Title = "Report Incident";
 }
 
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div><br/>
 <h2>@ViewBag.Title</h2>
 @if (TempData["Incident"] != null)
 {
@@ -15,8 +18,7 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class=" table form-horizontal">
-        <h4>Incident</h4>
+    <div class=" table form-horizontal">        
         <hr />
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -34,15 +36,13 @@
                 @Html.HiddenFor(model => model.JobID)
                 @Html.HiddenFor(model => model.OffenderID)
                 <br />
-                <input type="submit" value="Report User" class="btn btn-default" @(TempData["Incident"]!=null? "disabled='disabled'":"") />
+                <input type="submit"  value="Report User" class="btn btn-default" @(TempData["Incident"]!=null? "disabled='disabled'":"") />
             </div>
-            <div class="col-md-4"><img src="~/images/Report.png" alt="REPORT USER" width="200" height="200"></div>
+            <div class="col-md-4" ><img src="~/images/Report.png" alt="REPORT USER" width="200" height="200"></div>
 
         </div>
 
     </div>
 
 }
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+

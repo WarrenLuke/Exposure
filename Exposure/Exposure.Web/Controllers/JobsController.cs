@@ -50,8 +50,8 @@ namespace Exposure.Web.Controllers
                     jobHistory = jobHistory.OrderBy(j => j.Job.Rate);
                     break;
                 default:
-                    jobs = jobs.OrderBy(j => j.DateAdvertised);
-                    jobHistory = jobHistory.OrderBy(j => j.Job.StartDate);
+                    jobs = jobs.OrderByDescending(j => j.DateAdvertised);
+                    jobHistory = jobHistory.OrderByDescending(j => j.Job.EndDate);
                     break;
             }
             #endregion
@@ -93,26 +93,32 @@ namespace Exposure.Web.Controllers
             }
             #endregion
 
+            
 
             if (!String.IsNullOrEmpty(id))
             {
-                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.EmployerID.Equals(id));
+
+                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.EmployerID == id);
+                jobHistory = jobHistory.Where(x => x.WorkerID == id).Include(x=>x.Job.Suburb);
             }
 
             if (location != null)
             {
                 jobs = jobs.Where(x => x.SuburbID == location);
+                jobHistory.Where(x => x.Job.SuburbID == location);
             }
 
             if (skill != null)
             {
                 jobs = jobs.Where(j => j.SkillID == skill);
+                jobHistory = jobHistory.Where(x => x.Job.SkillID == skill);
             }
 
 
             if (!String.IsNullOrEmpty(search))
             {
-                jobs = jobs.Include(j => j.Employer).Include(j => j.Skill).Include(j => j.Suburb).Where(j => j.Title.Contains(search)).Where(j => j.Description.Contains(search));
+                jobHistory = jobHistory.Where(x => x.Job.Title.Contains(search) || x.Job.Description.Contains(search));
+                jobs = jobs.Where(j => j.Title.Contains(search) || j.Description.Contains(search));
             }
 
             //var jobs = db.Jobs.Where(w => w.JobID == job).Include(e => e.Employer).Include(e => e.Employer.ApplicationUser);
@@ -126,6 +132,7 @@ namespace Exposure.Web.Controllers
             ViewBag.WList = workers;
             ViewBag.JobAmt = jobs.Count();
             ViewBag.JobHistory = jaModel;
+            ViewBag.JobHistCount = jobHistory.Count();
             ViewBag.skill = new SelectList(db.Skills.OrderBy(x => x.SkillDescription), "SkillID", "SkillDescription");
             ViewBag.location = new SelectList(db.Suburbs.OrderBy(x => x.SubName), "SuburbID", "SubName");
             ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";

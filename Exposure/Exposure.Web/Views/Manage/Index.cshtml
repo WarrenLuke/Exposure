@@ -30,7 +30,7 @@
     }
 
     .panel, .panel-default {
-        border-color: #ff6a00;
+        border-color: #ffffff;
     }
 
     .btn:hover {
@@ -323,16 +323,13 @@
                                         <strong>@Html.DisplayNameFor(model => model.Location):</strong>
                                     </div>
                                     <div class="col-md-6">
-                                        @if (Model.Location == null)
+                                        @if (ViewBag.empSub == null)
                                         {
                                             <p>None</p>
                                         }
                                         else
                                         {
-                                            foreach (var item in ViewBag.empSub)
-                                            {
-                                                @item.Suburb.SubName
-                                            }
+                                            @ViewBag.empSub
                                         }
                                     </div>
                                 </div>

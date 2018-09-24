@@ -1,108 +1,120 @@
 ﻿@model Exposure.Entities.Job
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Job Details";
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
+<p>
+    @Html.ActionLink("Back to Jobs", "Index")
+</p>
 
 <div>
-    <h4>Job</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        
+    <div class="col-md-3"></div>
+    <div class="col-md-6 row panel panel-default" style="padding:3em">
+        <div class="col-md-6" style="font: bold 200">
+            <strong>@Html.DisplayNameFor(model => model.Title) </strong>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Skill.SkillDescription)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Skill.SkillDescription)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Suburb.SubName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Suburb.SubName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
+        <div class="col-md-6">
             @Html.DisplayFor(model => model.Title)
-        </dd>
+        </div>
+        <div class="col-md-6">
+            <strong>@Html.DisplayNameFor(model => model.Description)</strong>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DateAdvertised)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateAdvertised)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
+        <div class="col-md-6">
             @Html.DisplayFor(model => model.Description)
-        </dd>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
+        <div class="col-md-6">
+            <strong> @Html.DisplayNameFor(model => model.Skill.SkillDescription)</strong>
+        </div>
 
-        <dd>
+        <div class="col-md-6">
+            @Html.DisplayFor(model => model.Skill.SkillDescription)
+        </div>
+        <div class="col-md-6">
+            <strong> @Html.DisplayNameFor(model => model.Suburb.SubName)</strong>
+        </div>
+
+        <div class="col-md-6">
+            @Html.DisplayFor(model => model.Suburb.SubName)
+        </div>
+        <div class="col-md-6">
+            <strong>@Html.DisplayNameFor(model => model.StartDate)</strong>
+        </div>
+
+        <div class="col-md-6">
             @Html.DisplayFor(model => model.StartDate)
-        </dd>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
+        <div class="col-md-6">
+            <strong> @Html.DisplayNameFor(model => model.EndDate)</strong>
+        </div>
 
-        <dd>
+        <div class="col-md-6">
             @Html.DisplayFor(model => model.EndDate)
-        </dd>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
+        <div class="col-md-6">
+            <strong>@Html.DisplayNameFor(model => model.StartTime)</strong>
+        </div>
 
-        <dd>
+        <dic class="col-md-6">
             @Html.DisplayFor(model => model.StartTime)
-        </dd>
+        </dic>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
+        <div class="col-md-6">
+            <strong>@Html.DisplayNameFor(model => model.EndTime)</strong>
+        </div>
 
-        <dd>
+        <div class="col-md-6">
             @Html.DisplayFor(model => model.EndTime)
-        </dd>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Rate)
-        </dt>
+        <div class="col-md-6">
+            <strong>@Html.DisplayNameFor(model => model.Rate)</strong>
+        </div>
 
-        <dd>
+        <div class="col-md-6">
             @Html.DisplayFor(model => model.Rate)
-        </dd>
+        </div>
+        <div class="col-md-6">
+            <strong>@Html.DisplayNameFor(model => model.DateAdvertised)</strong>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Completed)
-        </dt>
+        <div class="col-md-6">
+            @Html.DisplayFor(model => model.DateAdvertised)
+        </div>
+        <div class="col-md-6">
+            <strong> @Html.DisplayNameFor(model => model.Completed)</strong>
+        </div>
 
-        <dd>
+        <div class="col-md-6">
             @Html.DisplayFor(model => model.Completed)
-        </dd>
+        </div>
 
-    </dl>
+
+    </div>
+    <div class="col-md-3"></div>
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.JobID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</dl>
+
+

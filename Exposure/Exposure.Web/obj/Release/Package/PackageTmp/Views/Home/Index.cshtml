@@ -1,70 +1,84 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<br/>
+
+<body>
+</body>
+<br />
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-7">
         <div class="row">
-            <div class="jumbotron col-md-12 " style="background-color:#f7e8dd">
-                <h1 style="font-family:'Californian FB'">WHAT DO WE DO?</h1>
+            <div class="jumbotron col-md-12 panel panel-default" style="background-color:#ffffff">
+                <h1 style="color:#ff6a00; font-family:Arial">WHAT DO WE DO?</h1>
                 <p class="lead" style="font-family:'Californian FB'">
                     Exposure is a website designed to bridge the gap between casual workers who are good with using their hands, and
                     potential employers looking for workers to work in their personal homes, business or holiday homes.
                 </p>
-
             </div>
-        </div>       
+        </div>
 
         <div class="row">
-            <div class="col-md-2">
-                <div class="row text-center">
-                    <div class="col-md-12">
-                        <h3 style="font-family:'Californian FB'">CURRENT USERS</h3>
+            <div class="panel panel-default col-md-2" style="background-color:#ffffff; height:150px">
+                <div>
+                    <div class="row text-center">
+                            <p style="font-family:'Californian FB'">
+                                <text style="font-size:50px;color:#ff6a00">@ViewBag.Users</text>
+                            </p>                    
                     </div>
                 </div>
-                <div class="row text-center">
-                    <div class="col-md-12">
+                <div >
+                    <div class="row text-center">
+                        <p style="font-family:'Californian FB'"><b>REGISTERED USERS</b></pstyle="font-family:'Californian>
+                    </div>
+                 </div>
+            </div>
+            
+            <div class="panel panel-default col-md-offset-3 col-md-2" style="background-color:#ffffff; height:150px">
+                <div >
+                    <div class="row text-center">
                         <p style="font-family:'Californian FB'">
-                            <text style="font-size:50px">@ViewBag.Users</text>
+                            <text style="font-size:50px; color:#ff6a00">@ViewBag.SJobs</text>
                         </p>
-                    </div>                    
+                    </div>
+                </div>
+                <div >
+                    <div class="row text-center">
+                            <div class="col-md-12">
+                                <p style="font-family:'Californian FB'"><b>SUCCESSFUL JOBS</b><br/>
+                                   (Last 30 days) 
+                                   
+                                </p>
+                            </div>
+                    </div>
+                </div>
+             </div>
+            
+
+            <div class="panel panel-default col-md-offset-3 col-md-2" style="background-color:#ffffff; height:150px">
+                <div>
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <p style="font-family:'Californian FB'">
+                                <text style="font-size:50px;color:#ff6a00">@ViewBag.Jobs</text>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <p style="font-family:'Californian FB'"><b>AVAILIBLE JOBS</b></p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-offset-2 col-md-2">
-                <div class="row text-center">
-                    <div class="col-md-12">
-                        <h3 style="font-family:'Californian FB'">SUCCESSFUL JOBS</h3>
-                    </div>
-                </div>
-                <div class="row text-center">
-                    <div class="col-md-12">
-                        <p style="font-family:'Californian FB'">
-                            <text style="font-size:50px">@ViewBag.SJobs</text>
-                        </p><br/>
-                        <p>(Last 30 days)</p>
-                    </div>                    
-                </div>
-            </div>
-            <div class="col-md-offset-2 col-md-2">
-                <div class="row text-center">
-                    <div class="col-md-12">
-                        <h3 style="font-family:'Californian FB'">CURRENT JOBS ADVERTISED</h3>
-                    </div>
-                </div>
-                <div class="row text-center">
-                    <div class="col-md-12">
-                        <p style="font-family:'Californian FB'">
-                            <text style="font-size:50px">@ViewBag.Jobs</text>
-                        </p>
-                    </div>                    
-                </div>
-            </div>       
-                          
+
         </div>
-        
+      
+
     </div>
-    <div class="col-md-4">
-        <div class="well text-center" style="background-color:#dedede">
+    <div class="col-md-offset-1 col-md-4 panel panel-default" style="height:inherit;">
+        <div class="well text-center " style="border-style:none; background-color:#ffffff">
             <p style="font-family:'Californian FB'; font-size:x-large">
                 ARE YOU A <text style="color:#ff6a00">CASUAL WORKER</text> LOOKING FOR WORK?<br />
                 DO YOU NEED <text style="color:#ff6a00">WORK TO BE DONE</text> AROUND
@@ -77,6 +91,6 @@
             <a href="@Url.Action("Register", "Account")" class="btn btn-default btn-lg">REGISTER</a>
         </div>
     </div>
-    </div>    
-    
-    
+</div>
+
+

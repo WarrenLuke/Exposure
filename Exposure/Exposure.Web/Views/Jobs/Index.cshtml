@@ -4,9 +4,17 @@
 @using System.Web.Mvc;
 
 @using Exposure.Entities
-@{
-    ViewBag.Title = "Jobs";
+
+@if (User.IsInRole("Worker"))
+{
+    ViewBag.Title = "Job History";
 }
+else
+{
+    ViewBag.Title = "Job Management";
+}
+
+
 
 @if (User.IsInRole("Worker"))
 {
@@ -41,13 +49,13 @@ else
 }
 <div class="row">
     <div class="col-md-2">
-        <h2>Jobs</h2>
+        <h2>@ViewBag.Title</h2>
         @if (User.IsInRole("Employer"))
         {
             <a href="@Url.Action("Create", "Jobs")" class="btn btn-default">Create Job</a>
         }
     </div>
-    <div class="col-md-offset-1 col-md-2" style="text-align:">
+    <div class="col-md-offset-1 col-md-2">
     </div>
     <div class="col-md-offset-2 col-md-5" style="text-align:right">
         @using (Html.BeginForm("Index", "Jobs", FormMethod.Get))
@@ -78,14 +86,14 @@ else
         </div>
         <div class="col-md-2">
             <p>Sort by: </p>@Html.DropDownList("sortOrder", new SelectList(
-new List<Object>
-{
-    new{value="date", text= "Latest"},
-    new{value="date_desc", text="Date Advertised(Desc)"},
-    new {value="rate", text="Rate(Lowest)"},
-    new {value="rate_desc", text="Rate(Highest)"}
-},
-"value", "text", 2), new { @class = "form-control" })
+     new List<Object>
+     {
+                new{value="date", text= "Latest"},
+                new{value="date_desc", text="Oldest"},
+                new {value="rate", text="Payment(Lowest)"},
+                new {value="rate_desc", text="Payment(Highest)"}
+     },
+     "value", "text", 2), new { @class = "form-control" })
         </div>
         <div class="col-md-2">
             <p>From:  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; <i><a href="#" onclick="Dates()" class="btn-danger btn-xs" data-toggle="tooltip" title="Clear dates">&times;</a></i> </p> @Html.TextBox("frmDate", null, new { @class = "form-control datepicker", @id = "frmDate", onkeydown = "return false", onpaste = "return false", placeholder = "Select from Date" })
@@ -114,7 +122,7 @@ new List<Object>
     <br />
 
     <div style="overflow-x:auto">
-        <table class="table table-striped table-bordered dt-nowrap" id="myTable">
+        <table class="table table-striped table-bordered dt-nowrap panel panel-default" id="myTable">
             <tr>
                 <th width="25">
                     Title
@@ -135,7 +143,7 @@ new List<Object>
                 </th>
 
                 <th>
-                    Rate
+                    Payment
                 </th>
                 <th>
                     Completed
@@ -198,12 +206,12 @@ new List<Object>
                                 {
                                     if (w.JobID == item.JobID)
                                     {
-                                        <a href="@Url.Action("Create","Reviews", new {job= item.JobID, worker = w.WorkerID, employer= item.EmployerID })" class="btn btn-default">Review worker</a><br/>
+                                        <a href="@Url.Action("Create","Reviews", new {job= item.JobID, worker = w.WorkerID, employer= item.EmployerID })" class="btn btn-default">Review worker</a><br />
                                     }
                                 }
                             }
                             <a href="@Url.Action("Details", "Jobs", new { id = item.JobID })" class="btn btn-info" data-toggle="tooltip" title="Details"><i class="glyphicon glyphicon-list-alt"></i></a>
-                            
+
                             <a href="#" onclick="ConfirmDelete(@item.JobID)" class="btn btn-danger" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-trash"></i></a>
                         </td>
                     </tr>
@@ -228,7 +236,7 @@ new List<Object>
         <div class="col-md-6">
             <a href="@Url.Action("Index", "Manage")">Back to profile</a>
         </div>
-        <div class="modal fade" id="myModal">
+        <div class="modal fade" id="JobDeleteModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -253,8 +261,8 @@ new List<Object>
 else if (User.IsInRole("Admin"))
 {
     <br />
-    <div style="overflow-x:auto">
-        <table class="table table-striped table-bordered dt-nowrap">
+    <div class="panel panel-default" style="overflow-x:auto; ">
+        <table class="table table-striped table-bordered dt-nowrap ">
             <tr>
                 <th width="25">
                     Title
@@ -309,7 +317,7 @@ else if (User.IsInRole("Admin"))
                             @Html.DisplayFor(modelItem => item.Suburb.City.CityName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.StartDate.ToShortDateString()) till @Html.DisplayFor(modelItem => item.EndDate.Value.ToShortDateString())
+                            @Html.DisplayFor(modelItem => item.StartDate) till @Html.DisplayFor(modelItem => item.EndDate)
                         </td>
 
                         <td>
@@ -317,7 +325,7 @@ else if (User.IsInRole("Admin"))
                         </td>
 
                         <td>
-                            <text>R</text>@Html.DisplayFor(modelItem => item.Rate)
+                            @Html.DisplayFor(modelItem => item.Rate)
                         </td>
                         <td>
                             @if (item.Completed == false)
@@ -351,9 +359,9 @@ else if (User.IsInRole("Admin"))
 }
 else if (User.IsInRole("Worker"))
 {
-    
+
     <br />
-    <div style="overflow-y:auto">
+    <div style="overflow-y:auto" class="panel panel-default">
         <table class="table table-striped table-bordered dt-nowrap" width="100" cellspacing="0">
             <thead>
                 <tr>
@@ -395,6 +403,12 @@ else if (User.IsInRole("Worker"))
                 </tr>
             }
         </table>
+        @if (ViewBag.JobHistCount == 0)
+        {
+            <div class="alert alert-info">
+                <p style="font-size:large">There are no jobs available to display</p>
+            </div>
+        }
     </div>
     <div class="col-md-10">
         <div class="center">
@@ -409,7 +423,7 @@ else if (User.IsInRole("Worker"))
 
         function ConfirmDelete(JobID) {
             $("#hiddenJobID").val(JobID);
-            $("#myModal").modal('show');
+            $("#JobDeleteModal").modal('show');
         }
 
         var DeleteJob = function () {
@@ -423,7 +437,7 @@ else if (User.IsInRole("Worker"))
                 data: { id: jobID },
                 success: function () {
                     $("#loaderDiv").hide();
-                    $("#myModal").modal("hide");
+                    $("#JobDeleteModal").modal("hide");
                     $("#row_" + jobID).remove();
                 }
             });

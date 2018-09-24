@@ -3,7 +3,6 @@
 @using System.Web.Mvc;
 @model IPagedList<Exposure.Web.Models.ApplicationUser>
 
-
 @{
     ViewBag.Title = "Users";
 }
@@ -16,10 +15,10 @@
     <div class="row search">
         <div class="col-md-4">
             <p>User Type:</p>@Html.DropDownList("userType", new SelectList(
-    new List<Object> {
-                    new{value="", text="Select User Type..."},
-                    new {value="Worker", text="Workers"},
-                    new{value="Employer", text = "Employers"} }, "value", "text", 2), new { @class = "form-control", @placeholder= "Select Suburb" })
+new List<Object> {
+                new{value="", text="Select User Type..."},
+                new {value="Worker", text="Workers"},
+                new{value="Employer", text = "Employers"} }, "value", "text", 2), new { @class = "form-control", @placeholder = "Select Suburb" })
         </div>
         <div class="col-md-4">
             <p>Search Users:</p> @Html.Editor("search", new { htmlAttributes = new { @class = "form-control clearable", @placeholder = "Search Users" } })
@@ -35,7 +34,7 @@
 }
 
 <hr />
-<table width="100%" id="myTable">
+<table width="100%" id="myTable" class="panel panel-default">
     <tr>
         <th>Profile Picture</th>
         <th>Full Name</th>
@@ -43,8 +42,12 @@
         <th>Address</th>
         <th>Email</th>
         <th>Phone No.</th>
+        <th></th>
     </tr>
+    @using (Html.BeginForm("Suspend", "Account", new { }))
+    {
 
+    }
     @foreach (var item in ViewBag.Users)
     {
         <tr style="padding-bottom:.10em">
@@ -71,7 +74,7 @@
             <td>@item.Email</td>
             <td>@item.PhoneNumber</td>
             <td>
-                <a href="#" class="btn btn-danger" onclick="SuspendConfirm(@item.Id)">Suspend</a>
+                <a href="#" class="btn btn-danger" onclick="Suspend(@item.Id)">Suspend</a>
                 <a href="@Url.Action("UserDetails", "Account", new { id= item.Id })" class="btn btn-info">Details</a>
             </td>
         </tr>
@@ -85,9 +88,54 @@
     </div>
 </div><br /><br /><br /> <br />
 
+<div class="modal fade" id="suspendModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Suspend User?</h3>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to suspend this user? </h4>
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-9">
+                    Full Name: <label for="name"></label>
+                    Type: <label for="type"></label>
+                    Email: <label for="email"></label>
+
+
+                </div>
+                <div style="text-align:center; display:none" id="loaderDiv">
+                    <img src="~/Images/InternetSlowdown_Day.gif" width="150" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success" onclick="SuspendConfirm()">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="userID" />
 <script>
     $(document).ready(function () {
-        $("#myTable").DataTable()       
-       
+        $("#myTable").DataTable()
+
     })
+
+    function Suspend(userID) {
+
+        $.ajax({
+            type: "POST",
+            url: "/SuspendDetails/Account",
+            data: { id: userID },
+            success: function (data) {
+
+            }
+        })
+        $("#suspendModal").modal('show');
+
+    }
 </script>

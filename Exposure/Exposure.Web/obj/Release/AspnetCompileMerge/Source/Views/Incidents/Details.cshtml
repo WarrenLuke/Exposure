@@ -1,41 +1,62 @@
 ﻿@model Exposure.Entities.Incident
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Incident Details";
 }
-<h2>Details</h2>
-<div>
-    <h4>Incident</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Job.Title)
-        </dt>
-        <dt>
-            @Html.DisplayNameFor(model => model.Job.AddressLine1)
-        </dt>
-        <dt>
-            @Html.DisplayNameFor(model => model.Job.AddressLine2)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Job.StartDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Job.Rate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Offender)
-        </dt>
-
-        <dt>
-
-
-    </dl>
-</div>
 <p>
-    @Html.ActionLink("Create", "REPORT", new { id = Model.IncidentID }) |
-    @Html.ActionLink("Back", "Index")
+    <a href="@Url.Action("Notifications","Home")">Back to notifications</a>
 </p>
+<h2>@ViewBag.Title</h2>
+
+@foreach (var item in ViewBag.Incident)
+{
+    <div class="row">
+        <div class="col-md-offset-1 col-md-5 panel panel-default" style="padding:1em">
+            <h3>Reporter Details</h3>
+            <hr/>
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <strong>Full name</strong>
+                </div>
+                <div class="col-md-6">
+                    @item.User.FirstName @item.User.LastName
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Job</strong>
+                </div>
+                <div class="col-md-6">
+                    @item.Incident.Job.Title
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Job End Date</strong>
+                </div>
+                <div class="col-md-6">
+                    @item.Incident.Job.EndDate
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Location</strong>
+                </div>
+                <div class="col-md-6">
+                    @item.Incident.Job.AddressLine1<br />
+                    @item.Incident.Job.Suburb.SubName<br />
+                    @item.Incident.Job.Suburb.City.CityName
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-offset-1 col-md-5 panel panel-default" style="padding:1em">
+            <h3>Incident</h3>
+            <div class="col-md-6">
+               <strong>Description</strong>
+            </div>
+            <div class="col-md-6">
+                @item.Incident.Description
+            </div>
+
+        </div>
+    </div>
+}
+
+

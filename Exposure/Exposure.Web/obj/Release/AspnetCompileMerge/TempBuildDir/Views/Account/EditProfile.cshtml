@@ -3,7 +3,7 @@
     ViewBag.Title = "Edit Profile";
 }
 
-<h2>EditProfile</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm())
 {
@@ -11,7 +11,7 @@
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 panel panel-default">
 
             @Html.HiddenFor(m => m.Gender, new { @class = "form-control" })
             @Html.HiddenFor(m => m.UserName, new { @class = "form-control" })

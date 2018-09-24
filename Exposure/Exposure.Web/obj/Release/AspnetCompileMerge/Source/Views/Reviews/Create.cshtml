@@ -2,22 +2,23 @@
 @{
     ViewBag.Title = "Review User";
 }
+
+<div>
+    <a href="@Url.Action("Index","Jobs")">Back to Jobs</a>
+</div>
+
 <h2>@ViewBag.Title</h2>
 
 @if (TempData["ReviewTrue"] != null)
 {
-    <div class="alert alert-danger alert-dismissable" role="alert">
-        
-        @TempData["ReviewTrue"]
+    <div class="alert alert-danger alert-dismissable" role="alert">        
+        @TempData["ReviewTrue"].<text>"Please "</text> <a href="@Url.Action("Jobs ", "Reviews")">click here</a> <text>to return to your jobs.</text>
     </div>
-
-
 }
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -25,7 +26,7 @@
         <div class="form-group">
             <h3>User Details</h3>
             <div class="row">
-                <div class="col-md-2 text-center">
+                <div class="col-md-2 text-center panel panel-default">
                     <h4>Profile Picture</h4>
                     <hr />
                     @if (User.IsInRole("Employer"))
@@ -61,7 +62,7 @@
                                  box-shadow:0px 0px 20px #888" />
                     }
                 </div>
-                <div class="col-md-4 col-md-offset-1">
+                <div class="col-md-4 col-md-offset-1 panel panel-default">
                     @if (User.IsInRole("Employer"))
                     {<h4>Worker Information</h4> }
                     else
@@ -142,7 +143,7 @@
                         }
                     }
                 </div>
-                <div class="col-md-4 col-md-offset-1">
+                <div class="col-md-4 col-md-offset-1 panel panel-default">
                     <h4>Review Details</h4>
                     <hr />
                     <div class="row">
@@ -162,11 +163,11 @@
                                 @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
                             </div>
                             <div class="col-md-9">
-                                @Html.RadioButtonFor(model => model.Rating, 1, false)
-                                @Html.RadioButtonFor(model => model.Rating, 2, false)
-                                @Html.RadioButtonFor(model => model.Rating, 3, false)
-                                @Html.RadioButtonFor(model => model.Rating, 4, false)
-                                @Html.RadioButtonFor(model => model.Rating, 5, false)
+                                @Html.RadioButtonFor(model => model.Rating, 1, false)<text>1</text>
+                                @Html.RadioButtonFor(model => model.Rating, 2, false)<text>2</text>
+                                @Html.RadioButtonFor(model => model.Rating, 3, false)<text>3</text>
+                                @Html.RadioButtonFor(model => model.Rating, 4, false)<text>4</text>
+                                @Html.RadioButtonFor(model => model.Rating, 5, false)<text>5</text>
                                 @*@Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })*@
                                 @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
                             </div>
@@ -217,9 +218,7 @@
 
     </div>
 }
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

@@ -7,15 +7,10 @@
     ViewBag.Title = "Create Job";
 }
 
-@*<style>
-    #Location{
-        display:none;
-    }
 
-    #alter:checked ~ #Location{
-        display:block;
-    }
-</style>*@
+<div>
+    <a href="@Url.Action("Dashboard","Employers")">Back to dashboard</a>
+</div>
 <h2>@ViewBag.Title</h2>
 <hr />
 @{
@@ -36,16 +31,16 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h3>Job Details</h3>
+    <div class="form-horizontal">       
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <p id="CalculateError" style="color:red"></p>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder="Title" } })
                         @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -53,7 +48,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.SkillID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("SkillID", null, htmlAttributes: new { @class = "form-control", @id = "Skill" })
+                        @Html.DropDownList("SkillID", null, htmlAttributes: new { @class = "form-control", @id = "Skill", placeholder = "Select Skill" })
                         @Html.ValidationMessageFor(model => model.SkillID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -61,10 +56,10 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.TextArea("Description", new { @class = "form-control", rows = 5, columns = 70 })
+                        @Html.TextArea("Description", new { @class = "form-control", rows = 5, columns = 70 , placeholder = "Description" })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
-                </div>                
+                </div>
 
                 <div id="Location">
                     <div class="form-group">
@@ -78,7 +73,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.AddressLine1, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(model => model.AddressLine1, new { @class = "form-control", @id = "addLine1", Value= job.AddressLine1 } )
+                            @Html.TextBoxFor(model => model.AddressLine1, new { @class = "form-control", @id = "addLine1", Value = job.AddressLine1 })
                             @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -86,7 +81,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.AddressLine2, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(model => model.AddressLine2, new { @class = "form-control", @id = "addLine2", Value=job.AddressLine2 } )
+                            @Html.TextBoxFor(model => model.AddressLine2, new { @class = "form-control", @id = "addLine2", Value = job.AddressLine2, placeholder = "Address Line 2" })
                             @Html.ValidationMessageFor(model => model.AddressLine2, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -97,7 +92,7 @@
                         @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10" id="demo">
                             @*<input type="text" id="startDate" class="form-control ui-datepicker-current ui-datepicker"  />*@
-                            @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control datepicker", onkeydown = "return false", onpaste = "return false", @id = "sDate", placeholder = "Select Start Date" })
+                            @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control datepicker", onkeydown = "return false", onpaste = "return false", @id = "sDate", placeholder = "Select Start Date", title = "Jobs are required to be advertised 3 days in advance. This is to cater for" })
                             @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger ", @id = "sError", })
                         </div>
                     </div>
@@ -105,7 +100,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker", onkeydown = "return false", onpaste = "return false", @id = "eDate", placeholder = "Select End Date" })
+                            @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker", onkeydown = "return false", onpaste = "return false", @id = "eDate", placeholder = "Select End Date", })
                             @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger", @id = "end" })
                         </div>
                     </div>
@@ -113,7 +108,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10 bfh-timepicker">
-                            @Html.TextBoxFor(model => model.StartTime, null, new { @class = " form-control timepicker", @id = "sTime" })
+                            @Html.TextBoxFor(model => model.StartTime, null, new { @class = " form-control timepicker", @id = "sTime", onkeydown = "return false", onpaste = "return false", placeholder = "Select Start Time" })
                             @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -121,16 +116,16 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(model => model.EndTime, null, new { @class = "form-control timepicker", @id = "eTime" })
+                            @Html.TextBoxFor(model => model.EndTime, null, new { @class = "form-control timepicker", @id = "eTime", onkeydown = "return false", onpaste = "return false", placeholder = "Select End Time" })
                             @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </form>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Rate, "Payment", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Rate, "Payment", htmlAttributes: new { @class = "control-label col-md-2",  })
                     <div class="col-md-7">
-                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @id = "rate" } })
+                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control", @id = "rate", placeholder = "Payment" } })
                         @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-md-2" style="justify-content:center">
@@ -146,34 +141,40 @@
                 </div>
             </div>
             <br /><br />
-            <div class=" col-md-offset-1 col-md-3 content">
-                <h3>Recommended Rate for Different Skills</h3>
-                <hr />
-                <div class="row">
-                    <div class="col-md-6"><strong>Skill</strong> </div><div class="col-md-6"><strong>Hourly Rate(R)</strong></div>
+            <div class=" col-md-offset-1 col-md-4 content panel panel-default">
+                <h3 style="color:#ff6a00">ATTENTION!</h3>                
+                <p>
+                    <ul>
+                        <li>In order to allow enough time for applications to submitted for the job, the start dare is only be allowed to be 3 days from the current date.</li>
+                        <li>Applications for all jobs closes 1 day before the start date of that job.</li>
+                    </ul>
+ 
+                </p>
+                
                 </div>
-
-                @foreach (var skill in ViewBag.Skills)
-                {
-                    <div class="row" style="text-align:left">
-                        <div class="col-md-6">@skill.SkillDescription</div><div class="col-md-6">@skill.Recom_Rate</div>
-                    </div>
-                }
-            </div>
+              
             <input type="hidden" id="hiddenRate" />
 
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to Profile", "Index")
-</div>
+
 
 @section Scripts {
 
     <script>       
-         $("#addLine1").text()     
+        $("#addLine1").text()   
+
+        var ApplyRate = function () {
+            $("#rate").val($("#hiddenRate").val());
+            $("#myModal").modal("hide");
+            $("#rate").focus();
+            $("#rate").$this;
+            $("#CalculateError").text("");
+
+        }
+
         var calculate = function () {
 
             var id = $("#Skill").val();
@@ -199,6 +200,9 @@
                     $("#hiddenRate").val(data.JobPay);
                     $("#myModal").modal("show");
 
+                },
+                error: function () {
+                    $("#CalculateError").text("The Following fields are required: Start & End Date, Start & End Time and Skill are all required for calculation");
                 }
             })
         }
@@ -228,15 +232,15 @@
                     $("#sDate").datepicker("option", "maxDate", selected)
                 }
             })
-            })
+        })
+
         $(function () {
 
             $("#sTime").timepicker({
                 timeFormat: 'HH:mm p',
                 durationTime: true,
                 minTime: '8:00am',
-                maxTime: '12:00pm',
-                defaultTime: '8:00am',
+                maxTime: '5:00pm',
                 dropdown: true,
                 scrollbar: true,
                 change: function (selected) {
@@ -247,10 +251,11 @@
             $("#eTime").timepicker({
                 durationTime: true,
                 timeFormat: 'HH:mm p',
-                maxTime: '4:00pm',
+                maxTime: '8:00pm',
                 dropdown: true,
                 scrollbar:true
             })
         })
+        
     </script>
 }

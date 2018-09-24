@@ -14,8 +14,8 @@
 @foreach (var user in ViewBag.User)
 {
     <div class="row">
-        <div class="col-md-3 text-center">
-            <h4>Profile Picture</h4>
+        <div class="col-md-3 text-center panel panel-default" style="padding:3em; height:380px">
+            <h3>Profile Picture</h3>
             <hr />
             <img src="@Url.Action("ProfilePic","Home", new {id= user.Id } )" style="width:160px; height:160px; background:
                             #ff6a00;
@@ -23,13 +23,16 @@
                             -moz-border-radius:30px;
                             border-radius:90px;
                             padding:2px;
-                            box-shadow:0px 0px 20px #888" /><br/><br/>
-            <a href="@Url.Action("Email", "Home", new {email= user.Email})" class="btn btn-default" style="border-radius:60px"><span><i class="glyphicon glyphicon-envelope"></i></span>&nbsp;Contact</a>
+                            box-shadow:0px 0px 20px #888" /><br /><br />
+            @if (User.IsInRole("Admin"))
+            {
+                <a href="@Url.Action("Email", "Home", new {email= user.Email})" class="btn btn-default" style="border-radius:60px"><span><i class="glyphicon glyphicon-envelope"></i></span>&nbsp;Contact</a>
+            }
 
         </div>
 
-        <div class="col-md-offset-1 col-md-3">
-            <h4>Personal Information</h4>
+        <div class="col-md-offset-1 col-md-3 panel panel-default" style="padding:3em; height:380px">
+            <h3>Personal Information</h3>
             <hr />
             <div class="row">
                 <div class="col-md-6"><strong>Full Name:</strong> </div>  <div class="col-md-6">@user.FirstName @user.LastName</div>
@@ -63,49 +66,49 @@
         </div>
         @if (ViewBag.Role == "Employer")
         {
-            var employer = (Employer)ViewData["Employer"];
-            <div class="col-md-offset-1 col-md-4">
-                <h4>Work Details</h4>
+
+            <div class="col-md-offset-1 col-md-4 panel panel-default" style="padding:3em; height:380px">
+                <h3>Work Details</h3>
                 <hr />
                 <div class="row">
                     <div class="col-md-5"><strong>Company Name</strong></div>
                     <div class="col-md-6">
-                        @if (employer.WorkName == null)
+                        @if (user.Employer.WorkName == null)
                         {
                             <p>None</p>
                         }
                         else
                         {
-                            @employer.WorkName
+                            @user.Employer.WorkName
                         }
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-5"><strong>Contact No.:</strong></div>
                     <div class="col-md-6">
-                        @if (employer.WorkNumber == null)
+                        @if (user.Employer.WorkNumber == null)
                         {
                             <p>None</p>
                         }
                         else
                         {
-                            @employer.WorkNumber
+                            @user.Employer.WorkNumber
                         }
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-5"><strong>Location:</strong></div>
                     <div class="col-md-6">
-                        @if (employer.WorkName == null)
+                        @if (user.Employer.WorkName == null)
                         {
                             <p>None</p>
                         }
                         else
                         {
-                            @employer.WorkAddress1<br />
-                            @employer.WorkAddress2<br />
-                            @employer.Suburb.SubName<br />
-                            @employer.Suburb.City.CityName
+                            @user.Employer.WorkAddress1<br />
+                            @user.Employer.WorkAddress2<br />
+                            @user.Employer.Suburb.SubName<br />
+                            @user.Employer.Suburb.City.CityName
                         }
                     </div>
                 </div>
@@ -141,12 +144,10 @@
 
     </div>
     <br />
-    <div class="row">
-        <hr />
+    <div class="row panel panel-default" style="padding:1em">
         <h3>Reviews</h3>
         <hr />
         <table class="table">
-
             @foreach (var rev in ViewBag.Reviews)
             {
                 <tr>
@@ -163,6 +164,14 @@
                     <td>@rev.ApplicationUser.FirstName&nbsp;@rev.ApplicationUser.LastName <br /> @rev.Review.Rating <br />@rev.Review.Comment</td>
                 </tr>
 
+            }
+            @if (ViewBag.Reviews == null)
+            {
+                <tr>
+                    <td>
+                        There are currently no review submitted for this user.
+                    </td>
+                </tr>
             }
 
         </table>

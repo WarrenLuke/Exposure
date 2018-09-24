@@ -39,7 +39,7 @@ namespace Exposure.Web.Models
         public string WorkAddressLine2 { get; set; }
 
         [DisplayName("Suburb")]
-        public int? Location { get; set; }
+        public string Location { get; set; }
 
         public string Email { get; set; }
         public bool HasPassword { get; set; }

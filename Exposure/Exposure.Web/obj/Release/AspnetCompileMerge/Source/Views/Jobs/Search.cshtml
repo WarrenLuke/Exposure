@@ -7,7 +7,7 @@
 }
 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         <h2>@ViewBag.Title</h2>
     </div>
     <div class="col-md-3">
@@ -46,10 +46,10 @@
             <p>Sort by: </p>@Html.DropDownList("sortOrder", new SelectList(
 new List<Object>
 {
-    new{value="date", text= "Latest"},
-    new{value="date_desc", text="Oldest"},
-    new {value="rate", text="Rate"},
-    new {value="rate_desc", text="Rate(Desc)"}
+new{value="date", text= "Latest"},
+new{value="date_desc", text="Oldest"},
+new {value="rate", text="Rate"},
+new {value="rate_desc", text="Rate(Desc)"}
 },
 "value", "text", 2), new { @class = "form-control" })
         </div>
@@ -86,22 +86,22 @@ new List<Object>
             </div>
             <div class="panel-body">
                 <div class="col-md-4">
-                    <strong>Location:</strong> @item.Suburb.SubName <br />
-                    <strong>Rate (Per Day):</strong> <text>R</text>@item.Rate <br />
-                    <strong>Date:</strong> @ViewBag.StartDate till @ViewBag.EndDate<br />
-                    <strong>Time:</strong> @ViewBag.StartTime till @ViewBag.EndTime<br />
-                    <strong>Description: </strong> <br />
+                    <strong><span><i class="glyphicon glyphicon-globe"></i></span>&nbsp; Location:</strong> @item.Suburb.SubName <br />
+                    <strong><span><i class="glyphicon glyphicon-usd"></i></span>&nbsp;Payment:</strong> <text>R</text>@item.Rate <br />
+                    <strong><span><i class="glyphicon glyphicon-calendar"></i></span>&nbsp;Date:</strong> @ViewBag.StartDate till @ViewBag.EndDate<br />
+                    <strong><span><i class="glyphicon glyphicon-time"></i></span>&nbsp;Time:</strong> @ViewBag.StartTime till @ViewBag.EndTime<br />
+                    <strong><span><i class="glyphicon glyphicon-list-alt"></i></span>&nbsp;Description: </strong> <br />
                     @item.Description<br />
                 </div>
                 <div class="col-md-8" style="text-align:right">
-                    @if(User.IsInRole("Worker"))
+                    @if (User.IsInRole("Worker"))
                     {
                         <a href="@Url.Action("Create", "JobApplications", new { id= item.JobID, skill = item.SkillID })" class="btn btn-default">
                             Apply
                         </a>
                     }
                 </div>
-                
+
             </div>
         </div>
 

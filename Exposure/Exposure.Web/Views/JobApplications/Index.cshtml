@@ -40,9 +40,9 @@
 new List<Object>
 {
 new{value="date", text= "Latest"},
-new{value="date_desc", text="Date Advertised(Desc)"},
-new {value="rate", text="Rate(Lowest)"},
-new {value="rate_desc", text="Rate(Highest)"}
+new{value="date_desc", text="Oldest"},
+new {value="rate", text="Payment(Lowest)"},
+new {value="rate_desc", text="Payment(Highest)"}
 },
 "value", "text", 2), new { @class = "form-control" })
     </div>
@@ -63,7 +63,7 @@ new {value="rate_desc", text="Rate(Highest)"}
 
 @if (User.IsInRole("Admin"))
 {
-    <table class="table">
+    <table class="table table-striped table-bordered dt-nowrap">
         <tr>
             <th>
                 Employer
@@ -128,7 +128,7 @@ else if (User.IsInRole("Worker"))
         </div>
     </div>
 
-    <table class="table table-striped table-bordered dt-nowrap">
+    <table class="table table-striped table-bordered dt-nowrap panel panel-default">
         <tr>
             <th>Title</th>
             <th>Skill</th>
@@ -186,7 +186,7 @@ else if (User.IsInRole("Worker"))
 }
 else if (User.IsInRole("Employer"))
 {
-    <table class="table">
+    <table class="table table-striped table-bordered dt-nowrap panel panel-default">
         <tr>
             <th>Title</th>
             <th>Skill</th>
@@ -226,14 +226,8 @@ else if (User.IsInRole("Employer"))
                 <td>
                     @if (application.Response != ViewBag.Rejected || application.Response != ViewBag.Hired)
                     {
-
-                        <a href="@Url.Action("Edit","JobApplications",new { id = application.JobApplicationID })">Respond</a> <br />
-
-                    }
-                    @if (application.Job.Completed == true && application.Response == ViewBag.Hired)
-                    {
-                        <a href="@Url.Action("Create", "Reviews", new { job = application.Job.JobID, worker = application.WorkerID })">Review Worker</a>
-                    }
+                        <a href="@Url.Action("Edit","JobApplications",new { id = application.JobApplicationID })" class="btn btn-default">Respond</a> <br />
+                    }                    
                 </td>
             </tr>
         }

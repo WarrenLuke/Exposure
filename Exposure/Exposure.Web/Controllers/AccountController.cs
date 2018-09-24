@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Data.Entity;
 using System.Net;
+using Exposure.Web.Models.ViewModels;
 
 namespace Exposure.Web.Controllers
 {
@@ -325,7 +326,7 @@ namespace Exposure.Web.Controllers
         public ActionResult UserDetails(string Id)
         {
 
-            var userDetails = db.Users.Include(e => e.Employer).Include(w => w.Worker).Include(s => s.Suburb).Where(u => u.Id == Id);
+            var userDetails = db.Users.Include(e => e.Employer.Suburb).Include(w => w.Worker).Include(s => s.Suburb).Where(u => u.Id == Id);
             var reviews = db.UserReviews.Where(u => u.Review.Reviewee == Id).Include(u => u.Review).Include(u => u.ApplicationUser);
             var userRole = UserManager.GetRoles(Id).Single();
 
@@ -335,8 +336,9 @@ namespace Exposure.Web.Controllers
             }
             else if (userRole == "Employer")
             {
-                ViewData["Employer"] = db.Employers.Find(Id);
+                ViewBag.Employer = db.Employers.Include(x => x.Suburb).Where(x => x.EmployerID == Id);
             }
+
             ViewBag.User = userDetails;
             ViewBag.Role = userRole;
             ViewBag.Reviews = reviews;
@@ -713,6 +715,17 @@ namespace Exposure.Web.Controllers
                 "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
             return callbackUrl;
+        }
+
+        public async Task<ActionResult> EmailIncident(EmailFormModel model)
+        {
+            var user = UserManager.FindByEmail(model.ToEmail);
+            var callbackUrl = Url.Action("Index", "Incidents");
+            await UserManager.SendEmailAsync(user.Id, model.Subject, model.Message);
+            TempData["EmailSent"] = "Email Successfully sent";
+
+             return RedirectToRoute("Default", new { controller = "Incidents", action = "Index", id = user.Id });
+
         }
 
         protected override void Dispose(bool disposing)

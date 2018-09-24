@@ -1,4 +1,5 @@
 ﻿@model Exposure.Entities.Help
+
 <style>
 
     dl.faq button {
@@ -57,16 +58,16 @@
         <h3>FAQs</h3>
         <p>Below is a list of frequently asked questions you might find useful.</p>
         <br />
-        <dl class="faq">
+        <dl class="faq panel panel-default">
             @foreach (var item in ViewBag.FAQ)
             {
-                <dt>
-                    <button aria-expanded="false" aria-controls="faq2_desc">
-                        @item.HelpQuestion
+                <dt class="panel panel-default col-md-12" aria-expanded="false" aria-controls="@item.HelpID">
+                    <button class="col-md-12" aria-expanded="false" aria-controls="@item.HelpID">
+                        <span><i class="glyphicon glyphicon-chevron-down"></i></span>&nbsp;@item.HelpQuestion
                     </button>
                 </dt>
                 <dd>
-                    <p id="faq2_desc" class="desc">
+                    <p id="@item.HelpID" class="desc">
                         @item.HelpAnswer
                     </p>
                 </dd>

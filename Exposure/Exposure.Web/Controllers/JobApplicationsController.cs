@@ -30,10 +30,10 @@ namespace Exposure.Web.Controllers
                     jobApplications = jobApplications.OrderBy(j => j.Job.Title);
                     break;
                 case "date":
-                    jobApplications = jobApplications.OrderByDescending(j => j.Job.DateAdvertised);
+                    jobApplications = jobApplications.OrderByDescending(j => j.Job.StartDate);
                     break;
                 case "date_desc":
-                    jobApplications = jobApplications.OrderBy(j => j.Job.DateAdvertised);
+                    jobApplications = jobApplications.OrderBy(j => j.Job.StartDate);
                     break;
                 case "rate_desc":
                     jobApplications = jobApplications.OrderByDescending(j => j.Job.Rate);
@@ -42,7 +42,7 @@ namespace Exposure.Web.Controllers
                     jobApplications = jobApplications.OrderBy(j => j.Job.Rate);
                     break;
                 default:
-                    jobApplications = jobApplications.OrderByDescending(j => j.Job.DateAdvertised);
+                    jobApplications = jobApplications.OrderByDescending(j => j.Job.StartDate);
                     break;
             }
 

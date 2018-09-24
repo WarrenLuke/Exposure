@@ -14,7 +14,7 @@ using PagedList;
 
 namespace Exposure.Web.Controllers
 {
-    [Authorize(Roles ="Admin, Employer")]
+    [Authorize(Roles = "Admin, Employer")]
     public class EmployersController : Controller
     {
         private IdentityDb db = new IdentityDb();
@@ -26,7 +26,7 @@ namespace Exposure.Web.Controllers
             return View(employers.ToList());
         }
 
-        public ActionResult Dashboard(int page=1, int pageSize = 5)
+        public ActionResult Dashboard(int page = 1, int pageSize = 5)
         {
             var userID = User.Identity.GetUserId();
             var currentDate = DateTime.UtcNow;
@@ -34,13 +34,26 @@ namespace Exposure.Web.Controllers
             double avgRating = 0;
             if (ratingCount != 0)
             {
-                 avgRating = db.Reviews.Where(x => x.Reviewee == userID).Average(x => x.Rating);                 
-            }          
+                avgRating = db.Reviews.Where(x => x.Reviewee == userID).Average(x => x.Rating);
+            }
 
             var totalJobs = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Count();
-            var upcomingJob = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == false).OrderByDescending(x => x.StartDate).First();
+
+            var upcomingJobCount = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == false).OrderByDescending(x => x.StartDate).Count();
+            if (upcomingJobCount != 0)
+            {
+                var upcomingJob = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == false).OrderByDescending(x => x.StartDate).First();
+                ViewData["upcomingJob"] = upcomingJob;
+                ViewBag.UpcomingJob = upcomingJob;
+            }
+            else
+            {
+
+                ViewBag.UpcomingJobCount = upcomingJobCount;
+            }
+
             var reviews = db.UserReviews.Where(u => u.Review.Reviewee == userID).Include(u => u.Review).Include(u => u.ApplicationUser).OrderByDescending(x => x.Review.ReportDate);
-            if(reviews.Count() == 0)
+            if (reviews.Count() == 0)
             {
                 TempData["Reviews"] = "There are currently no reviews to display";
             }
@@ -49,36 +62,46 @@ namespace Exposure.Web.Controllers
             {
                 TempData["currentJob"] = "You dont have any active jobs";
             }
-            var TotalSpent = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Sum(x => x.Rate);
-            var monthAvg = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Average(x => x.Rate);
+
+
+
+            var TotalSpentCount = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Count();
+            if (TotalSpentCount != 0)
+            {
+                var TotalSpent = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Sum(x => x.Rate);
+
+                if (TotalSpent == 0)
+                {
+                    ViewBag.TotalSpent = 0;
+                }
+                else
+                {
+                    ViewBag.TotalSpent = TotalSpent;
+                }
+            }
+            var monthAvgCount = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Count();
+            if (monthAvgCount != 0)
+            {
+                var monthAvg = db.Jobs.Where(x => x.EmployerID == userID).Where(x => x.Completed == true).Average(x => x.Rate);
+                if (monthAvg == 0)
+                {
+                    ViewBag.AVG = 0;
+                }
+                else
+                {
+                    ViewBag.AVG = monthAvg;
+                }
+            }
+
             PagedList<UserReviews> model = new PagedList<UserReviews>(reviews, page, pageSize);
 
-            if (TotalSpent == 0)
-            {
-                ViewBag.TotalSpent = 0;
-            }
-            else
-            {
-                ViewBag.TotalSpent = TotalSpent;
-            }
-
-            if (monthAvg == 0)
-            {
-                ViewBag.AVG = 0;
-            }
-            else
-            {
-                ViewBag.AVG = monthAvg;
-            }
-
-            if(totalJobs== 0)
+            if (totalJobs == 0)
             {
                 TempData["totalJobs"] = "You have not advertised any Jobs yet.";
             }
 
             ViewBag.TotalJobs = totalJobs;
-            ViewData["upcomingJob"] = upcomingJob;
-            ViewBag.UpcomingJob = upcomingJob;
+
             ViewBag.Reviews = reviews;
             ViewBag.AvgRating = avgRating;
             ViewBag.CurrentJob = currentJob;
@@ -102,8 +125,8 @@ namespace Exposure.Web.Controllers
         }
 
         // GET: Employers/Create
-        
-        [Authorize(Roles ="Employer, Admin")]
+
+        [Authorize(Roles = "Employer, Admin")]
         public ActionResult Create()
         {
             ViewBag.EmployerID = User.Identity.GetUserId();
@@ -123,10 +146,10 @@ namespace Exposure.Web.Controllers
                 db.Employers.Add(employer);
                 db.SaveChanges();
                 TempData["WorkDetails"] = "Work details successfully updated";
-                return RedirectToRoute("Default", new {controller = "Manage", action="Index" });
+                return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
             }
 
-            
+
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", employer.SuburbID);
             TempData["WorkDetails"] = "Work details could not be updated. Please enter valid details";
             return View(employer);
@@ -160,9 +183,9 @@ namespace Exposure.Web.Controllers
             {
                 db.Entry(employer).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToRoute("Default", new {controller="Manage", action="Index" });
+                return RedirectToRoute("Default", new { controller = "Manage", action = "Index" });
             }
-            
+
             ViewBag.SuburbID = new SelectList(db.Suburbs, "SuburbID", "SubName", employer.SuburbID);
             return View(employer);
         }

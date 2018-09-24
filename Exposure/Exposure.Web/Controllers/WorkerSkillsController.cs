@@ -43,6 +43,7 @@ namespace Exposure.Web.Controllers
         [Authorize(Roles = "Admin, Worker")]
         public ActionResult Create(string returnUrl)
         {
+            var user = User.Identity.GetUserId();            
             ViewBag.SkillID = new SelectList(db.Skills, "SkillID", "SkillDescription");            
             ViewBag.ReturnUrl = returnUrl;
             

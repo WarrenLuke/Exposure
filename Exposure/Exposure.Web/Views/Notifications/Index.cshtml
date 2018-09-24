@@ -6,7 +6,16 @@
 @{
     ViewBag.Title = "Notifications";
 }
-
+<div class="col-md-3">
+    @if (User.IsInRole("Worker"))
+    {
+        <a href="@Url.Action("Dashboard","Worker")">Back to Dashboard</a>
+    }
+    else if (User.IsInRole("Employer"))
+    {
+        <a href="@Url.Action("Dashboard","Employer")">Back to Dashboard</a>
+    }
+</div>
 <h2><span><i class="glyphicon glyphicon-bell" style="font-size:x-large"></i></span>@ViewBag.Title</h2>
 <hr />
 @foreach (var item in ViewBag.Notifications)
@@ -18,7 +27,8 @@
                 <span><i class="glyphicon glyphicon-bell" style="font-size:xx-large"></i></span>
             </div>
             <div class="col-md-10">
-                <p>@item.Message</p>
+                <p>@item.Message</p><br/>
+                <p style="font-style:italic">Received on: @item.Updated.ToShortDateString()</p>
             </div>
             <div class="col-md-1">
                 @if (item.Job != null)

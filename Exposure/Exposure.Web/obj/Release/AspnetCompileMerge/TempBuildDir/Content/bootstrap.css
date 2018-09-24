@@ -3834,12 +3834,12 @@ textarea.input-group-sm > .input-group-btn > .btn {
   clear: both;
 }
 
-.nav > li {
+.nav > li > span {
   position: relative;
   display: block;
 }
 
-.nav > li > a {
+.nav > li > a > span {
   position: relative;
   display: block;
   padding: 10px 15px;
@@ -3890,7 +3890,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   margin-bottom: -1px;
 }
 
-.nav-tabs > li > a {
+.nav-tabs > li > a > span {
   margin-right: 2px;
   line-height: 1.428571429;
   border: 1px solid transparent;
